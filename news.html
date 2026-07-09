@@ -1,0 +1,1177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>callbybreath official website</title>
+  <link rel="icon" type="image/png" href="Images/logo.png">
+  <style>
+    @font-face {
+      font-family: 'Eitai';
+      src: url('Font/Eitai.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'NotoSerifJP';
+      src: url('Font/NotoSerifJP-Light.ttf') format('truetype');
+      font-weight: 300;
+      font-style: normal;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background-color: #f0fff8;
+      font-family: 'Eitai', sans-serif;
+      color: #1f2024;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: row;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    img {
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
+      user-drag: none;
+      pointer-events: auto;
+    }
+
+    .left-panel {
+      width: 64px;
+      background-color: #1f2024;
+      flex-shrink: 0;
+      height: 100vh;
+    }
+
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .right-panel {
+      width: 64px;
+      background-color: #1f2024;
+      flex-shrink: 0;
+      height: 100vh;
+    }
+
+    .top-bar {
+      background-color: #1f2024;
+      width: 100%;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .top-bar-inner {
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 2rem;
+      position: relative;
+    }
+
+    .nav-container {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .logo {
+      height: 48px;
+      width: auto;
+      display: block;
+      cursor: pointer;
+      filter: brightness(0) invert(1);
+    }
+
+    .tooltip {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 8px;
+      background-color: #1f2024;
+      color: #f0fff8;
+      font-size: 0.8rem;
+      font-weight: 340;
+      padding: 8px 14px;
+      white-space: nowrap;
+      border-left: 2px solid #700707;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .logo-wrapper:hover .tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .nav {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .nav a {
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 380;
+      letter-spacing: 0.3px;
+      color: #f0fff8;
+      transition: color 0.2s;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav a:hover {
+      color: #700707;
+    }
+
+    .nav a.active {
+      color: #700707;
+      border-bottom: 2px solid #700707;
+    }
+
+    .nav-separator {
+      color: #f0fff8;
+      font-size: 0.9rem;
+      display: inline-block;
+      transform: scaleX(0.65);
+    }
+
+    .news-ticker-header {
+      width: 100%;
+      background-color: #700707;
+      padding: 0.4rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .news-ticker-header:hover {
+      background-color: #1f2024;
+    }
+
+    .news-ticker-header .ticker-content-header {
+      color: #f0fff8;
+    }
+
+    .news-ticker-header .news-badge-ticker {
+      background-color: #f0fff8;
+      color: #700707;
+    }
+
+    .news-ticker-header:hover .news-badge-ticker {
+      background-color: #700707;
+      color: #f0fff8;
+    }
+
+    .ticker-content-header {
+      display: inline-block;
+      animation: ticker-header 30s linear infinite;
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      padding-left: 20px;
+    }
+
+    .ticker-content-header span {
+      margin-right: 40px;
+    }
+
+    .news-badge-ticker {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      margin: 0 10px;
+      font-family: 'Eitai', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @keyframes ticker-header {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #f0fff8;
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.2s;
+      position: absolute;
+      right: 2rem;
+    }
+
+    .mobile-menu-btn:hover {
+      color: #700707;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px;
+      right: 0;
+      background-color: #1f2024;
+      padding: 1.5rem;
+      flex-direction: column;
+      gap: 1.2rem;
+      z-index: 999;
+      border-left: none;
+      border-bottom: none;
+      min-width: 200px;
+    }
+
+    .mobile-nav.active {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 380;
+      letter-spacing: 0.3px;
+      color: #f0fff8;
+      transition: color 0.2s;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      text-align: center;
+    }
+
+    .mobile-nav a:hover {
+      color: #700707;
+    }
+
+    .mobile-nav a.active {
+      color: #700707;
+      border-bottom: 2px solid #700707;
+    }
+
+    .page-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
+    .content-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 4rem 2rem 0 2rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: left;
+    }
+
+    .nav a .scale-wrapper,
+    .tooltip .scale-wrapper,
+    .mobile-nav a .scale-wrapper {
+      transform-origin: center;
+    }
+
+    .nav a {
+      display: inline-block;
+    }
+
+    .nav a .scale-wrapper {
+      display: inline-block;
+    }
+
+    .mobile-nav a {
+      display: block;
+      text-align: center;
+    }
+
+    .mobile-nav a .scale-wrapper {
+      display: inline-block;
+    }
+
+    .title-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .title-box {
+      background-image: url('Images/background01_red.jpg');
+      background-size: cover;
+      background-position: center;
+      width: 100%;
+      max-width: 1600px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    .page-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #700707;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.15rem;
+      white-space: nowrap;
+      text-shadow: 
+        -1px -1px 0 #f0fff8,
+        1px -1px 0 #f0fff8,
+        -1px 1px 0 #f0fff8,
+        1px 1px 0 #f0fff8;
+    }
+
+    .page-title .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: center;
+    }
+
+    .page-subtitle {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: #f0fff8;
+      letter-spacing: 2px;
+      display: inline-block;
+      background-color: #700707;
+      padding: 0.1rem 0.5rem;
+      white-space: nowrap;
+    }
+
+    .page-subtitle .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.8);
+      transform-origin: center;
+    }
+
+    .divider-line {
+      width: 100%;
+      max-width: 1600px;
+      height: 1px;
+      background-color: #1f2024;
+      margin-bottom: 2rem;
+    }
+
+    .news-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 1600px;
+    }
+
+    .news-item {
+      border-bottom: 1px solid #1f2024;
+      padding-bottom: 0.5rem;
+    }
+
+    .news-header {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      cursor: pointer;
+      padding: 0.5rem 0;
+      transition: background-color 0.2s ease;
+    }
+
+    .news-header:hover {
+      background-color: rgba(112, 7, 7, 0.05);
+    }
+
+    .news-date {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 1.1rem;
+      font-weight: 300;
+      color: #1f2024;
+      margin-right: 1.5rem;
+      min-width: 100px;
+    }
+
+    .news-date .scale-wrapper {
+      display: inline-block;
+    }
+
+    .news-title-wrapper {
+      display: flex;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      flex: 1;
+    }
+
+    .news-badge {
+      background-image: url('Images/background01_red.jpg');
+      background-size: cover;
+      background-position: center;
+      padding: 0.3rem 0.6rem;
+      display: inline-block;
+      text-align: center;
+    }
+
+    .news-badge .badge-top {
+      font-family: 'Eitai', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #700707;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 
+        -1px -1px 0 #f0fff8,
+        1px -1px 0 #f0fff8,
+        -1px 1px 0 #f0fff8,
+        1px 1px 0 #f0fff8;
+    }
+
+    .news-badge .badge-top .scale-wrapper {
+      display: inline-block;
+      transform-origin: center;
+    }
+
+    .news-title {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1f2024;
+      text-transform: uppercase;
+    }
+
+    .news-title .scale-wrapper {
+      display: inline-block;
+    }
+
+    .news-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease, padding 0.3s ease;
+      padding: 0 0 0 120px;
+    }
+
+    .news-item.expanded .news-content {
+      max-height: 2000px;
+      padding: 0.5rem 0 1.5rem 120px;
+    }
+
+    .news-body {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: #1f2024;
+      line-height: 1.6;
+      text-transform: uppercase;
+    }
+
+    .news-body p {
+      margin-bottom: 1rem;
+    }
+
+    .news-body .scale-text {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: left;
+    }
+
+    .news-body strong,
+    .news-body b,
+    .news-body .bold {
+      font-weight: 600;
+      color: #700707;
+    }
+
+    /* Иконка разворачивания — новая */
+    .news-expand-icon {
+      margin-left: auto;
+      font-size: 1.4rem;
+      color: #700707;
+      transition: transform 0.2s ease;
+      padding-left: 1rem;
+      line-height: 1;
+    }
+
+    .news-item.expanded .news-expand-icon {
+      transform: scale(1.1);
+    }
+
+    .footer {
+      width: 100%;
+      background-color: #f0fff8;
+      border-top: 1px solid #1f2024;
+      padding: 1.5rem 2rem;
+      margin-top: 3rem;
+      flex-shrink: 0;
+    }
+
+    .footer-content {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      height: 40px;
+      width: auto;
+      filter: brightness(0);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .footer-social-link {
+      text-decoration: none;
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: #1f2024;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+      position: relative;
+      display: inline-block;
+      border-bottom: none;
+    }
+
+    .footer-social-link .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.65);
+      position: relative;
+    }
+
+    .footer-social-link .scale-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: -4px;
+      width: calc(100% + 8px);
+      height: 1px;
+      background-color: #700707;
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+      transform-origin: center;
+    }
+
+    .footer-social-link:hover .scale-wrapper::after {
+      transform: scaleX(1);
+    }
+
+    .footer-social-link:hover {
+      color: #700707;
+    }
+
+    .footer-copyright {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: #1f2024;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.5rem;
+    }
+
+    .footer-copyright .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.65);
+    }
+
+    .tooltip .scale-wrapper {
+      white-space: nowrap;
+    }
+
+    @media (max-width: 1100px) {
+      .title-box {
+        padding: 1.5rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 800px) {
+      .title-box {
+        padding: 1.2rem 1.2rem;
+      }
+      .page-title {
+        font-size: 2rem;
+      }
+      .page-subtitle {
+        font-size: 1rem;
+        padding: 0.08rem 0.4rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .left-panel, .right-panel {
+        width: 40px;
+      }
+
+      .top-bar-inner {
+        padding: 0.8rem 1rem;
+        justify-content: flex-start;
+      }
+
+      .nav-container {
+        gap: 1.5rem;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+        right: 1rem;
+      }
+
+      .news-ticker-header {
+        padding: 0.3rem 0;
+      }
+
+      .ticker-content-header {
+        font-size: 0.75rem;
+      }
+
+      .news-badge-ticker {
+        font-size: 0.6rem;
+        padding: 0.1rem 0.4rem;
+      }
+
+      .content-inner {
+        padding: 2rem 1rem 0 1rem;
+      }
+
+      .title-box {
+        padding: 1rem 1rem;
+      }
+
+      .page-title {
+        font-size: 1.6rem;
+        white-space: nowrap;
+      }
+
+      .page-subtitle {
+        font-size: 0.85rem;
+        padding: 0.06rem 0.3rem;
+        white-space: nowrap;
+      }
+
+      .news-date {
+        min-width: 80px;
+        font-size: 1rem;
+        margin-right: 1rem;
+      }
+
+      .news-title {
+        font-size: 1.1rem;
+      }
+
+      .news-content {
+        padding-left: 0;
+      }
+
+      .news-item.expanded .news-content {
+        padding-left: 0;
+      }
+
+      .news-badge .badge-top {
+        font-size: 0.7rem;
+      }
+
+      .footer {
+        padding: 1rem 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .footer-logo {
+        height: 30px;
+      }
+
+      .footer-social-link {
+        font-size: 0.8rem;
+      }
+
+      .footer-copyright {
+        font-size: 0.6rem;
+      }
+
+      .logo {
+        height: 40px;
+      }
+
+      .tooltip {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .left-panel, .right-panel {
+        width: 32px;
+      }
+
+      .top-bar-inner {
+        padding: 0.6rem 0.8rem;
+      }
+
+      .nav-container {
+        gap: 1rem;
+      }
+
+      .logo {
+        height: 36px;
+      }
+
+      .mobile-menu-btn {
+        right: 0.8rem;
+        font-size: 1.5rem;
+      }
+
+      .mobile-nav {
+        top: 56px;
+        min-width: 160px;
+        padding: 1rem;
+      }
+
+      .mobile-nav a {
+        font-size: 0.9rem;
+      }
+
+      .ticker-content-header {
+        font-size: 0.65rem;
+      }
+
+      .news-badge-ticker {
+        font-size: 0.5rem;
+        padding: 0.1rem 0.3rem;
+      }
+
+      .title-box {
+        padding: 0.8rem 0.8rem;
+      }
+
+      .page-title {
+        font-size: 1.3rem;
+        white-space: nowrap;
+      }
+
+      .page-subtitle {
+        font-size: 0.75rem;
+        padding: 0.05rem 0.25rem;
+        white-space: nowrap;
+      }
+
+      .news-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+      }
+
+      .news-date {
+        margin-right: 0;
+      }
+
+      .news-title-wrapper {
+        width: 100%;
+      }
+
+      .news-expand-icon {
+        position: absolute;
+        right: 1rem;
+        top: 0.5rem;
+      }
+
+      .news-item {
+        position: relative;
+      }
+
+      .news-title {
+        font-size: 1rem;
+      }
+
+      .news-body {
+        font-size: 0.9rem;
+      }
+
+      .content-inner {
+        padding: 1.5rem 0.8rem 0 0.8rem;
+      }
+
+      .footer {
+        padding: 0.8rem 1rem;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .footer-logo {
+        height: 25px;
+      }
+
+      .footer-socials {
+        gap: 1rem;
+      }
+
+      .footer-social-link {
+        font-size: 0.7rem;
+      }
+
+      .footer-copyright {
+        font-size: 0.5rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .title-box {
+        padding: 0.6rem 0.6rem;
+      }
+
+      .page-title {
+        font-size: 1.1rem;
+        white-space: nowrap;
+      }
+
+      .page-subtitle {
+        font-size: 0.65rem;
+        padding: 0.04rem 0.2rem;
+        white-space: nowrap;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="left-panel"></div>
+
+  <div class="main-content">
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <div class="nav-container">
+          <div class="logo-wrapper">
+            <a href="index.html">
+              <img src="Images/logo.png" alt="CallbyBreath" class="logo">
+            </a>
+            <div class="tooltip"><span class="scale-wrapper">TAKE A LITTLE CITRUS FROM MY HANDS 🍋 ♡(｡- ω -)</span></div>
+          </div>
+          
+          <nav class="nav">
+            <a href="discography.html"><span class="scale-wrapper">DISCOGRAPHY</span></a>
+            <span class="nav-separator">|</span>
+            <a href="videos.html"><span class="scale-wrapper">MUSIC VIDEOS</span></a>
+            <span class="nav-separator">|</span>
+            <a href="archive.html"><span class="scale-wrapper">ARCHIVE</span></a>
+            <span class="nav-separator">|</span>
+            <a href="news.html" class="active"><span class="scale-wrapper">NEWS</span></a>
+            <span class="nav-separator">|</span>
+            <a href="special.html"><span class="scale-wrapper">SPECIAL</span></a>
+            <span class="nav-separator">|</span>
+            <a href="contacts.html"><span class="scale-wrapper">SOCIAL</span></a>
+          </nav>
+        </div>
+
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+
+    <a href="news.html" class="news-ticker-header">
+      <div class="ticker-content-header" id="tickerHeader"></div>
+    </a>
+
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="discography.html"><span class="scale-wrapper">DISCOGRAPHY</span></a>
+      <a href="videos.html"><span class="scale-wrapper">MUSIC VIDEOS</span></a>
+      <a href="archive.html"><span class="scale-wrapper">ARCHIVE</span></a>
+      <a href="news.html" class="active"><span class="scale-wrapper">NEWS</span></a>
+      <a href="special.html"><span class="scale-wrapper">SPECIAL</span></a>
+      <a href="contacts.html"><span class="scale-wrapper">SOCIAL</span></a>
+    </nav>
+
+    <div class="page-wrapper">
+      <div class="content-inner">
+        <div class="title-wrapper">
+          <div class="title-box">
+            <div class="page-title">
+              <span class="scale-wrapper">＜ NEWS ＞</span>
+            </div>
+            <div class="page-subtitle">
+              <span class="scale-wrapper">最新情報</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <div class="news-container" id="newsContainer"></div>
+      </div>
+
+      <div class="footer">
+        <div class="footer-content">
+          <div class="footer-top">
+            <img src="Images/logo.png" alt="CallbyBreath" class="footer-logo">
+            <div class="footer-socials" id="footerSocials"></div>
+          </div>
+          <div class="footer-copyright">
+            <span class="scale-wrapper">© ALL RIGHTS RESERVED</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="right-panel"></div>
+
+  <script>
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileNav.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        mobileNav.classList.remove('active');
+      }
+    });
+
+    const tickerNews = [
+      { date: "2025.04.15", title: "CALLBYBREATH IS NOW AVAILABLE ON INSTAGRAM, PINTEREST, DISCORD, TELEGRAM, VK!", isLatest: true },
+      { date: "2025.04.15", title: "CALLBYBREATH OFFICIAL WEBSITE OUT NOW! NEW DESIGN!", isLatest: false }
+    ];
+
+    function renderTicker() {
+      const ticker = document.getElementById('tickerHeader');
+      
+      let contentHTML = '';
+      tickerNews.forEach(news => {
+        contentHTML += `<span>${news.date}  `;
+        if (news.isLatest) {
+          contentHTML += `<span class="news-badge-ticker">LATEST NEWS</span>  `;
+        }
+        contentHTML += `${news.title}  ◆  </span>`;
+      });
+      
+      ticker.innerHTML = contentHTML + contentHTML;
+    }
+
+    renderTicker();
+
+    const socialLinks = [
+      { name: 'youtube', url: 'https://www.youtube.com/@CallbyBreath' },
+      { name: 'instagram', url: 'https://www.instagram.com/callbybreath.official' },
+      { name: 'pinterest', url: 'https://pinterest.com/callbybreath' },
+      { name: 'telegram', url: 'https://t.me/callbybreath' },
+      { name: 'spotify', url: 'https://open.spotify.com/artist/4RJTPseEgwmAZIto7YDuV6' },
+      { name: 'apple music', url: 'https://music.apple.com/ru/artist/callbybreath/1602956679' }
+    ];
+
+    function renderFooterSocials() {
+      const container = document.getElementById('footerSocials');
+      container.innerHTML = '';
+      
+      socialLinks.forEach(link => {
+        const a = document.createElement('a');
+        a.className = 'footer-social-link';
+        a.href = link.url;
+        a.target = '_blank';
+        a.innerHTML = `<span class="scale-wrapper">${link.name}</span>`;
+        container.appendChild(a);
+      });
+    }
+
+    renderFooterSocials();
+
+    const newsData = [
+      
+      {
+        date: "2026.04.15",
+        title: "CALLBYBREATH IS NOW AVAILABLE ON INSTAGRAM, PINTEREST, DISCORD, TELEGRAM, VK!",
+        isLatest: true,
+        content: `
+          <p><span class="scale-text">We have moved to the final stage, and now we have more social media!</span></p>
+
+        <p><span class="scale-text">
+        <strong>Instagram</strong> — photos, lifestyle videos, CallbyBreath news (coming soon).<br>
+        <strong>Pinterest</strong> — photos, lifestyle videos, CallbyBreath news (coming soon).<br>
+        <strong>Discord</strong> — direct communication, CallbyBreath news.<br>
+        <strong>Telegram</strong> — photos, lifestyle videos, CallbyBreath news.<br>
+        <strong>VK</strong> — CallbyBreath news only.
+        </span></p>
+
+        <p><span class="scale-text"><strong>You can find all the links on the SOCIAL tab right on the website!</strong></span></p>
+
+        <p><span class="scale-text">
+        --- <strong>If you are on a computer:</strong> go to the "SOCIAL" tab in the navigation bar.<br>
+        --- <strong>If you are on a mobile device:</strong> open the "≡" menu and select <strong>"SOCIAL"</strong>.
+        </span></p>
+        `
+      },
+      
+      {
+        date: "2026.04.15",
+        title: "CALLBYBREATH OFFICIAL WEBSITE OUT NOW! NEW DESIGN!",
+        isLatest: false,
+        content: `
+          <p><span class="scale-text">After extensive work on the design and concept, we are ready to present our website to you. Here you can find:</span></p>
+          <p><span class="scale-text"><strong>"Discography"</strong> — featuring ONLY official releases. <strong>"Music Videos"</strong> — featuring ONLY official videos from our channel. <strong>"ARCHIVE"</strong> – a collection of all deleted videos (covers and remixes) kept for content protection. <strong>"News"</strong> — featuring the latest updates on the CallbyBreath project. <strong>"SPECIAL"</strong> – featuring selected user comments from our videos. <strong>"Social"</strong> — featuring all our official links.</span></p>
+          <p><span class="scale-text">Hopefully, all bugs are fixed now. However, If you notice anything wrong with the site, please let us know at: callbybreathcom@gmail.com</span></p>
+          <p><span class="scale-text">We congratulate all our listeners on this major milestone!</span></p>
+        `
+      }
+    ];
+
+    function renderNews() {
+      const container = document.getElementById('newsContainer');
+      container.innerHTML = '';
+
+      newsData.forEach((news, index) => {
+        const newsItem = document.createElement('div');
+        newsItem.className = 'news-item';
+        if (index === 0) {
+          newsItem.classList.add('expanded');
+        }
+
+        const header = document.createElement('div');
+        header.className = 'news-header';
+        header.addEventListener('click', () => {
+          newsItem.classList.toggle('expanded');
+          // Обновляем иконку
+          const icon = newsItem.querySelector('.news-expand-icon');
+          if (newsItem.classList.contains('expanded')) {
+            icon.innerHTML = '☓';
+          } else {
+            icon.innerHTML = '•';
+          }
+        });
+
+        const dateDiv = document.createElement('div');
+        dateDiv.className = 'news-date';
+        dateDiv.innerHTML = `<span class="scale-wrapper">${news.date}</span>`;
+
+        const titleWrapper = document.createElement('div');
+        titleWrapper.className = 'news-title-wrapper';
+
+        if (news.isLatest) {
+          const badge = document.createElement('span');
+          badge.className = 'news-badge';
+          badge.innerHTML = `
+            <div class="badge-top"><span class="scale-wrapper">LATEST NEWS</span></div>
+          `;
+          titleWrapper.appendChild(badge);
+        }
+
+        const titleDiv = document.createElement('span');
+        titleDiv.className = 'news-title';
+        titleDiv.innerHTML = `<span class="scale-wrapper">${news.title}</span>`;
+        titleWrapper.appendChild(titleDiv);
+
+        const expandIcon = document.createElement('span');
+        expandIcon.className = 'news-expand-icon';
+        // Первая новость открыта по умолчанию
+        expandIcon.innerHTML = (index === 0) ? '☓' : '•';
+
+        header.appendChild(dateDiv);
+        header.appendChild(titleWrapper);
+        header.appendChild(expandIcon);
+
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'news-content';
+        
+        const bodyDiv = document.createElement('div');
+        bodyDiv.className = 'news-body';
+        bodyDiv.innerHTML = news.content;
+        
+        contentDiv.appendChild(bodyDiv);
+
+        newsItem.appendChild(header);
+        newsItem.appendChild(contentDiv);
+        container.appendChild(newsItem);
+      });
+    }
+
+    renderNews();
+
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('copy', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('cut', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('dragstart', (e) => {
+      e.preventDefault();
+      return false;
+    });
+  </script>
+</body>
+</html>

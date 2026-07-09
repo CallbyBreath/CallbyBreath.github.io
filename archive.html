@@ -1,0 +1,1220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>callbybreath official website</title>
+  <link rel="icon" type="image/png" href="Images/logo.png">
+  <style>
+    @font-face {
+      font-family: 'Eitai';
+      src: url('Font/Eitai.otf') format('opentype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'NotoSerifJP';
+      src: url('Font/NotoSerifJP-Light.ttf') format('truetype');
+      font-weight: 300;
+      font-style: normal;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      overflow: hidden;
+    }
+
+    body {
+      background-color: #f0fff8;
+      font-family: 'Eitai', sans-serif;
+      color: #1f2024;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: row;
+      /* Запрет выделения текста */
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    /* Запрет перетаскивания изображений */
+    img {
+      -webkit-user-drag: none;
+      -khtml-user-drag: none;
+      -moz-user-drag: none;
+      -o-user-drag: none;
+      user-drag: none;
+      pointer-events: auto;
+    }
+
+    /* Левая вертикальная панель — ЧЁРНАЯ */
+    .left-panel {
+      width: 64px;
+      background-color: #1f2024;
+      flex-shrink: 0;
+      height: 100vh;
+    }
+
+    /* Основной контент */
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Правая вертикальная панель — ЧЁРНАЯ */
+    .right-panel {
+      width: 64px;
+      background-color: #1f2024;
+      flex-shrink: 0;
+      height: 100vh;
+    }
+
+    /* Верхняя плашка с навигацией */
+    .top-bar {
+      background-color: #1f2024;
+      width: 100%;
+      padding: 0;
+      flex-shrink: 0;
+    }
+
+    .top-bar-inner {
+      width: 100%;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 2rem;
+      position: relative;
+    }
+
+    /* Контейнер для логотипа и навигации */
+    .nav-container {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .logo-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .logo {
+      height: 48px;
+      width: auto;
+      display: block;
+      cursor: pointer;
+      filter: brightness(0) invert(1);
+    }
+
+    .tooltip {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      margin-top: 8px;
+      background-color: #1f2024;
+      color: #f0fcff;
+      font-size: 0.8rem;
+      font-weight: 340;
+      padding: 8px 14px;
+      white-space: nowrap;
+      border-left: 2px solid #700707;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
+
+    .logo-wrapper:hover .tooltip {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Десктопная навигация */
+    .nav {
+      display: flex;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    .nav a {
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 380;
+      letter-spacing: 0.3px;
+      color: #f0fcff;
+      transition: color 0.2s;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+    }
+
+    .nav a:hover {
+      color: #700707;
+    }
+
+    .nav a.active {
+      color: #700707;
+      border-bottom: 2px solid #700707;
+    }
+
+    .nav-separator {
+      color: #f0fff8;
+      font-size: 0.9rem;
+      display: inline-block;
+      transform: scaleX(0.65);
+    }
+
+    /* Бегущая строка новостей ПОД ВЕРХНЕЙ ПЛАШКОЙ — ВСЕГДА КРАСНАЯ */
+    .news-ticker-header {
+      width: 100%;
+      background-color: #700707;
+      padding: 0.4rem 0;
+      overflow: hidden;
+      white-space: nowrap;
+      cursor: pointer;
+      text-decoration: none;
+      display: block;
+      transition: background-color 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .news-ticker-header:hover {
+      background-color: #1f2024;
+    }
+
+    .news-ticker-header .ticker-content-header {
+      color: #f0fff8;
+    }
+
+    .news-ticker-header .news-badge-ticker {
+      background-color: #f0fff8;
+      color: #700707;
+    }
+
+    .news-ticker-header:hover .news-badge-ticker {
+      background-color: #700707;
+      color: #f0fff8;
+    }
+
+    .ticker-content-header {
+      display: inline-block;
+      animation: ticker-header 30s linear infinite;
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      text-transform: uppercase;
+      padding-left: 20px;
+    }
+
+    .ticker-content-header span {
+      margin-right: 40px;
+    }
+
+    .news-badge-ticker {
+      display: inline-block;
+      padding: 0.15rem 0.5rem;
+      margin: 0 10px;
+      font-family: 'Eitai', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    @keyframes ticker-header {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Мобильное меню */
+    .mobile-menu-btn {
+      display: none;
+      background: transparent;
+      border: none;
+      color: #f0fff8;
+      font-size: 1.8rem;
+      cursor: pointer;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.2s;
+      position: absolute;
+      right: 2rem;
+    }
+
+    .mobile-menu-btn:hover {
+      color: #700707;
+    }
+
+    .mobile-nav {
+      display: none;
+      position: fixed;
+      top: 64px;
+      right: 0;
+      background-color: #1f2024;
+      padding: 1.5rem;
+      flex-direction: column;
+      gap: 1.2rem;
+      z-index: 999;
+      border-left: none;
+      border-bottom: none;
+      min-width: 200px;
+    }
+
+    .mobile-nav.active {
+      display: flex;
+    }
+
+    .mobile-nav a {
+      text-decoration: none;
+      font-size: 1rem;
+      font-weight: 380;
+      letter-spacing: 0.3px;
+      color: #f0fff8;
+      transition: color 0.2s;
+      padding-bottom: 4px;
+      border-bottom: 2px solid transparent;
+      text-align: center;
+    }
+
+    .mobile-nav a:hover {
+      color: #700707;
+    }
+
+    .mobile-nav a.active {
+      color: #700707;
+      border-bottom: 2px solid #700707;
+    }
+
+    .page-wrapper {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .page-wrapper::-webkit-scrollbar {
+      display: none;
+    }
+
+    .content-inner {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 4rem 2rem 0 2rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Сужение текста */
+    .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: center;
+    }
+
+    .nav a .scale-wrapper,
+    .tooltip .scale-wrapper,
+    .mobile-nav a .scale-wrapper {
+      transform-origin: center;
+    }
+
+    .nav a {
+      display: inline-block;
+    }
+
+    .nav a .scale-wrapper {
+      display: inline-block;
+    }
+
+    .mobile-nav a {
+      display: block;
+      text-align: center;
+    }
+
+    .mobile-nav a .scale-wrapper {
+      display: inline-block;
+    }
+
+    /* Заголовок с фоновой картинкой — как в discography.html и videos.html */
+    .title-wrapper {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-bottom: 2rem;
+    }
+
+    .title-box {
+      background-image: url('Images/background01_red.jpg');
+      background-size: cover;
+      background-position: center;
+      width: 100%;
+      max-width: 1600px;
+      padding: 1.5rem 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      box-sizing: border-box;
+    }
+
+    /* ARCHIVE — КРАСНЫЙ ТЕКСТ + БЕЛАЯ ОБВОДКА (ЦВЕТ ОБВОДКИ ЗАМЕНЁН НА #f0fff8) */
+    .page-title {
+      font-size: 3rem;
+      font-weight: 700;
+      color: #700707;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 0.15rem;
+      white-space: nowrap;
+      text-shadow: 
+        -1px -1px 0 #f0fff8,
+        1px -1px 0 #f0fff8,
+        -1px 1px 0 #f0fff8,
+        1px 1px 0 #f0fff8;
+    }
+
+    .page-title .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: center;
+    }
+
+    /* Иероглифы — БЕЛЫЙ ТЕКСТ, ФОН КРАСНЫЙ (ЦВЕТ ТЕКСТА ЗАМЕНЁН НА #f0fff8) */
+    .page-subtitle {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 1.3rem;
+      font-weight: 300;
+      color: #f0fff8;
+      letter-spacing: 2px;
+      display: inline-block;
+      background-color: #700707;
+      padding: 0.1rem 0.5rem;
+      white-space: nowrap;
+    }
+
+    .page-subtitle .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.8);
+      transform-origin: center;
+    }
+
+    /* Описание архива */
+    .archive-description {
+      width: 100%;
+      max-width: 1600px;
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 0 1rem;
+    }
+
+    .archive-description p {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 1rem;
+      font-weight: 300;
+      color: #1f2024;
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+
+    .archive-description .scale-text {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: center;
+    }
+
+    /* Чёрный отделитель */
+    .divider-line {
+      width: 100%;
+      max-width: 1600px;
+      height: 1px;
+      background-color: #1f2024;
+      margin-bottom: 2rem;
+    }
+
+    /* Контейнер кнопок */
+    .archive-container {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 400px;
+      margin-bottom: 2rem;
+    }
+
+    .archive-btn {
+      display: block;
+      text-decoration: none;
+      text-align: center;
+      font-size: 1.4rem;
+      font-weight: 380;
+      letter-spacing: 1px;
+      color: #1f2024;
+      background: transparent;
+      border: 2px solid #700707;
+      padding: 14px 0;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+
+    .archive-btn .scale-wrapper {
+      display: inline-block;
+    }
+
+    .archive-btn:hover {
+      background-color: #700707;
+      color: #f0fff8;
+    }
+
+    /* Дисклеймер */
+    .disclaimer {
+      width: 100%;
+      max-width: 1600px;
+      text-align: center;
+      margin-top: 0.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .disclaimer-warning {
+      font-family: 'Eitai', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: #700707;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      margin-bottom: 1rem;
+    }
+
+    .disclaimer-warning .scale-wrapper {
+      display: inline-block;
+    }
+
+    .disclaimer-text {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: #1f2024;
+      text-transform: uppercase;
+      line-height: 1.6;
+      margin-bottom: 1rem;
+    }
+
+    .disclaimer-text .scale-text {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: center;
+    }
+
+    .disclaimer-email {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #700707;
+      text-transform: uppercase;
+    }
+
+    .disclaimer-email .scale-text {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: center;
+    }
+
+    /* Заголовок удалённых видео */
+    .deleted-title {
+      width: 100%;
+      max-width: 1600px;
+      text-align: center;
+      margin-top: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .deleted-title span {
+      font-family: 'Eitai', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: #1f2024;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .deleted-title .scale-wrapper {
+      display: inline-block;
+    }
+
+    /* Список удалённых видео */
+    .deleted-list {
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 2rem;
+    }
+
+    .deleted-item {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: #1f2024;
+      text-transform: uppercase;
+      padding: 0.4rem 0;
+      border-bottom: 1px solid rgba(31, 32, 36, 0.2);
+    }
+
+    .deleted-item .scale-text {
+      display: inline-block;
+      transform: scaleX(0.65);
+      transform-origin: left;
+    }
+
+    /* Футер с логотипом и соцсетями — исправленное подчёркивание */
+    .footer {
+      width: 100%;
+      background-color: #f0fff8;
+      border-top: 1px solid #1f2024;
+      padding: 1.5rem 2rem;
+      margin-top: 3rem;
+      flex-shrink: 0;
+    }
+
+    .footer-content {
+      max-width: 1600px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-top {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+    }
+
+    .footer-logo {
+      height: 40px;
+      width: auto;
+      filter: brightness(0);
+    }
+
+    .footer-socials {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+    }
+
+    .footer-social-link {
+      text-decoration: none;
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.9rem;
+      font-weight: 300;
+      color: #1f2024;
+      text-transform: uppercase;
+      transition: color 0.2s ease;
+      position: relative;
+      display: inline-block;
+      border-bottom: none;
+    }
+
+    /* Подчёркивание привязано к scale-wrapper, чуть шире текста */
+    .footer-social-link .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.65);
+      position: relative;
+    }
+
+    .footer-social-link .scale-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: -4px;
+      width: calc(100% + 8px);
+      height: 1px;
+      background-color: #700707;
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+      transform-origin: center;
+    }
+
+    .footer-social-link:hover .scale-wrapper::after {
+      transform: scaleX(1);
+    }
+
+    .footer-social-link:hover {
+      color: #700707;
+    }
+
+    .footer-copyright {
+      font-family: 'NotoSerifJP', serif;
+      font-size: 0.7rem;
+      font-weight: 300;
+      color: #1f2024;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-top: 0.5rem;
+    }
+
+    .footer-copyright .scale-wrapper {
+      display: inline-block;
+      transform: scaleX(0.65);
+    }
+
+    @media (max-width: 1100px) {
+      .title-box {
+        padding: 1.5rem 1.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .left-panel, .right-panel {
+        width: 40px;
+      }
+
+      .top-bar-inner {
+        padding: 0.8rem 1rem;
+        justify-content: flex-start;
+      }
+
+      .nav-container {
+        gap: 1.5rem;
+      }
+
+      .nav {
+        display: none;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+        right: 1rem;
+      }
+
+      .news-ticker-header {
+        padding: 0.3rem 0;
+      }
+
+      .ticker-content-header {
+        font-size: 0.75rem;
+      }
+
+      .news-badge-ticker {
+        font-size: 0.6rem;
+        padding: 0.1rem 0.4rem;
+      }
+
+      .content-inner {
+        padding: 2rem 1rem 0 1rem;
+      }
+
+      .title-box {
+        padding: 1rem 1rem;
+      }
+
+      .page-title {
+        font-size: 1.6rem;
+        white-space: nowrap;
+      }
+
+      .page-subtitle {
+        font-size: 0.85rem;
+        padding: 0.06rem 0.3rem;
+        white-space: nowrap;
+      }
+
+      .archive-description p {
+        font-size: 0.9rem;
+      }
+
+      .archive-btn {
+        font-size: 1.2rem;
+        padding: 12px 0;
+      }
+
+      .disclaimer-warning {
+        font-size: 1rem;
+      }
+
+      .disclaimer-text {
+        font-size: 0.8rem;
+      }
+
+      .disclaimer-email {
+        font-size: 0.8rem;
+      }
+
+      .deleted-title span {
+        font-size: 1.1rem;
+      }
+
+      .deleted-item {
+        font-size: 0.8rem;
+      }
+
+      .footer {
+        padding: 1rem 1.5rem;
+        margin-top: 2rem;
+      }
+
+      .footer-logo {
+        height: 30px;
+      }
+
+      .footer-social-link {
+        font-size: 0.8rem;
+      }
+
+      .footer-copyright {
+        font-size: 0.6rem;
+      }
+
+      .logo {
+        height: 40px;
+      }
+
+      .tooltip {
+        display: none;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .left-panel, .right-panel {
+        width: 32px;
+      }
+
+      .top-bar-inner {
+        padding: 0.6rem 0.8rem;
+      }
+
+      .nav-container {
+        gap: 1rem;
+      }
+
+      .logo {
+        height: 36px;
+      }
+
+      .mobile-menu-btn {
+        right: 0.8rem;
+        font-size: 1.5rem;
+      }
+
+      .mobile-nav {
+        top: 56px;
+        min-width: 160px;
+        padding: 1rem;
+      }
+
+      .mobile-nav a {
+        font-size: 0.9rem;
+      }
+
+      .ticker-content-header {
+        font-size: 0.65rem;
+      }
+
+      .news-badge-ticker {
+        font-size: 0.5rem;
+        padding: 0.1rem 0.3rem;
+      }
+
+      .title-box {
+        padding: 0.8rem 0.8rem;
+      }
+
+      .page-title {
+        font-size: 1.3rem;
+        white-space: nowrap;
+      }
+
+      .page-subtitle {
+        font-size: 0.75rem;
+        padding: 0.05rem 0.25rem;
+        white-space: nowrap;
+      }
+
+      .archive-description p {
+        font-size: 0.8rem;
+      }
+
+      .archive-btn {
+        font-size: 1rem;
+        padding: 10px 0;
+      }
+
+      .disclaimer-warning {
+        font-size: 0.9rem;
+      }
+
+      .disclaimer-text {
+        font-size: 0.7rem;
+      }
+
+      .disclaimer-email {
+        font-size: 0.7rem;
+      }
+
+      .deleted-title span {
+        font-size: 1rem;
+      }
+
+      .deleted-item {
+        font-size: 0.7rem;
+      }
+
+      .content-inner {
+        padding: 1.5rem 0.8rem 0 0.8rem;
+      }
+
+      .footer {
+        padding: 0.8rem 1rem;
+      }
+
+      .footer-top {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .footer-logo {
+        height: 25px;
+      }
+
+      .footer-socials {
+        gap: 1rem;
+      }
+
+      .footer-social-link {
+        font-size: 0.7rem;
+      }
+
+      .footer-copyright {
+        font-size: 0.5rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .title-box {
+        padding: 0.6rem 0.6rem;
+      }
+
+      .page-title {
+        font-size: 1.1rem;
+        white-space: nowrap;
+      }
+
+      .page-subtitle {
+        font-size: 0.65rem;
+        padding: 0.04rem 0.2rem;
+        white-space: nowrap;
+      }
+
+      .archive-btn {
+        font-size: 0.9rem;
+      }
+
+      .deleted-item {
+        font-size: 0.65rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Левая вертикальная панель — ЧЁРНАЯ -->
+  <div class="left-panel"></div>
+
+  <!-- Основной контент -->
+  <div class="main-content">
+    <!-- Верхняя чёрная плашка с навигацией -->
+    <div class="top-bar">
+      <div class="top-bar-inner">
+        <div class="nav-container">
+          <div class="logo-wrapper">
+            <a href="index.html">
+              <img src="Images/logo.png" alt="CallbyBreath" class="logo">
+            </a>
+            <div class="tooltip"><span class="scale-wrapper">TAKE A LITTLE CITRUS FROM MY HANDS 🍋 ♡(｡- ω -)</span></div>
+          </div>
+          
+          <!-- Десктопная навигация -->
+          <nav class="nav">
+            <a href="discography.html"><span class="scale-wrapper">DISCOGRAPHY</span></a>
+            <span class="nav-separator">|</span>
+            <a href="videos.html"><span class="scale-wrapper">MUSIC VIDEOS</span></a>
+            <span class="nav-separator">|</span>
+            <a href="archive.html" class="active"><span class="scale-wrapper">ARCHIVE</span></a>
+            <span class="nav-separator">|</span>
+            <a href="news.html"><span class="scale-wrapper">NEWS</span></a>
+            <span class="nav-separator">|</span>
+            <a href="special.html"><span class="scale-wrapper">SPECIAL</span></a>
+            <span class="nav-separator">|</span>
+            <a href="contacts.html"><span class="scale-wrapper">SOCIAL</span></a>
+          </nav>
+        </div>
+
+        <!-- Кнопка мобильного меню -->
+        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+      </div>
+    </div>
+
+    <!-- Бегущая строка новостей ПОД ВЕРХНЕЙ ПЛАШКОЙ — ВСЕГДА КРАСНАЯ -->
+    <a href="news.html" class="news-ticker-header">
+      <div class="ticker-content-header" id="tickerHeader"></div>
+    </a>
+
+    <!-- Мобильная навигация -->
+    <nav class="mobile-nav" id="mobileNav">
+      <a href="discography.html"><span class="scale-wrapper">DISCOGRAPHY</span></a>
+      <a href="videos.html"><span class="scale-wrapper">MUSIC VIDEOS</span></a>
+      <a href="archive.html" class="active"><span class="scale-wrapper">ARCHIVE</span></a>
+      <a href="news.html"><span class="scale-wrapper">NEWS</span></a>
+      <a href="special.html"><span class="scale-wrapper">SPECIAL</span></a>
+      <a href="contacts.html"><span class="scale-wrapper">SOCIAL</span></a>
+    </nav>
+
+    <div class="page-wrapper">
+      <div class="content-inner">
+        <!-- Заголовок с фоновой картинкой — как в discography.html и videos.html -->
+        <div class="title-wrapper">
+          <div class="title-box">
+            <div class="page-title">
+              <span class="scale-wrapper">＜ ARCHIVE ＞</span>
+            </div>
+            <div class="page-subtitle">
+              <span class="scale-wrapper">アーカイブ</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Описание архива -->
+        <div class="archive-description">
+          <p>
+            <span class="scale-text">This archive features old works from CallbyBreath</span><br>
+            <span class="scale-text">that were taken down from the main channel for security.</span><br>
+            <span class="scale-text">Every deleted track is here—all covers and remixes included.</span>
+          </p>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <!-- Контейнер кнопок -->
+        <div class="archive-container" id="archiveContainer"></div>
+
+        <!-- Черта между кнопками и WARNING -->
+        <div class="divider-line"></div>
+
+        <!-- Дисклеймер -->
+        <div class="disclaimer">
+          <div class="disclaimer-warning">
+            <span class="scale-wrapper">!WARNING!</span>
+          </div>
+          <div class="disclaimer-text">
+            <span class="scale-text">If you own the rights to this song and wish to have it removed from the list,</span><br>
+            <span class="scale-text">please contact me at:</span>
+          </div>
+          <div class="disclaimer-email">
+            <span class="scale-text">callbybreathcom@gmail.com</span>
+          </div>
+        </div>
+
+        <!-- Заголовок удалённых видео -->
+        <div class="deleted-title">
+          <span class="scale-wrapper">- Deleted Videos -</span>
+        </div>
+
+        <!-- Список удалённых видео -->
+        <div class="deleted-list" id="deletedList"></div>
+      </div>
+
+      <!-- Футер с логотипом, соцсетями и копирайтом -->
+      <div class="footer">
+        <div class="footer-content">
+          <div class="footer-top">
+            <img src="Images/logo.png" alt="CallbyBreath" class="footer-logo">
+            <div class="footer-socials" id="footerSocials"></div>
+          </div>
+          <div class="footer-copyright">
+            <span class="scale-wrapper">© ALL RIGHTS RESERVED</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Правая вертикальная панель — ЧЁРНАЯ -->
+  <div class="right-panel"></div>
+
+  <script>
+    // Мобильное меню
+    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+    const mobileNav = document.getElementById('mobileNav');
+
+    mobileMenuBtn.addEventListener('click', () => {
+      mobileNav.classList.toggle('active');
+    });
+
+    // Закрытие меню при клике вне его
+    document.addEventListener('click', (e) => {
+      if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+        mobileNav.classList.remove('active');
+      }
+    });
+
+    // ============================================
+    // НОВОСТИ ДЛЯ БЕГУЩЕЙ СТРОКИ — ДОБАВЛЯЙ СЮДА
+    // ============================================
+    const tickerNews = [
+      { date: "2025.04.15", title: "CALLBYBREATH IS NOW AVAILABLE ON INSTAGRAM, PINTEREST, DISCORD, TELEGRAM, VK!", isLatest: true },
+      { date: "2025.04.15", title: "CALLBYBREATH OFFICIAL WEBSITE OUT NOW! NEW DESIGN!", isLatest: false }
+    ];
+
+    function renderTicker() {
+      const ticker = document.getElementById('tickerHeader');
+      
+      let contentHTML = '';
+      tickerNews.forEach(news => {
+        contentHTML += `<span>${news.date}  `;
+        if (news.isLatest) {
+          contentHTML += `<span class="news-badge-ticker">LATEST NEWS</span>  `;
+        }
+        contentHTML += `${news.title}  ◆  </span>`;
+      });
+      
+      // Дублируем для бесконечности
+      ticker.innerHTML = contentHTML + contentHTML;
+    }
+
+    renderTicker();
+
+    // ============================================
+    // СОЦСЕТИ В ФУТЕРЕ — ДОБАВЛЯЙ СЮДА
+    // ============================================
+    const socialLinks = [
+      { name: 'youtube', url: 'https://www.youtube.com/@CallbyBreath' },
+      { name: 'instagram', url: 'https://www.instagram.com/callbybreath.official' },
+      { name: 'pinterest', url: 'https://pinterest.com/callbybreath' },
+      { name: 'telegram', url: 'https://t.me/callbybreath' },
+      { name: 'spotify', url: 'https://open.spotify.com/artist/4RJTPseEgwmAZIto7YDuV6' },
+      { name: 'apple music', url: 'https://music.apple.com/ru/artist/callbybreath/1602956679' }
+    ];
+
+    function renderFooterSocials() {
+      const container = document.getElementById('footerSocials');
+      container.innerHTML = '';
+      
+      socialLinks.forEach(link => {
+        const a = document.createElement('a');
+        a.className = 'footer-social-link';
+        a.href = link.url;
+        a.target = '_blank';
+        a.innerHTML = `<span class="scale-wrapper">${link.name}</span>`;
+        container.appendChild(a);
+      });
+    }
+
+    renderFooterSocials();
+
+    // ============================================
+    // АРХИВНЫЕ ССЫЛКИ — ДОБАВЛЯЙ СЮДА
+    // ============================================
+    const archiveLinks = [
+      { name: 'MEGA', url: 'https://mega.nz/folder/zz5lhBoD#C-qVTfiRYx2T4Ebc9zLptw' },
+      { name: 'GOOGLE DRIVE', url: 'https://drive.google.com/drive/folders/1vy2p-7udxfTRceKRZmSSEzesqPOFyc-A?usp=sharing' },
+      { name: 'YANDEX DISK', url: 'https://disk.yandex.ru/d/M9at-fEbbHcSGg' },
+      { name: 'MEDIA FIRE', url: 'https://www.mediafire.com/folder/qvhambzpcn67m/CallbyBreath_Archive' }
+    ];
+
+    function renderArchiveLinks() {
+      const container = document.getElementById('archiveContainer');
+      container.innerHTML = '';
+      
+      archiveLinks.forEach(link => {
+        const a = document.createElement('a');
+        a.className = 'archive-btn';
+        a.href = link.url;
+        a.target = '_blank';
+        a.innerHTML = `<span class="scale-wrapper">${link.name}</span>`;
+        container.appendChild(a);
+      });
+    }
+
+    renderArchiveLinks();
+
+    // ============================================
+    // УДАЛЁННЫЕ ВИДЕО — ДОБАВЛЯЙ СЮДА
+    // ============================================
+    const deletedVideos = [
+      "[ 2022.11.03 ]『FOREST MAIDEN』- Everlasting Summer  FOREST MAIDEN - Бесконечное Лето ( COVER )",
+      "[ 2022.08.06 ] Fukashigi no Carte (Trap Remix) - Bunny Girl Senpai",
+      "[ 2022.07.03 ] Gramophone On Loop ▶ The Quarry Witch Theme Remix (Prod. shadrxin)  MUSIC VIDEO",
+      "[ 2022.06.14 ] Spooky Scary Skeletons ▶ RemixCover (Instrumental)",
+      "[ 2022.06.13 ] Spooky Scary Skeletons ▶ RemixCover  LYRICS VIDEO",
+      "[ 2022.05.18 ] Pink Goose (The Story of goose) - Remix and Lyrics Video (Instrumental)",
+      "[ 2022.05.17 ] Pink Goose (The Story of goose) Remix and Lyrics Video by CallbyBreath",
+      "[ 2022.04.28 ] 🐰 (SFM & C4D) - STAY ▶ BUT THIS IS VANNY FROM FNAF SECURITY BREACH) 🐰",
+      "[ 2021.11.07 ] Spooky Scary Skeletons - RemixCover (Instrumental)",
+      "[ 2021.10.31 ] Spooky Scary Skeletons - RemixCover",
+      "[ 2021.06.09 ] FNAF SONG ▶ Secret Car Minigame Theme Remix  FNAF MUSIC VIDEO",
+      "[ 2021.05.17 ]🔒 FNAF SONG ▶ It's Been So Long (Remix)  FNAF MUSIC VIDEO 🔒",
+      "[ 2021.05.13 ] Fur Elise (Remix) by  @CallbyBreath    MUSIC VIDEO",
+      "[ 2021.04.18 ] FNAF SONG ▶ Die In A Fire Short RemixCover  FNAF MUSIC VIDEO",
+      "[ 2021.04.11 ] FNAF SONG ▶ It's Been So Long Short RemixCover  FNAF MUSIC VIDEO",
+      "[ 2021.04.07 ] FNAF SONG ▶ Like It Or Not RemixCover (ft.  @DCLCMUSIC  ) FNAF MUSIC VIDEO",
+      "[ 2021.03.22 ] FNAF SONG ▶ Security Breach Theme Remix  FNAF MUSIC VIDEO",
+      "[ 2021.03.16 ] Five Nights At Freddy's 1 Song - RemixCover by CallbyBreath  FNAF MUSIC VIDEO",
+      "[ 2021.02.22 ] It's Been So Long - Remix and Lyrics Video (Instrumental)",
+      "[ 2021.02.20 ] It's Been So Long - Remix and Lyrics Video by CallbyBreath",
+      "[ 2020.09.24 ] It's Been So Long - Remixes Mashup by CallbyBreath"
+    ];
+
+    function renderDeletedVideos() {
+      const container = document.getElementById('deletedList');
+      container.innerHTML = '';
+      
+      deletedVideos.forEach(video => {
+        const item = document.createElement('div');
+        item.className = 'deleted-item';
+        item.innerHTML = `<span class="scale-text">${video}</span>`;
+        container.appendChild(item);
+      });
+    }
+
+    renderDeletedVideos();
+
+    // ============================================
+    // ЗАПРЕТ КОПИРОВАНИЯ, ПЕРЕТАСКИВАНИЯ И КОНТЕКСТНОГО МЕНЮ
+    // ============================================
+    document.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('copy', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('cut', (e) => {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('dragstart', (e) => {
+      e.preventDefault();
+      return false;
+    });
+  </script>
+</body>
+</html>
