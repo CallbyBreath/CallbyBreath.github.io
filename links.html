@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>callbybreath official website – Links</title>
+    <link rel="icon" type="image/png" href="Images/logo.png">
+    <style>
+        @font-face {
+            font-family: 'Press Start 2P';
+            src: url('Font/PressStart2P.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'Rubik Spray Paint';
+            src: url('Font/RubikSprayPaint-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            height: 100%;
+            overflow: hidden;
+        }
+        body {
+            font-family: 'Press Start 2P', sans-serif;
+            color: #f0fff8;
+            background: #141416;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding: 2rem 1rem;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            position: relative;
+        }
+        #bgCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 100;
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.6rem;
+            color: #f0fff8;
+            text-decoration: none;
+            background: rgba(20, 20, 22, 0.85);
+            border: 2px solid rgba(255, 230, 200, 0.6);
+            border-radius: 8px;
+            padding: 0.5rem 1rem;
+            letter-spacing: 1px;
+            transition: all 0.25s ease;
+            backdrop-filter: blur(4px);
+            text-shadow: 0 0 6px rgba(0,0,0,0.5);
+            white-space: nowrap;
+        }
+        .back-button:hover {
+            border-color: #ffcc00;
+            box-shadow: 0 0 12px rgba(255,200,40,0.4);
+            color: #ffcc00;
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 2;
+            margin-bottom: 2rem;
+        }
+        .logo-container img {
+            height: clamp(80px, 15vh, 150px);
+            width: auto;
+            filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255,220,170,0.7));
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        .logo-container img:hover {
+            transform: scale(1.05);
+        }
+
+        .page-title {
+            font-family: 'Rubik Spray Paint', sans-serif;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: #f0fff8;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(0,0,0,0.7);
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+
+        .search-wrapper {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 1.5rem;
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            justify-content: center;
+        }
+        .search-input {
+            flex: 1;
+            padding: 0.8rem 1.2rem;
+            background: rgba(20,20,22,0.9);
+            border: 2px solid rgba(255,230,200,0.6);
+            border-radius: 12px;
+            color: #f0fff8;
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            outline: none;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .search-input::placeholder {
+            color: rgba(240,255,248,0.4);
+            font-size: 0.5rem;
+        }
+        .search-input:focus {
+            border-color: #ffcc00;
+            box-shadow: 0 0 12px rgba(255,200,40,0.3);
+        }
+
+        /* Кнопка LINKS */
+        .toggle-links-btn {
+            padding: 0.8rem 1.5rem;
+            background: rgba(20,20,22,0.9);
+            border: 2px solid rgba(255,230,200,0.6);
+            border-radius: 12px;
+            color: #f0fff8;
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-shadow: 0 0 6px rgba(0,0,0,0.5);
+            white-space: nowrap;
+            z-index: 2;
+        }
+        .toggle-links-btn:hover {
+            border-color: #ffcc00;
+            box-shadow: 0 0 12px rgba(255,200,40,0.4);
+            color: #ffcc00;
+        }
+        .toggle-links-btn.active {
+            background: rgba(255,200,40,0.15);
+            border-color: #ffcc00;
+            color: #ffcc00;
+        }
+
+        .platforms-grid {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.2rem;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .platform-card {
+            background: rgba(20,20,22,0.85);
+            border: none;
+            border-radius: 10px;
+            padding: 0.7rem 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            min-width: 150px;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            transition: all 0.25s ease;
+        }
+        .platform-card:hover {
+            background: rgba(255,200,40,0.15);
+            box-shadow: 0 4px 15px rgba(255,200,40,0.25);
+            transform: translateY(-2px);
+        }
+
+        .platform-name-link {
+            text-decoration: none;
+            color: #f0fff8;
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-shadow: 0 0 6px rgba(0,0,0,0.5);
+            transition: color 0.2s;
+        }
+        .platform-name-link:hover {
+            color: #ffcc00;
+        }
+
+        .platform-url {
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.4rem;
+            color: rgba(240,255,248,0.7);
+            cursor: pointer;
+            word-break: break-all;
+            transition: color 0.2s;
+            text-align: center;
+            line-height: 1.4;
+            display: none; /* скрыто по умолчанию */
+        }
+        /* Класс, который показывает ссылки */
+        .show-urls .platform-url {
+            display: block;
+        }
+
+        .platform-url:hover {
+            color: #ffcc00;
+        }
+
+        /* Адаптив */
+        @media (max-width: 480px) {
+            .back-button {
+                font-size: 0.5rem;
+                padding: 0.4rem 0.8rem;
+                top: 10px;
+                left: 10px;
+            }
+            .platform-card {
+                min-width: 120px;
+                padding: 0.5rem 0.8rem;
+            }
+            .platform-name-link {
+                font-size: 0.5rem;
+            }
+            .platform-url {
+                font-size: 0.35rem;
+            }
+            .search-input {
+                font-size: 0.5rem;
+            }
+            .toggle-links-btn {
+                font-size: 0.5rem;
+                padding: 0.5rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="bgCanvas"></canvas>
+
+    <a href="index.html" class="back-button">Back ►</a>
+
+    <div class="logo-container">
+        <a href="index.html">
+            <img src="Images/logo.png" alt="CallbyBreath">
+        </a>
+    </div>
+
+    <h1 class="page-title">All Platforms</h1>
+
+    <div class="search-wrapper">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search platform...">
+        <button class="toggle-links-btn" id="toggleLinksBtn">LINKS</button>
+    </div>
+
+    <div class="platforms-grid" id="platformsGrid"></div>
+
+    <!-- Подключаем конфиг с платформами -->
+    <script src="links-config.js"></script>
+    <script>
+        (function() {
+            // Проверяем загрузку конфига
+            if (typeof linksConfig === 'undefined' || !linksConfig.platforms) {
+                document.getElementById('platformsGrid').innerHTML = 
+                    '<div style="color:red; text-align:center; width:100%;">Ошибка загрузки платформ. Проверьте links-config.js</div>';
+                console.error('linksConfig не загружен!');
+                return;
+            }
+            const platforms = linksConfig.platforms;
+
+            const grid = document.getElementById('platformsGrid');
+            const searchInput = document.getElementById('searchInput');
+            const toggleBtn = document.getElementById('toggleLinksBtn');
+            let linksVisible = false;
+
+            function renderPlatforms(filter = '') {
+                const filtered = platforms.filter(p =>
+                    p.name.toLowerCase().includes(filter.toLowerCase())
+                );
+                const sorted = filtered.sort((a, b) =>
+                    a.name.localeCompare(b.name, 'en', { sensitivity: 'base' })
+                );
+
+                grid.innerHTML = '';
+                if (sorted.length === 0) {
+                    grid.innerHTML = '<div style="color:#f0fff8; opacity:0.6; font-size:0.6rem; width:100%; text-align:center;">No platforms found</div>';
+                    return;
+                }
+                sorted.forEach(p => {
+                    const card = document.createElement('div');
+                    card.className = 'platform-card';
+
+                    const nameLink = document.createElement('a');
+                    nameLink.className = 'platform-name-link';
+                    nameLink.href = p.url;
+                    nameLink.target = '_blank';
+                    nameLink.rel = 'noopener';
+                    nameLink.textContent = p.name;
+
+                    const urlSpan = document.createElement('span');
+                    urlSpan.className = 'platform-url';
+                    urlSpan.textContent = p.url;
+                    urlSpan.title = 'Click to copy URL';
+                    urlSpan.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        navigator.clipboard.writeText(p.url).then(() => {
+                            const originalText = urlSpan.textContent;
+                            urlSpan.textContent = 'Copied!';
+                            urlSpan.style.color = '#ffcc00';
+                            setTimeout(() => {
+                                urlSpan.textContent = originalText;
+                                urlSpan.style.color = '';
+                            }, 1000);
+                        }).catch(() => {
+                            alert('Failed to copy URL');
+                        });
+                    });
+
+                    card.appendChild(nameLink);
+                    card.appendChild(urlSpan);
+                    grid.appendChild(card);
+                });
+                // Применяем текущее состояние видимости ссылок
+                if (linksVisible) {
+                    grid.classList.add('show-urls');
+                } else {
+                    grid.classList.remove('show-urls');
+                }
+            }
+
+            searchInput.addEventListener('input', (e) => {
+                renderPlatforms(e.target.value);
+            });
+
+            // Переключение видимости ссылок
+            toggleBtn.addEventListener('click', () => {
+                linksVisible = !linksVisible;
+                if (linksVisible) {
+                    grid.classList.add('show-urls');
+                    toggleBtn.textContent = 'HIDE LINKS';
+                    toggleBtn.classList.add('active');
+                } else {
+                    grid.classList.remove('show-urls');
+                    toggleBtn.textContent = 'LINKS';
+                    toggleBtn.classList.remove('active');
+                }
+            });
+
+            renderPlatforms();
+
+            // Фоновый эффект
+            const canvas = document.getElementById('bgCanvas');
+            const ctx = canvas.getContext('2d');
+            const blobs = [];
+            for (let i = 0; i < 6; i++) {
+                blobs.push({
+                    x: 0.1 + Math.random() * 0.8,
+                    y: 0.1 + Math.random() * 0.8,
+                    r: 0.12 + Math.random() * 0.28
+                });
+            }
+            function resizeCanvas() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            function drawBackground() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.globalCompositeOperation = 'lighter';
+                blobs.forEach(b => {
+                    const cx = b.x * canvas.width;
+                    const cy = b.y * canvas.height;
+                    const maxR = b.r * Math.max(canvas.width, canvas.height);
+                    const grad = ctx.createRadialGradient(cx, cy, maxR * 0.2, cx, cy, maxR);
+                    grad.addColorStop(0, 'rgba(180,182,186,0.3)');
+                    grad.addColorStop(0.2, 'rgba(160,162,166,0.25)');
+                    grad.addColorStop(0.4, 'rgba(140,142,146,0.15)');
+                    grad.addColorStop(0.7, 'rgba(120,122,126,0.05)');
+                    grad.addColorStop(1, 'rgba(0,0,0,0)');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+                ctx.globalCompositeOperation = 'source-over';
+            }
+            window.addEventListener('resize', () => {
+                resizeCanvas();
+                drawBackground();
+            });
+            resizeCanvas();
+            drawBackground();
+        })();
+    </script>
+</body>
+</html>

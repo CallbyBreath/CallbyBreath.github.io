@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Freddy Fazbear's Coming To House</title>
+  <title>Наше рыжее счастье</title>
   <link rel="icon" type="image/png" href="../Images/logo.png">
   <style>
-    /* Подключаем NotoSerifJP-Light */
     @font-face {
-      font-family: 'NotoSerifJP';
-      src: url('../Font/NotoSerifJP-Light.ttf') format('truetype');
-      font-weight: 300;
+      font-family: 'Press Start 2P';
+      src: url('../Font/PressStart2P.ttf') format('truetype');
+      font-weight: normal;
       font-style: normal;
     }
 
     @font-face {
-      font-family: 'Eitai';
-      src: url('../Font/Eitai.otf') format('opentype');
+      font-family: 'Rubik Spray Paint';
+      src: url('../Font/RubikSprayPaint-Regular.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
     }
@@ -29,7 +28,7 @@
 
     body {
       background-color: #1f2024;
-      font-family: 'Eitai', sans-serif;
+      font-family: 'Press Start 2P', sans-serif;
       color: #1f2024;
       line-height: 1.5;
       min-height: 100vh;
@@ -38,7 +37,6 @@
       align-items: center;
       justify-content: center;
       padding: 2rem;
-      
       user-select: none;
       -webkit-user-select: none;
       -moz-user-select: none;
@@ -53,11 +51,9 @@
       padding: 1.2rem 1.2rem;
       border-radius: 8px;
       box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-      
       display: flex;
       flex-direction: column;
       align-items: center;
-      
       user-select: none;
       -webkit-user-select: none;
       -moz-user-select: none;
@@ -91,22 +87,15 @@
       margin: 0 auto;
     }
 
-    /* Название — РАЗРЕШЕНО ВЫДЕЛЕНИЕ, ПЕРЕНОС СЛОВ */
     .release-title {
-      font-family: 'NotoSerifJP', 'Eitai', serif;
-      font-size: 1.3rem;
-      font-weight: 300;
+      font-family: 'Press Start 2P', sans-serif;
+      font-size: 0.9rem;
+      font-weight: normal;
       color: #1f2024;
-      line-height: 1.3;
-      margin-bottom: 0.2rem;
-      letter-spacing: -0.04em;
-      transform: scaleX(0.75);
-      display: block;
-      width: 100%;
-      word-wrap: break-word;
+      line-height: 1.4;
+      margin-bottom: 1rem;
       word-break: break-word;
-      white-space: normal;
-      
+      overflow-wrap: break-word;
       user-select: text;
       -webkit-user-select: text;
       -moz-user-select: text;
@@ -114,45 +103,14 @@
       cursor: text;
     }
 
-    .release-date {
-      font-family: 'NotoSerifJP', 'Eitai', serif;
-      font-size: 1rem;
-      font-weight: 300;
-      color: #1f2024;
-      opacity: 0.5;
-      letter-spacing: 0.5px;
-      margin-bottom: 0.8rem;
-      transform: scaleX(0.75);
-      display: inline-block;
-    }
-
-    .release-logo {
-      margin-bottom: 1rem;
-    }
-
-    .release-logo a {
-      display: inline-block;
-      cursor: pointer;
-    }
-
-    .release-logo img {
-      width: 60px;
-      height: auto;
-      filter: brightness(0) saturate(100%) invert(11%) sepia(53%) saturate(4321%) hue-rotate(352deg) brightness(95%) contrast(102%);
-      -webkit-user-drag: none;
-      user-drag: none;
-      pointer-events: none;
-    }
-
     .available-title {
-      font-family: 'NotoSerifJP', 'Eitai', serif;
+      font-family: 'Press Start 2P', sans-serif;
       font-size: 0.9rem;
-      font-weight: 300;
+      font-weight: normal;
       color: #1f2024;
       opacity: 0.6;
       letter-spacing: 2px;
       margin-bottom: 0.8rem;
-      transform: scaleX(0.75);
       display: inline-block;
       width: 100%;
     }
@@ -190,18 +148,15 @@
     }
 
     .platform-name-wrapper {
-      transform: scaleX(0.75);
-      transform-origin: left center;
       display: inline-block;
     }
 
     .platform-name {
-      font-family: 'NotoSerifJP', 'Eitai', serif;
-      font-size: 1.3rem;
-      font-weight: 300;
+      font-family: 'Press Start 2P', sans-serif;
+      font-size: 0.8rem;
+      font-weight: normal;
       color: #1f2024;
       opacity: 0.8;
-      letter-spacing: -0.04em;
       display: inline-block;
     }
 
@@ -217,23 +172,15 @@
       background-color: #f0fff8;
       transition: all 0.2s ease;
       flex-shrink: 0;
-    }
-
-    .platform-link img {
-      width: 20px;
-      height: 20px;
-      object-fit: contain;
-      -webkit-user-drag: none;
-      user-drag: none;
+      font-family: 'Press Start 2P', sans-serif;
+      font-size: 1.2rem;
+      color: #1f2024;
     }
 
     .platform-link:hover {
       background-color: #700707;
       border-color: #700707;
-    }
-
-    .platform-link:hover img {
-      filter: brightness(0) invert(1);
+      color: #f0fff8;
     }
 
     .not-available {
@@ -245,11 +192,10 @@
     }
 
     .not-available-title {
-      font-family: 'NotoSerifJP', 'Eitai', serif;
+      font-family: 'Rubik Spray Paint', sans-serif;
       font-size: 1.3rem;
-      font-weight: 400;
+      font-weight: normal;
       color: #700707;
-      transform: scaleX(0.75);
       display: inline-block;
       white-space: nowrap;
     }
@@ -263,7 +209,6 @@
         padding: 0;
         background-color: #f0fff8;
       }
-      
       .release-container {
         max-width: 100%;
         min-height: 100vh;
@@ -272,73 +217,40 @@
         box-shadow: none;
         width: 100%;
       }
-      
       .release-cover {
         width: min(75%, 280px);
         max-width: 280px;
       }
-      
       .text-wrapper {
         width: min(75%, 280px);
         max-width: 280px;
       }
-      
       .platforms-section {
         width: min(75%, 280px);
         max-width: 280px;
       }
-      
-      .not-available {
-        width: 100%;
-      }
-      
       .release-title {
-        font-size: 1.4rem;
+        font-size: 1rem;
       }
-      
-      .release-date {
-        font-size: 1.1rem;
-      }
-      
-      .release-logo img {
-        width: 70px;
-      }
-      
       .available-title {
         font-size: 1rem;
       }
-      
       .platform-name {
-        font-size: 1.4rem;
+        font-size: 0.9rem;
       }
-      
       .platform-link {
         width: 36px;
         height: 36px;
+        font-size: 1.4rem;
       }
-      
-      .platform-link img {
-        width: 22px;
-        height: 22px;
-      }
-      
       .not-available-title {
         font-size: 1.4rem;
-        white-space: nowrap;
       }
-      
       .divider-line {
         width: min(75%, 280px);
         max-width: 280px;
         margin-left: auto;
         margin-right: auto;
-      }
-    }
-
-    @media (min-width: 601px) and (max-width: 900px) {
-      body {
-        background-color: #1f2024;
-        padding: 2rem 1.5rem;
       }
     }
 
@@ -364,13 +276,6 @@
     
     <div class="text-wrapper">
       <h1 class="release-title" id="releaseTitle"></h1>
-      <div class="release-date" id="releaseDate"></div>
-      
-      <div class="release-logo">
-        <a href="../discography.html">
-          <img src="../Images/logo.png" alt="Logo">
-        </a>
-      </div>
     </div>
     
     <div class="divider-line" id="dividerLine" style="display: none;"></div>
@@ -400,9 +305,8 @@
     });
     
     const releaseData = {
-      cover: '../Images/Releases/single_01.jpg',
-      title: "Freddy Fazbear's Coming To House",
-      date: '2021.12.31',
+      cover: '../Images/Releases/single_14.png',
+      title: "Наше рыжее счастье",
       platforms: {
         spotify: '',
         appleMusic: '',        
@@ -431,7 +335,6 @@
       document.getElementById('releaseCover').src = releaseData.cover;
       document.getElementById('releaseCover').alt = releaseData.title;
       document.getElementById('releaseTitle').textContent = releaseData.title;
-      document.getElementById('releaseDate').textContent = releaseData.date;
       
       const availablePlatforms = [];
       
@@ -473,12 +376,7 @@
           link.className = 'platform-link';
           link.href = platform.url;
           link.target = '_blank';
-          
-          const playIcon = document.createElement('img');
-          playIcon.src = '../Images/Hud/play.png';
-          playIcon.alt = 'Play';
-          
-          link.appendChild(playIcon);
+          link.textContent = '►';
           link.setAttribute('aria-label', `Open ${platform.name}`);
           
           row.appendChild(wrapper);

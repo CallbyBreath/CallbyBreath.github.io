@@ -1,1250 +1,704 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SPECIAL | CallbyBreath Official Website</title>
-  <link rel="icon" type="image/png" href="Images/logo.png">
-  <style>
-    @font-face {
-      font-family: 'Eitai';
-      src: url('Font/Eitai.otf') format('opentype');
-      font-weight: normal;
-      font-style: normal;
-    }
-
-    @font-face {
-      font-family: 'NotoSerifJP';
-      src: url('Font/NotoSerifJP-Light.ttf') format('truetype');
-      font-weight: 300;
-      font-style: normal;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: 100%;
-      overflow: hidden;
-    }
-
-    body {
-      background-color: #f0fcff;
-      font-family: 'Eitai', sans-serif;
-      color: #1f2024;
-      line-height: 1.5;
-      display: flex;
-      flex-direction: row;
-      /* Запрет выделения текста */
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      -ms-user-select: none;
-      user-select: none;
-    }
-
-    /* Запрет перетаскивания изображений */
-    img {
-      -webkit-user-drag: none;
-      -khtml-user-drag: none;
-      -moz-user-drag: none;
-      -o-user-drag: none;
-      user-drag: none;
-      pointer-events: auto;
-    }
-
-    /* Левая вертикальная панель — ЧЁРНАЯ */
-    .left-panel {
-      width: 64px;
-      background-color: #1f2024;
-      flex-shrink: 0;
-      height: 100vh;
-    }
-
-    /* Основной контент */
-    .main-content {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      position: relative;
-    }
-
-    /* Правая вертикальная панель — ЧЁРНАЯ */
-    .right-panel {
-      width: 64px;
-      background-color: #1f2024;
-      flex-shrink: 0;
-      height: 100vh;
-    }
-
-    /* Верхняя плашка с навигацией */
-    .top-bar {
-      background-color: #1f2024;
-      width: 100%;
-      padding: 0;
-      flex-shrink: 0;
-    }
-
-    .top-bar-inner {
-      width: 100%;
-      height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0 2rem;
-      position: relative;
-    }
-
-    /* Контейнер для логотипа и навигации */
-    .nav-container {
-      display: flex;
-      align-items: center;
-      gap: 3rem;
-    }
-
-    .logo-wrapper {
-      position: relative;
-      display: inline-block;
-    }
-
-    .logo {
-      height: 48px;
-      width: auto;
-      display: block;
-      cursor: pointer;
-      filter: brightness(0) invert(1);
-    }
-
-    .tooltip {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      margin-top: 8px;
-      background-color: #1f2024;
-      color: #f0fcff;
-      font-size: 0.8rem;
-      font-weight: 340;
-      padding: 8px 14px;
-      white-space: nowrap;
-      border-left: 2px solid #700707;
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.2s ease, visibility 0.2s ease;
-      pointer-events: none;
-      z-index: 100;
-    }
-
-    .logo-wrapper:hover .tooltip {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    /* Десктопная навигация */
-    .nav {
-      display: flex;
-      gap: 0.8rem;
-      align-items: center;
-    }
-
-    .nav a {
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 380;
-      letter-spacing: 0.3px;
-      color: #f0fcff;
-      transition: color 0.2s;
-      padding-bottom: 4px;
-      border-bottom: 2px solid transparent;
-    }
-
-    .nav a:hover {
-      color: #700707;
-    }
-
-    .nav a.active {
-      color: #700707;
-      border-bottom: 2px solid #700707;
-    }
-
-    .nav-separator {
-      color: #f0fcff;
-      font-size: 0.9rem;
-      display: inline-block;
-      transform: scaleX(0.65);
-    }
-
-    /* Бегущая строка новостей ПОД ВЕРХНЕЙ ПЛАШКОЙ — ВСЕГДА КРАСНАЯ */
-    .news-ticker-header {
-      width: 100%;
-      background-color: #700707;
-      padding: 0.4rem 0;
-      overflow: hidden;
-      white-space: nowrap;
-      cursor: pointer;
-      text-decoration: none;
-      display: block;
-      transition: background-color 0.2s ease;
-      flex-shrink: 0;
-    }
-
-    .news-ticker-header:hover {
-      background-color: #1f2024;
-    }
-
-    .news-ticker-header .ticker-content-header {
-      color: #f0fcff;
-    }
-
-    .news-ticker-header .news-badge-ticker {
-      background-color: #f0fcff;
-      color: #700707;
-    }
-
-    .news-ticker-header:hover .news-badge-ticker {
-      background-color: #700707;
-      color: #f0fcff;
-    }
-
-    .ticker-content-header {
-      display: inline-block;
-      animation: ticker-header 30s linear infinite;
-      font-family: 'NotoSerifJP', serif;
-      font-size: 0.9rem;
-      font-weight: 300;
-      text-transform: uppercase;
-      padding-left: 20px;
-    }
-
-    .ticker-content-header span {
-      margin-right: 40px;
-    }
-
-    .news-badge-ticker {
-      display: inline-block;
-      padding: 0.15rem 0.5rem;
-      margin: 0 10px;
-      font-family: 'Eitai', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    @keyframes ticker-header {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-50%); }
-    }
-
-    /* Мобильное меню */
-    .mobile-menu-btn {
-      display: none;
-      background: transparent;
-      border: none;
-      color: #f0fcff;
-      font-size: 1.8rem;
-      cursor: pointer;
-      padding: 0;
-      line-height: 1;
-      transition: color 0.2s;
-      position: absolute;
-      right: 2rem;
-    }
-
-    .mobile-menu-btn:hover {
-      color: #700707;
-    }
-
-    .mobile-nav {
-      display: none;
-      position: fixed;
-      top: 64px;
-      right: 0;
-      background-color: #1f2024;
-      padding: 1.5rem;
-      flex-direction: column;
-      gap: 1.2rem;
-      z-index: 999;
-      border-left: 2px solid #700707;
-      border-bottom: 2px solid #700707;
-      min-width: 200px;
-    }
-
-    .mobile-nav.active {
-      display: flex;
-    }
-
-    .mobile-nav a {
-      text-decoration: none;
-      font-size: 1rem;
-      font-weight: 380;
-      letter-spacing: 0.3px;
-      color: #f0fcff;
-      transition: color 0.2s;
-      padding-bottom: 4px;
-      border-bottom: 2px solid transparent;
-      text-align: right;
-    }
-
-    .mobile-nav a:hover {
-      color: #700707;
-    }
-
-    .mobile-nav a.active {
-      color: #700707;
-      border-bottom: 2px solid #700707;
-    }
-
-    .page-wrapper {
-      flex: 1;
-      overflow-y: auto;
-      overflow-x: hidden;
-      scrollbar-width: none;
-      -ms-overflow-style: none;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .page-wrapper::-webkit-scrollbar {
-      display: none;
-    }
-
-    .content-inner {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 4rem 2rem 0 2rem;
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-
-    /* Сужение текста */
-    .scale-wrapper {
-      display: inline-block;
-      transform: scaleX(0.65);
-      transform-origin: center;
-    }
-
-    .nav a .scale-wrapper,
-    .tooltip .scale-wrapper,
-    .mobile-nav a .scale-wrapper {
-      transform-origin: center;
-    }
-
-    .nav a {
-      display: inline-block;
-    }
-
-    .nav a .scale-wrapper {
-      display: inline-block;
-    }
-
-    .mobile-nav a {
-      display: inline-block;
-    }
-
-    .mobile-nav a .scale-wrapper {
-      display: inline-block;
-    }
-
-    /* Заголовок с фоновой картинкой */
-    .title-wrapper {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      margin-bottom: 2rem;
-    }
-
-    .title-box {
-      background-image: url('Images/background01_red.jpg');
-      background-size: cover;
-      background-position: center;
-      padding: 1.5rem 4rem;
-      display: inline-block;
-      text-align: center;
-    }
-
-    .page-title {
-      font-size: 3rem;
-      font-weight: 700;
-      color: #700707;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      margin-bottom: 0.15rem;
-      white-space: nowrap;
-      text-shadow: 
-        -1px -1px 0 #f0fcff,
-        1px -1px 0 #f0fcff,
-        -1px 1px 0 #f0fcff,
-        1px 1px 0 #f0fcff;
-    }
-
-    .page-title .scale-wrapper {
-      display: inline-block;
-      transform: scaleX(0.65);
-      transform-origin: center;
-    }
-
-    .page-subtitle {
-      font-family: 'NotoSerifJP', serif;
-      font-size: 1.3rem;
-      font-weight: 300;
-      color: #f0fcff;
-      letter-spacing: 2px;
-      display: inline-block;
-      background-color: #700707;
-      padding: 0.1rem 0.5rem;
-      white-space: nowrap;
-    }
-
-    .page-subtitle .scale-wrapper {
-      display: inline-block;
-      transform: scaleX(0.8);
-      transform-origin: center;
-    }
-
-    /* Описание */
-    .special-description {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .special-description p {
-      font-family: 'NotoSerifJP', serif;
-      font-size: 1.1rem;
-      font-weight: 300;
-      color: #1f2024;
-      text-transform: uppercase;
-    }
-
-    .special-description .scale-text {
-      display: inline-block;
-      transform: scaleX(0.65);
-      transform-origin: center;
-    }
-
-    .special-subtext {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 1rem;
-    }
-
-    .special-subtext p {
-      font-family: 'NotoSerifJP', serif;
-      font-size: 0.9rem;
-      font-weight: 300;
-      color: #1f2024;
-      text-transform: uppercase;
-    }
-
-    .special-subtext .scale-text {
-      display: inline-block;
-      transform: scaleX(0.65);
-      transform-origin: center;
-    }
-
-    .special-thanks {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .special-thanks p {
-      font-family: 'NotoSerifJP', serif;
-      font-size: 1rem;
-      font-weight: 600;
-      color: #700707;
-      text-transform: uppercase;
-    }
-
-    .special-thanks .scale-text {
-      display: inline-block;
-      transform: scaleX(0.65);
-      transform-origin: center;
-    }
-
-    /* Счётчик комментариев */
-    .comments-count {
-      width: 100%;
-      text-align: center;
-      margin-bottom: 0.5rem;
-    }
-
-    .comments-count span {
-      font-family: 'NotoSerifJP', serif;
-      font-size: 0.9rem;
-      font-weight: 300;
-      color: #700707;
-      text-transform: uppercase;
-    }
-
-    .comments-count .scale-text {
-      display: inline-block;
-      transform: scaleX(0.65);
-      transform-origin: center;
-    }
-
-    /* Чёрный отделитель */
-    .divider-line {
-      width: 100%;
-      max-width: 1200px;
-      height: 1px;
-      background-color: #1f2024;
-      margin: 0.5rem 0 2rem 0;
-    }
-
-    /* Сетка комментариев — 2 колонки */
-    .comments-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1.5rem 2rem;
-      width: 100%;
-      margin-bottom: 2rem;
-    }
-
-    .comment-item {
-      font-family: 'NotoSerifJP', serif;
-      font-size: 0.85rem;
-      font-weight: 300;
-      color: #1f2024;
-      line-height: 1.5;
-      padding: 0.5rem 0;
-      border-bottom: 1px solid rgba(31, 32, 36, 0.15);
-    }
-
-    .comment-item .scale-text {
-      display: inline-block;
-      transform: scaleX(0.65);
-      transform-origin: left;
-    }
-
-    .comment-item strong {
-      font-weight: 600;
-      color: #700707;
-    }
-
-    /* Футер с логотипом и соцсетями */
-    .footer {
-      width: 100%;
-      background-color: #f0fcff;
-      border-top: 1px solid #1f2024;
-      padding: 1.5rem 2rem;
-      margin-top: 3rem;
-      flex-shrink: 0;
-    }
-
-    .footer-content {
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-    }
-
-    .footer-top {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 2rem;
-    }
-
-    .footer-logo {
-      height: 40px;
-      width: auto;
-      filter: brightness(0);
-    }
-
-    .footer-socials {
-      display: flex;
-      gap: 1.5rem;
-      align-items: center;
-    }
-
-    .footer-social-link {
-      text-decoration: none;
-      font-family: 'NotoSerifJP', serif;
-      font-size: 0.9rem;
-      font-weight: 300;
-      color: #1f2024;
-      text-transform: uppercase;
-      transition: color 0.2s ease;
-      border-bottom: 1px solid transparent;
-    }
-
-    .footer-social-link:hover {
-      color: #700707;
-      border-bottom-color: #700707;
-    }
-
-    .footer-social-link .scale-wrapper {
-      display: inline-block;
-      transform: scaleX(0.65);
-    }
-
-    .footer-copyright {
-      font-family: 'NotoSerifJP', serif;
-      font-size: 0.7rem;
-      font-weight: 300;
-      color: #1f2024;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-top: 0.5rem;
-    }
-
-    .footer-copyright .scale-wrapper {
-      display: inline-block;
-      transform: scaleX(0.65);
-    }
-
-    @media (max-width: 768px) {
-      .left-panel, .right-panel {
-        width: 40px;
-      }
-
-      .top-bar-inner {
-        padding: 0.8rem 1rem;
-        justify-content: flex-start;
-      }
-
-      .nav-container {
-        gap: 1.5rem;
-      }
-
-      .nav {
-        display: none;
-      }
-
-      .mobile-menu-btn {
-        display: block;
-        right: 1rem;
-      }
-
-      .news-ticker-header {
-        padding: 0.3rem 0;
-      }
-
-      .ticker-content-header {
-        font-size: 0.75rem;
-      }
-
-      .news-badge-ticker {
-        font-size: 0.6rem;
-        padding: 0.1rem 0.4rem;
-      }
-
-      .content-inner {
-        padding: 2rem 1rem 0 1rem;
-      }
-
-      .title-box {
-        padding: 1rem 1.8rem;
-      }
-
-      .page-title {
-        font-size: 1.8rem;
-        white-space: nowrap;
-      }
-
-      .page-subtitle {
-        font-size: 0.9rem;
-        padding: 0.06rem 0.3rem;
-        white-space: nowrap;
-      }
-
-      .special-description p {
-        font-size: 0.9rem;
-      }
-
-      .special-subtext p {
-        font-size: 0.75rem;
-      }
-
-      .special-thanks p {
-        font-size: 0.85rem;
-      }
-
-      .comments-grid {
-        grid-template-columns: 1fr;
-        gap: 0.5rem;
-      }
-
-      .comment-item {
-        font-size: 0.75rem;
-      }
-
-      .footer {
-        padding: 1rem 1.5rem;
-        margin-top: 2rem;
-      }
-
-      .footer-logo {
-        height: 30px;
-      }
-
-      .footer-social-link {
-        font-size: 0.8rem;
-      }
-
-      .footer-copyright {
-        font-size: 0.6rem;
-      }
-
-      .logo {
-        height: 40px;
-      }
-
-      .tooltip {
-        display: none;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .left-panel, .right-panel {
-        width: 32px;
-      }
-
-      .top-bar-inner {
-        padding: 0.6rem 0.8rem;
-      }
-
-      .nav-container {
-        gap: 1rem;
-      }
-
-      .logo {
-        height: 36px;
-      }
-
-      .mobile-menu-btn {
-        right: 0.8rem;
-        font-size: 1.5rem;
-      }
-
-      .mobile-nav {
-        top: 56px;
-        min-width: 160px;
-        padding: 1rem;
-      }
-
-      .mobile-nav a {
-        font-size: 0.9rem;
-      }
-
-      .ticker-content-header {
-        font-size: 0.65rem;
-      }
-
-      .news-badge-ticker {
-        font-size: 0.5rem;
-        padding: 0.1rem 0.3rem;
-      }
-
-      .title-box {
-        padding: 0.8rem 1.2rem;
-      }
-
-      .page-title {
-        font-size: 1.4rem;
-        white-space: nowrap;
-      }
-
-      .page-subtitle {
-        font-size: 0.8rem;
-        padding: 0.05rem 0.25rem;
-        white-space: nowrap;
-      }
-
-      .special-description p {
-        font-size: 0.8rem;
-      }
-
-      .special-subtext p {
-        font-size: 0.65rem;
-      }
-
-      .special-thanks p {
-        font-size: 0.75rem;
-      }
-
-      .comment-item {
-        font-size: 0.7rem;
-      }
-
-      .content-inner {
-        padding: 1.5rem 0.8rem 0 0.8rem;
-      }
-
-      .footer {
-        padding: 0.8rem 1rem;
-      }
-
-      .footer-top {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .footer-logo {
-        height: 25px;
-      }
-
-      .footer-socials {
-        gap: 1rem;
-      }
-
-      .footer-social-link {
-        font-size: 0.7rem;
-      }
-
-      .footer-copyright {
-        font-size: 0.5rem;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>callbybreath official website – Special</title>
+    <link rel="icon" type="image/png" href="Images/logo.png">
+    <style>
+        @font-face { font-family: 'Press Start 2P'; src: url('Font/PressStart2P.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'Rubik Spray Paint'; src: url('Font/RubikSprayPaint-Regular.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; height: 100%; overflow: hidden; }
+        body {
+            font-family: 'Press Start 2P', sans-serif;
+            color: #1f2024;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: row;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            background: #141416;
+        }
+        img { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; pointer-events: auto; }
+
+        .particle { position: fixed; pointer-events: none; z-index: 9999; font-size: 1.2rem; animation: particleFade 0.8s ease-out forwards; font-family: 'Press Start 2P', sans-serif; }
+        @keyframes particleFade { 0% { opacity: 1; transform: translate(0,0) scale(1); } 100% { opacity: 0; transform: translate(var(--dx),var(--dy)) scale(0.3); } }
+
+        .cursor-trail { position: fixed; pointer-events: none; z-index: 10000; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); box-shadow: 0 0 6px rgba(255,255,255,0.4); animation: trailFade 0.6s ease-out forwards; }
+        @keyframes trailFade { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
+
+        .wobbly-text { display: inline-block; }
+        .wobbly-text .char { display: inline-block; transition: transform 0.25s ease-out, filter 0.25s ease-out; position: relative; z-index: 1; }
+        .wobbly-text:hover .char { z-index: 2; transform: translate(var(--wx), var(--wy)) rotate(var(--wr)); filter: brightness(1.5); }
+
+        /* ПОЛНОЭКРАННЫЕ ОВЕРЛЕИ С КРЕСТИКАМИ (More, Social, Menu) */
+        .more-overlay, .social-overlay, .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #141416;
+            z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: clamp(1.5rem, 3vh, 2.5rem);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            overflow: hidden;
+        }
+        .more-overlay.open, .social-overlay.open, .nav-overlay.open { opacity: 1; pointer-events: auto; }
+        .overlay-bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        .overlay-close-btn {
+            position: absolute; top: 20px; right: 20px;
+            background: transparent; border: none; color: #f0fff8;
+            font-size: 2rem; cursor: pointer; z-index: 20;
+            line-height: 1; transition: color 0.2s;
+        }
+        .overlay-close-btn:hover { color: #ffcc00; }
+
+        .more-overlay-title, .social-overlay-title, .nav-overlay-title {
+            font-family: 'Rubik Spray Paint', sans-serif; font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: #f0fff8; text-transform: uppercase; letter-spacing: 5px; opacity: 0.9;
+            margin-bottom: 1rem; position: relative; z-index: 2; text-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .more-overlay-list, .social-overlay-list, .nav-overlay-list {
+            display: flex; flex-direction: column; gap: clamp(0.8rem, 1.5vh, 1.2rem); min-width: 250px;
+            position: relative; z-index: 2;
+        }
+        .more-overlay-list a, .social-overlay-list a, .nav-overlay-list a {
+            display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+            padding: clamp(1rem, 2vh, 1.5rem) clamp(1.5rem, 3vw, 2.5rem);
+            color: #f0fff8; text-decoration: none; font-family: 'Press Start 2P', sans-serif;
+            font-size: clamp(0.7rem, 1.2vw, 0.9rem); letter-spacing: 2px; border-radius: 10px;
+            transition: color 0.2s ease; text-transform: uppercase; text-align: center;
+            text-shadow: 0 0 12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .more-overlay-list a:hover, .social-overlay-list a:hover, .nav-overlay-list a:hover { color: #ffcc00; }
+
+        #globalBgCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+
+        .left-panel, .right-panel { width: clamp(40px, 5vw, 64px); flex-shrink: 0; height: 100vh; position: relative; z-index: 5; background: #ffffff; }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 10; height: 100%; }
+        .top-bar { width: 100%; padding: 0; flex-shrink: 0; position: relative; z-index: 100; background: #ffffff; }
+        .top-bar-inner { width: 100%; height: clamp(48px, 8vh, 64px); display: flex; align-items: center; justify-content: space-between; padding: 0; position: relative; }
+        .logo-wrapper { position: relative; display: inline-block; padding-left: 0.5rem; }
+        .logo { height: clamp(36px, 6vh, 48px); width: auto; display: block; cursor: pointer; filter: brightness(0) saturate(100%) invert(10%) sepia(78%) saturate(4617%) hue-rotate(350deg) brightness(92%) contrast(108%); transition: transform 0.2s ease; }
+        .logo:hover { transform: scale(1.05); }
+        .nav { display: flex; gap: 1.2rem; align-items: center; padding-right: 0; }
+        .nav a { text-decoration: none; font-size: 0.7rem; letter-spacing: 0.3px; color: #700707; transition: color 0.2s; padding: 0.5rem 0.8rem; border-radius: 10px; text-shadow: 0 0 6px rgba(112,7,7,0.3); }
+        .nav a:last-child { padding-right: 0.5rem; }
+        .nav a:hover { color: #990000; text-shadow: 0 0 10px rgba(153,0,0,0.5); }
+        .more-toggle { text-decoration: none; font-size: 0.7rem; letter-spacing: 0.3px; color: #700707; transition: color 0.2s; padding: 0.5rem 0.8rem; cursor: pointer; background: none; border: none; border-radius: 10px; font-family: 'Press Start 2P', sans-serif; outline: none; -webkit-tap-highlight-color: transparent; text-shadow: 0 0 6px rgba(112,7,7,0.3); }
+        .more-toggle:focus { outline: none; }
+        .more-toggle:hover { color: #990000; text-shadow: 0 0 10px rgba(153,0,0,0.5); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #700707; font-size: 1.8rem; cursor: pointer; padding: 0 0.5rem 0 0; line-height: 1; transition: color 0.2s, transform 0.3s ease; }
+        .mobile-menu-btn:hover { color: #4a0000; }
+        .mobile-menu-btn.open { transform: rotate(90deg); }
+
+        .page-content {
+            flex: 1; overflow-y: auto; overflow-x: hidden;
+            scrollbar-width: none; -ms-overflow-style: none;
+            padding: 1rem clamp(0.5rem, 2vw, 1.5rem) 0;
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; background: transparent;
+        }
+        .page-content::-webkit-scrollbar { display: none; }
+
+        #loadingIndicator {
+            position: absolute; top: 20px; left: 20px; z-index: 1000;
+            background: #000; color: #fff; font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.4rem; padding: 4px 8px; border-radius: 3px;
+            opacity: 1; transition: opacity 0.4s ease; white-space: nowrap;
+        }
+        #loadingIndicator.hidden { opacity: 0; pointer-events: none; }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in-up { animation: fadeInUp 0.6s ease forwards; }
+
+        .special-title {
+            font-family: 'Rubik Spray Paint', sans-serif;
+            font-size: clamp(1.2rem, 2.5vw, 2rem);
+            color: #f0fff8; text-transform: uppercase; letter-spacing: 4px;
+            text-shadow: 0 0 20px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5);
+            margin: 1.5rem 0 0.8rem; position: relative; z-index: 2;
+            opacity: 0;
+        }
+        .special-description {
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: clamp(0.6rem, 0.9vw, 0.8rem);
+            color: rgba(240,255,248,0.9);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            z-index: 2;
+            text-shadow: 0 0 12px rgba(0,0,0,0.7);
+            line-height: 1.8;
+            opacity: 0;
+        }
+        .special-thanks {
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: clamp(0.55rem, 0.8vw, 0.7rem);
+            color: #ffcc00;
+            text-align: center;
+            margin-bottom: 2rem;
+            z-index: 2;
+            text-shadow: 0 0 8px rgba(0,0,0,0.6);
+            line-height: 1.6;
+            opacity: 0;
+        }
+
+        /* Вертикальная бесконечная лента */
+        .vertical-comments-container {
+            flex: 1;
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            position: relative;
+            z-index: 2;
+            mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 10%, black 90%, transparent 100%);
+        }
+        .vertical-comments-track {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            animation: scrollUp 180s linear infinite;
+        }
+        @keyframes scrollUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50%); }
+        }
+        .comment-item {
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.75rem;
+            color: #141416;
+            background: rgba(255,255,255,0.9);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+            border-radius: 8px;
+            padding: 0.6rem 1.2rem;
+            line-height: 1.6;
+            white-space: normal;
+            word-wrap: break-word;
+        }
+        .comment-item strong {
+            color: #700707;
+            font-weight: normal;
+        }
+
+        .bottom-bar { width: 100%; padding: 0; flex-shrink: 0; position: relative; z-index: 100; background: #ffffff; }
+        .bottom-bar-inner { width: 100%; height: clamp(48px, 8vh, 64px); display: flex; align-items: center; justify-content: center; padding: 0 1rem; position: relative; gap: 2rem; }
+        .bottom-social-link { text-decoration: none; font-family: 'Press Start 2P', sans-serif; font-size: clamp(0.5rem, 0.9vw, 0.65rem); letter-spacing: 0.3px; color: #700707; text-transform: uppercase; transition: color 0.2s ease; text-shadow: 0 0 8px rgba(112,7,7,0.4); }
+        .bottom-social-link:hover { color: #990000; text-shadow: 0 0 14px rgba(153,0,0,0.6); }
+        .mobile-social-btn { display: none; background: none; border: none; color: #700707; font-family: 'Press Start 2P', sans-serif; font-size: 0.6rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; padding: 0.5rem 1rem; text-shadow: 0 0 8px rgba(112,7,7,0.4); transition: color 0.2s ease; }
+        .mobile-social-btn:hover { color: #990000; }
+
+        @media (max-width: 768px) {
+            .left-panel, .right-panel { width: clamp(30px, 6vw, 40px); }
+            .nav, .more-toggle { display: none; }
+            .mobile-menu-btn { display: block; }
+            .page-content { padding: 1rem 0.5rem 0; }
+            .bottom-bar-inner { gap: 0; height: clamp(40px, 7vh, 48px); }
+            .bottom-social-link { display: none; }
+            .mobile-social-btn { display: block; }
+        }
+        @media (max-width: 480px) {
+            .left-panel, .right-panel { width: clamp(24px, 5vw, 32px); }
+            .logo { height: clamp(28px, 4vh, 36px); }
+        }
+    </style>
 </head>
 <body>
-  <!-- Левая вертикальная панель — ЧЁРНАЯ -->
-  <div class="left-panel"></div>
+    <canvas id="globalBgCanvas"></canvas>
 
-  <!-- Основной контент -->
-  <div class="main-content">
-    <!-- Верхняя чёрная плашка с навигацией -->
-    <div class="top-bar">
-      <div class="top-bar-inner">
-        <div class="nav-container">
-          <div class="logo-wrapper">
-            <a href="index.html">
-              <img src="Images/logo.png" alt="CallbyBreath" class="logo">
-            </a>
-            <div class="tooltip"><span class="scale-wrapper">TAKE A LITTLE CITRUS FROM MY HANDS 🍋 ♡(｡- ω -)</span></div>
-          </div>
-          
-          <!-- Десктопная навигация -->
-          <nav class="nav">
-            <a href="discography.html"><span class="scale-wrapper">DISCOGRAPHY</span></a>
-            <span class="nav-separator">|</span>
-            <a href="videos.html"><span class="scale-wrapper">MUSIC VIDEOS</span></a>
-            <span class="nav-separator">|</span>
-            <a href="archive.html"><span class="scale-wrapper">ARCHIVE</span></a>
-            <span class="nav-separator">|</span>
-            <a href="news.html"><span class="scale-wrapper">NEWS</span></a>
-            <span class="nav-separator">|</span>
-            <a href="special.html" class="active"><span class="scale-wrapper">SPECIAL</span></a>
-            <span class="nav-separator">|</span>
-            <a href="contacts.html"><span class="scale-wrapper">SOCIAL</span></a>
-          </nav>
-        </div>
-
-        <!-- Кнопка мобильного меню -->
-        <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
-      </div>
-    </div>
-
-    <!-- Бегущая строка новостей ПОД ВЕРХНЕЙ ПЛАШКОЙ — ВСЕГДА КРАСНАЯ -->
-    <a href="news.html" class="news-ticker-header">
-      <div class="ticker-content-header" id="tickerHeader"></div>
-    </a>
-
-    <!-- Мобильная навигация -->
-    <nav class="mobile-nav" id="mobileNav">
-      <a href="discography.html"><span class="scale-wrapper">DISCOGRAPHY</span></a>
-      <a href="videos.html"><span class="scale-wrapper">MUSIC VIDEOS</span></a>
-      <a href="archive.html"><span class="scale-wrapper">ARCHIVE</span></a>
-      <a href="news.html"><span class="scale-wrapper">NEWS</span></a>
-      <a href="special.html" class="active"><span class="scale-wrapper">SPECIAL</span></a>
-      <a href="contacts.html"><span class="scale-wrapper">SOCIAL</span></a>
-    </nav>
-
-    <div class="page-wrapper">
-      <div class="content-inner">
-        <!-- Заголовок с фоновой картинкой -->
-        <div class="title-wrapper">
-          <div class="title-box">
-            <div class="page-title">
-              <span class="scale-wrapper">＜ SPECIAL ＞</span>
+    <div class="left-panel"></div>
+    <div class="main-content" id="mainContent">
+        <div class="more-overlay" id="moreOverlay">
+            <canvas class="overlay-bg-canvas" id="moreBgCanvas"></canvas>
+            <button class="overlay-close-btn" id="closeMoreOverlay">✕</button>
+            <div class="more-overlay-title">More</div>
+            <div class="more-overlay-list">
+                <a href="archive.html"><span>ARCHIVE</span></a>
+                <!-- SCHEDULE добавлен в выпадающее More -->
+                <a href="schedule.html"><span>SCHEDULE</span></a>
+                <a href="special.html"><span>SPECIAL</span></a>
             </div>
-            <div class="page-subtitle">
-              <span class="scale-wrapper">スペシャル</span>
+        </div>
+        <div class="social-overlay" id="socialOverlay">
+            <canvas class="overlay-bg-canvas" id="socialBgCanvas"></canvas>
+            <button class="overlay-close-btn" id="closeSocialOverlay">✕</button>
+            <div class="social-overlay-title">Social</div>
+            <div class="social-overlay-list" id="socialOverlayList"></div>
+        </div>
+        <div class="nav-overlay" id="navOverlay">
+            <canvas class="overlay-bg-canvas" id="navBgCanvas"></canvas>
+            <button class="overlay-close-btn" id="closeNavOverlay">✕</button>
+            <div class="nav-overlay-title">Menu</div>
+            <div class="nav-overlay-list" id="navOverlayList">
+                <a href="discography.html"><span>DISCOGRAPHY</span></a>
+                <a href="videos.html"><span>MUSIC VIDEOS</span></a>
+                <!-- Shop добавлен в мобильное меню -->
+                <a href="shop.html"><span>SHOP</span></a>
+                <a href="schedule.html"><span>SCHEDULE</span></a>
+                <a href="archive.html"><span>ARCHIVE</span></a>
+                <a href="special.html"><span>SPECIAL</span></a>
             </div>
-          </div>
         </div>
 
-        <!-- Описание -->
-        <div class="special-description">
-          <p><span class="scale-text">Comments I love reading are right here.</span></p>
+        <div class="top-bar"><div class="top-bar-inner">
+            <div class="logo-wrapper"><a href="index.html"><img src="Images/logo.png" alt="CallbyBreath" class="logo" id="logoImg"></a></div>
+            <nav class="nav">
+                <a href="discography.html"><span>DISCOGRAPHY</span></a>
+                <a href="videos.html"><span>MUSIC VIDEOS</span></a>
+                <!-- Новая вкладка Shop -->
+                <a href="shop.html"><span>SHOP</span></a>
+                <!-- SCHEDULE убран из десктопной навигации -->
+                <button class="more-toggle" id="moreToggle"><span>MORE</span></button>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div></div>
+
+        <div class="page-content" id="pageContent">
+            <div id="loadingIndicator">Loading</div>
+            <h1 class="special-title fade-in-up" style="animation-delay: 0.1s">SPECIAL</h1>
+
+            <div class="special-description fade-in-up" style="animation-delay: 0.3s">
+                Comments I love reading are right here.
+            </div>
+
+            <div class="special-thanks fade-in-up" style="animation-delay: 0.5s">
+                And first and foremost, I owe my gratitude to Arisha.<br>
+                She's been my supporter for most of my career,<br>
+                and it's thanks to her that I got here.
+            </div>
+
+            <div class="vertical-comments-container">
+                <div class="vertical-comments-track" id="verticalTrack"></div>
+            </div>
         </div>
 
-        <!-- Подтекст -->
-        <div class="special-subtext">
-          <p><span class="scale-text">(But this is only a small part. Thanks everyone!)</span></p>
-        </div>
-
-        <!-- Благодарность -->
-        <div class="special-thanks">
-          <p><span class="scale-text">And first and foremost, I owe my gratitude to Arisha. She's been my supporter for most of my career, and It's thanks to her that I got here.</span></p>
-        </div>
-
-        <!-- Счётчик комментариев -->
-        <div class="comments-count">
-          <span class="scale-text" id="commentsCounter"></span>
-        </div>
-
-        <!-- Черта -->
-        <div class="divider-line"></div>
-
-        <!-- Сетка комментариев -->
-        <div class="comments-grid" id="commentsGrid"></div>
-      </div>
-
-      <!-- Футер с логотипом, соцсетями и копирайтом -->
-      <div class="footer">
-        <div class="footer-content">
-          <div class="footer-top">
-            <img src="Images/logo.png" alt="CallbyBreath" class="footer-logo">
-            <div class="footer-socials" id="footerSocials"></div>
-          </div>
-          <div class="footer-copyright">
-            <span class="scale-wrapper">© ALL RIGHTS RESERVED</span>
-          </div>
-        </div>
-      </div>
+        <div class="bottom-bar"><div class="bottom-bar-inner" id="bottomSocials">
+            <button class="mobile-social-btn" id="mobileSocialBtn">SOCIAL</button>
+        </div></div>
     </div>
-  </div>
+    <div class="right-panel"></div>
 
-  <!-- Правая вертикальная панель — ЧЁРНАЯ -->
-  <div class="right-panel"></div>
+    <script>
+        (function() {
+            const globalCanvas = document.getElementById('globalBgCanvas');
+            const ctx = globalCanvas.getContext('2d');
+            const blobs = Array.from({length:6}, () => ({ x: 0.1+Math.random()*0.8, y: 0.1+Math.random()*0.8, r: 0.12+Math.random()*0.28 }));
 
-  <script>
-    // Мобильное меню
-    const mobileMenuBtn = document.getElementById('mobileMenuBtn');
-    const mobileNav = document.getElementById('mobileNav');
+            function drawGlobalBg() {
+                const w = globalCanvas.width = window.innerWidth;
+                const h = globalCanvas.height = window.innerHeight;
+                ctx.clearRect(0,0,w,h);
+                ctx.globalCompositeOperation = 'lighter';
+                blobs.forEach(b => {
+                    const cx = b.x * w, cy = b.y * h, maxR = b.r * Math.max(w,h);
+                    const grad = ctx.createRadialGradient(cx,cy,maxR*0.2,cx,cy,maxR);
+                    grad.addColorStop(0,'rgba(180,182,186,0.3)');
+                    grad.addColorStop(0.2,'rgba(160,162,166,0.25)');
+                    grad.addColorStop(0.4,'rgba(140,142,146,0.15)');
+                    grad.addColorStop(0.7,'rgba(120,122,126,0.05)');
+                    grad.addColorStop(1,'rgba(0,0,0,0)');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(cx,cy,maxR,0,Math.PI*2);
+                    ctx.fill();
+                });
+                ctx.globalCompositeOperation = 'source-over';
+            }
+            window.addEventListener('resize', drawGlobalBg);
+            drawGlobalBg();
 
-    mobileMenuBtn.addEventListener('click', () => {
-      mobileNav.classList.toggle('active');
-    });
+            function copyBgToOverlay(overlayCanvas) {
+                if (!overlayCanvas) return;
+                const oCtx = overlayCanvas.getContext('2d');
+                overlayCanvas.width = window.innerWidth;
+                overlayCanvas.height = window.innerHeight;
+                oCtx.drawImage(globalCanvas, 0, 0, overlayCanvas.width, overlayCanvas.height);
+            }
 
-    // Закрытие меню при клике вне его
-    document.addEventListener('click', (e) => {
-      if (!mobileNav.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-        mobileNav.classList.remove('active');
-      }
-    });
+            const loadingEl = document.getElementById('loadingIndicator');
+            let loadingDots = 0;
+            const loadingInterval = setInterval(() => {
+                loadingDots = (loadingDots + 1) % 4;
+                loadingEl.textContent = 'Loading' + '.'.repeat(loadingDots);
+            }, 500);
 
-    // ============================================
-    // НОВОСТИ ДЛЯ БЕГУЩЕЙ СТРОКИ — ДОБАВЛЯЙ СЮДА
-    // ============================================
-    const tickerNews = [
-      { date: "2025.04.15", title: "CALLBYBREATH OFFICIAL WEBSITE OUT NOW! NEW DESIGN!", isLatest: true }
-    ];
+            window.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+            window.addEventListener('keydown', e => { if ((e.ctrlKey||e.metaKey) && (e.key==='+'||e.key==='-'||e.key==='0')) e.preventDefault(); });
 
-    function renderTicker() {
-      const ticker = document.getElementById('tickerHeader');
-      
-      let contentHTML = '';
-      tickerNews.forEach(news => {
-        contentHTML += `<span>${news.date}  `;
-        if (news.isLatest) {
-          contentHTML += `<span class="news-badge-ticker">LATEST NEWS</span>  `;
-        }
-        contentHTML += `${news.title}  ◆  </span>`;
-      });
-      
-      // Дублируем для бесконечности
-      ticker.innerHTML = contentHTML + contentHTML;
-    }
+            function closeAllOverlays() {
+                ['moreOverlay','socialOverlay','navOverlay'].forEach(id => {
+                    document.getElementById(id).classList.remove('open');
+                });
+                const menuBtn = document.getElementById('mobileMenuBtn');
+                if (menuBtn) {
+                    menuBtn.classList.remove('open');
+                    menuBtn.textContent = '☰';
+                }
+            }
 
-    renderTicker();
+            document.getElementById('moreToggle').addEventListener('click', e => {
+                e.stopPropagation();
+                const overlay = document.getElementById('moreOverlay');
+                overlay.classList.toggle('open');
+                if (overlay.classList.contains('open')) copyBgToOverlay(document.getElementById('moreBgCanvas'));
+            });
+            document.getElementById('closeMoreOverlay').addEventListener('click', () => {
+                document.getElementById('moreOverlay').classList.remove('open');
+            });
 
-    // ============================================
-    // СОЦСЕТИ В ФУТЕРЕ — ДОБАВЛЯЙ СЮДА
-    // ============================================
-    const socialLinks = [
-      { name: 'YOUTUBE', url: 'https://www.youtube.com/@CallbyBreath' },
-      { name: 'TELEGRAM', url: 'https://t.me/CallbyBreath' }
-    ];
+            document.getElementById('mobileSocialBtn').addEventListener('click', e => {
+                e.stopPropagation();
+                const overlay = document.getElementById('socialOverlay');
+                overlay.classList.toggle('open');
+                if (overlay.classList.contains('open')) copyBgToOverlay(document.getElementById('socialBgCanvas'));
+            });
+            document.getElementById('closeSocialOverlay').addEventListener('click', () => {
+                document.getElementById('socialOverlay').classList.remove('open');
+            });
 
-    function renderFooterSocials() {
-      const container = document.getElementById('footerSocials');
-      container.innerHTML = '';
-      
-      socialLinks.forEach(link => {
-        const a = document.createElement('a');
-        a.className = 'footer-social-link';
-        a.href = link.url;
-        a.target = '_blank';
-        a.innerHTML = `<span class="scale-wrapper">${link.name}</span>`;
-        container.appendChild(a);
-      });
-    }
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                const overlay = document.getElementById('navOverlay');
+                overlay.classList.toggle('open');
+                document.getElementById('mobileMenuBtn').classList.toggle('open');
+                document.getElementById('mobileMenuBtn').textContent = overlay.classList.contains('open') ? '✕' : '☰';
+                if (overlay.classList.contains('open')) copyBgToOverlay(document.getElementById('navBgCanvas'));
+            });
+            document.getElementById('closeNavOverlay').addEventListener('click', () => {
+                document.getElementById('navOverlay').classList.remove('open');
+                document.getElementById('mobileMenuBtn').classList.remove('open');
+                document.getElementById('mobileMenuBtn').textContent = '☰';
+            });
 
-    renderFooterSocials();
+            document.querySelectorAll('.more-overlay, .social-overlay, .nav-overlay').forEach(overlay => {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeAllOverlays();
+                });
+            });
 
-    // ============================================
-    // КОММЕНТАРИИ — ДОБАВЛЯЙ СЮДА
-    // ============================================
-    const comments = [
-      "<strong>@Everie:</strong> WHA- What hidden jewel I've stumbled upon?",
-      "<strong>@sushinotthedishtheonefrommario:</strong> The voice is great, I like how soft yet aggressive it is. The animation is great, too! I love the little details like that Springbonnie endo and Fredbear's hat along with the other stuff at the start. Also, the broken FNaF 1 models look great.",
-      "<strong>@LPA-nimations:</strong> This is just unreal to see , so much work , it is NOT just fire , it's undescribeable fire!",
-      "<strong>@milkku2137:</strong> Ive just stumbled across a hidden gem HELL YEAH HATSUNE MIKU GOOO 🗣️🔥🔥🔥🔥",
-      "<strong>@LlamToons:</strong> THIS IS SO PEAK!!! 🗣 I LOVE IT 💖",
-      "<strong>@UNKNOWN-yea:</strong> Damnnn this was hard as hell man got me jumping up and down",
-      "<strong>@duskysfm:</strong> Thank you for making a great fnaf song during this time. Every aspect is spot on!",
-      "<strong>@polishspy8778:</strong> This is what im talking about, this is peak, this is absolute cinema, am i right lad or am i right?",
-      "<strong>@mixandmashup693:</strong> Truely, well done calby, you've actually outdown done yourself, without a doubt this blow up just like your other die in a fire remix.",
-      "<strong>@PurpleGuysAccount:</strong> This is unironically fire🔥",
-      "<strong>@GorjiraSinkOfficialMusic:</strong> I love this so much! I really like the added lyrics at the end too!",
-      "<strong>@Hamzah_The5:</strong> Look good This Awesome",
-      "<strong>@Devin-Music:</strong> ngl this is peak, w animation and w song, fnaf songs in 2025 lets go",
-      "<strong>@nathanpierce7681:</strong> ngl, banger as hell visuals and vocals. something so poignant about the rising fnaf 1 scream during the close up shot of freddy's eye right before. the axe comes down and the instrumental break completely cuts off \"desire\"",
-      "<strong>@GogetaSon-p1z:</strong> Really great and smooth animation.",
-      "<strong>@Kinetic125:</strong> its been a while my guy! sick remix 🔥🔥",
-      "<strong>@Brice1342XD:</strong> Absolute cinema 🗣️🔥🔥",
-      "<strong>@Blyvr:</strong> This is going to be fire 🗣️🔥🔥🔥",
-      "<strong>@Eta-10-x5d:</strong> Awesome",
-      "<strong>@rgb010.:</strong> This is masterpiece!",
-      "<strong>@crumbledcandy:</strong> Dont know who u r but im hyped⁉️🔥",
-      "<strong>@Lioxis_3510:</strong> Yeah, this is 🔥FIRE🔥",
-      "<strong>@DJustMusic3:</strong> That's really good!",
-      "<strong>@ぽてとりおん:</strong> Please add this song  to Spotify! This is epic!",
-      "<strong>@Yombi2024:</strong> Epic!",
-      "<strong>@Holden-o8d:</strong> You 666 likes that crazy",
-      "<strong>@fnaflegostudios2268:</strong> Amazing ❤",
-      "<strong>@JestABoxNovaFox:</strong> This cover is genuinely tho, Like william really died in a fire song 🔥",
-      "<strong>@Lumina-Studios:</strong> This is gonna be pure peak! 🔥🔥🔥🔥",
-      "<strong>@LuizHenriqueBezerraAlves:</strong> Incredible animation song remix congratulations on the work",
-      "<strong>@bluebear1993:</strong> I love this SO MUCH!!!",
-      "<strong>@Track-bs8mp:</strong> why this is underrated this is just ultra peak",
-      "<strong>@GameWork_GWS:</strong> Судя по обложки уже топ!)",
-      "<strong>@EternalX0:</strong> The instrumental 🔥",
-      "<strong>@mardjito3077:</strong> Absolute cinema",
-      "<strong>@DroneBat:</strong> What did Freddy do to get mainly axed the most? 😭",
-      "<strong>@NanamiSoraVT:</strong> OUHHHHH LEST **CKING GOOOO!!!",
-      "<strong>@OfficialNeoDay:</strong> This is beautiful",
-      "<strong>@MatthewKitchel:</strong> This is insane job🎉",
-      "<strong>@Muchyutaka:</strong> nice remix",
-      "<strong>@Holden-o8d:</strong> Beautiful 10/10",
-      "<strong>@joeyfaust9075:</strong> Amazing start",
-      "<strong>@croks_a:</strong> OMG THIS IS GORGEOUS! Your remixes always got the special and cool vibe, Keep remixing the songs bro!",
-      "<strong>@ViolaRanieri-o2r:</strong> WOW",
-      "<strong>@Lumina-Studios:</strong> This was amazing!! Everyone who worked on this did a fantastic job! And especially the animation really impressed me!!",
-      "<strong>@hartbreakzofficial:</strong> Awesome 💯 job on this",
-      "<strong>@FortGuitarist:</strong> Кайф",
-      "<strong>@LiforxMusic:</strong> Good job",
-      "<strong>@VitorAnimationsStudios:</strong> THIS WAS LITERALLY AMAZING!! I REALLY LOVED THIS! ESPECIALLY THE ANIMATION! GOOD JOB!",
-      "<strong>@thejusty2009:</strong> Я думаю это будет огонь, очень хочу увидеть , щас в 9ом классе, как раз за два дня до устного русского покайфую от ремикса",
-      "<strong>@baselzeno85:</strong> 🔥",
-      "<strong>@StampRBXnMC:</strong> Dawg dang this is SUPER fire🔥",
-      "<strong>@momotheshi-21:</strong> best",
-      "<strong>@pyraxerre:</strong> The animation and the remix is so peak 🔥",
-      "<strong>@CALl_myface:</strong> So good ❤❤❤❤❤",
-      "<strong>@mars00001:</strong> peak bro",
-      "<strong>@The_Mortal14:</strong> 10/10",
-      "<strong>@ShowtimeFreddy2077:</strong> Oh my God where were you oh my God you made this old song from like 10 or so years ago sound like it's brand new I'm going to subscribe to you made an old song sound  peek again I love this rendition of it now what have you done to me you made me feel things in this song I love it so much",
-      "<strong>@DCLCMUSIC:</strong> me boy is back!",
-      "<strong>@Calebwall44:</strong> This song is peak",
-      "<strong>@JadenMudge:</strong> this is so peam",
-      "<strong>@rehanatoqir739:</strong> Is it js me or is hatsune miku singing it??????????",
-      "<strong>@Justie_is_Real:</strong> Ждём всем ру аниматорским составом",
-      "<strong>@cross1133:</strong> Nice remix",
-      "<strong>@mixandmashup693:</strong> The legend returns, you already know ill be making as much mashups as possible with this!",
-      "<strong>@DCLCMUSIC:</strong> I love that chiptune style, I missed this 🕺",
-      "<strong>@Blyvr:</strong> OMG I CANT WAITTTT THIS IS GOING TO BE SO GOOD!!!!!",
-      "<strong>@FisrtTake:</strong> goals: collaborate with this man",
-      "<strong>@Foyxx:</strong> Can not wait bro 🔥🔥",
-      "<strong>@xerblee:</strong> Heeeeyyy!! Nice work Mr CallbyBreath! Very good! :)",
-      "<strong>@Track-bs8mp:</strong> brooo this is a real master piece",
-      "<strong>@CatManalt2:</strong> I love how you did the purple guy dance meme, best cover ever.",
-      "<strong>@RayrY-q4y:</strong> First comment and this is going to be so much fun 😊❤❤❤❤❤",
-      "<strong>@Thesilentboi:</strong> Absolute banger",
-      "<strong>@MobPlaytime:</strong> cool",
-      "<strong>@mikelarios3178:</strong> So fire 🔥",
-      "<strong>@zecabone3850:</strong> He's back!",
-      "<strong>@LiforxMusic:</strong> epic remix/cover :D",
-      "<strong>@andersoncaleb-l4u:</strong> woo I like it",
-      "<strong>@goldinfluencestheselfishz:</strong> T I M E  T O  M A S H U P",
-      "<strong>@Lumina-Studios:</strong> Great Job!! Keep it up!",
-      "<strong>@zeyland974:</strong> 🤩🤩🤩💥💥💥💥💥",
-      "<strong>@LJPlentiThings:</strong> Where are you man I hope you ain't gave up on this you make good stuff",
-      "<strong>@GLAMROCKBONNIEDED:</strong> Make moreeee pls or I cryyy",
-      "<strong>@Lioxis_3510:</strong> Yoooo, it's so freaking amazing 🔥🔥🔥",
-      "<strong>@DRK_VerseYT:</strong> NICE",
-      "<strong>@Виктория-щ3я:</strong> Кавер номер 1",
-      "<strong>@Marie-JoseeBonneville-ri4mq:</strong> i love your voice",
-      "<strong>@Maximo23_13:</strong> Necesitas mas apoyo sigue asi",
-      "<strong>@karinkakarina6202:</strong> Клфссный клип, мелодичный, xорошая постановка и исполнение, очень неплоxо!",
-      "<strong>@DJustMusic3:</strong> Это действительно великолепно!",
-      "<strong>@kristiess:</strong> красивый трек и амв прекрасный!🥺",
-      "<strong>@dimel4885:</strong> лично знаю АМВ'шера, амв получилось потрясное, трек тоже имбовый",
-      "<strong>@МаринаЦыганкова-е4е:</strong> Интересное зрелищное видео, музыка хорошая танцевальная, можно и посмотреть и подвигаться под музыку!",
-      "<strong>@silentheart.e:</strong> Один из моих любимых треков, сижу на гендзи под него играю",
-      "<strong>@RuLeT_18:</strong> Молодец, очень красивая и качественная работа)",
-      "<strong>@РоманЕфимов-ф5д:</strong> Вау прикольно, трек огонь, Молодец продолжай и дальше нас радовать!",
-      "<strong>@starkstark3908:</strong> Спасибо вам что снимаете такие позитивные ролики.очень интересно смотреть и слушать.",
-      "<strong>@maryconne33:</strong> прикольно, мне очень понравилось🔥 так мощно",
-      "<strong>@АнитаСергеева-х4ю:</strong> очень интересный видео ролик получился респект вам",
-      "<strong>@aivory144:</strong> Мне понравился и трек и клип",
-      "<strong>@daze582:</strong> неплох",
-      "<strong>@nomimicyyy:</strong> Вот это счастье мне нахлынуло, когда я узнал, что ты русский :)",
-      "<strong>@FortGuitarist:</strong> Имба",
-      "<strong>@ruslan_1361:</strong> Я рыгнул в поддержку этого трека, дай бог нам здоровья❤",
-      "<strong>@alsssr:</strong> Это круто",
-      "<strong>@nomimicyyy:</strong> ОБОЖАЮ ЭТО ВСЕЙ ДУШОЙ!",
-      "<strong>@yanox4350:</strong> Male voice hits different. You did a great job on it 👍🏻",
-      "<strong>@Blyvr:</strong> Why didn't I find this earlier than this, it's amazing",
-      "<strong>@Loqukita:</strong> YOO THE REMIX IS SUCH A BANGER!! 🔥🔥 Instrumental? 👀",
-      "<strong>@Tomirissska:</strong> прекрасно, Тём💘(вот и иностранные поклонники:>)",
-      "<strong>@Mario-qy7st:</strong> This is just ☆masterpiece☆ (I called it brother location)",
-      "<strong>@NotTunaVR:</strong> SOOOOOO 🔥🔥🔥🔥🔥🔥",
-      "<strong>@Foxys_gaming_bloopers:</strong> wow i have noting to say",
-      "<strong>@CTunes34:</strong> This is apsolutely incredible Wonderfully done you never fail to impress me with your music and covers 🔥🔥",
-      "<strong>@LiforxMusic:</strong> epic",
-      "<strong>@mikelarios3178:</strong> So fire I love sister location",
-      "<strong>@GabsusBurger:</strong> GOD",
-      "<strong>@svetozarbubnov:</strong> Ну хоть кто то исправил мелодию",
-      "<strong>@JoannaLopez-w9r:</strong> Cool songs 😎😎😎👍🖤🖤🖤🖤🖤🖤",
-      "<strong>@CatManD17:</strong> ЭТО ПРОСТО ОФИГЕННО!!!❤❤❤🔥🔥🔥нет слов",
-      "<strong>@friendlyshadow6857:</strong> I like it",
-      "<strong>@weixiyen221:</strong> Wow this awsome",
-      "<strong>@DCLCMUSIC:</strong> :0",
-      "<strong>@Kayden_and_the_imposters:</strong> H o w I,s T h i s S o G o o d",
-      "<strong>@SCDH_MUSICS:</strong> What a great remix of yours my friend!! 💝💖💗🔥",
-      "<strong>@fnafsams:</strong> OMG IS THIS FR reeeee",
-      "<strong>@fksz9282:</strong> really nice remix i dont know why this dont have many more likes",
-      "<strong>@NanamiSoraVT:</strong> SOO GOOD! 🔥",
-      "<strong>@samirgamerxd:</strong> Wow , hermoso",
-      "<strong>@GameWork_GWS:</strong> Это было круто!)",
-      "<strong>@camerasystem100:</strong> I really like this remix! Thank you for making it!",
-      "<strong>@fnafsams:</strong> Nahh cuz why is this so good REEEE 😳 I LOVE IT",
-      "<strong>@falperio05:</strong> This Is amazing!!",
-      "<strong>@zecabone3850:</strong> fabulous",
-      "<strong>@thejusty2009:</strong> вау, я так рад увидеть такой шедевр от тебя, супер! Надеюсь ты продолжишь в том же темпе)",
-      "<strong>@Lumina-Studios:</strong> i wish i would have found your channel earlier!! DEFENTLY my favorite remix of this song for sure!!!",
-      "<strong>@Torcher_Cake:</strong> Это изумительно , бро!",
-      "<strong>@DJustMusic3:</strong> THIS IS F8CK AWESOME!!!! You're skills are insane now bro 0-0",
-      "<strong>@Maven-790:</strong> Your insane man! Please tell me what you use to make music",
-      "<strong>@RengarLion_42:</strong> I love this song so much ❤and I love it when he says, \"Your my Superstar\" 🥹☺️",
-      "<strong>@naolink7832:</strong> This sounds so good!!",
-      "<strong>@nomimicyyy:</strong> А ЧЕЛ ТО НЕПЛОХ, Я БЫ ДАЖЕ СКАЗАЛ, ШИКАРЕН)",
-      "<strong>@epikdummy6702:</strong> this is so underated, you deserve more",
-      "<strong>@SnoozyJorJor:</strong> Ahhh this is so cool!!❤️✨",
-      "<strong>@shadowfreddy1991:</strong> I like it",
-      "<strong>@TheCtoresin:</strong> way to go superstar.",
-      "<strong>@Kinetic125:</strong> Nice!",
-      "<strong>@miasanchez4792:</strong> it is good and amazing 😄",
-      "<strong>@DJustMusic3:</strong> You're best remix so far!",
-      "<strong>@Charlie_Hazbin_Hotel_187:</strong> 👍💙💞",
-      "<strong>@DCLCMUSIC:</strong> Bruh, This is amazing",
-      "<strong>@TheMrGold:</strong> 👍",
-      "<strong>@universoparalelo1538:</strong> I LOVE IT! ❤",
-      "<strong>@LiforxMusic:</strong> wooow man this is so good :D",
-      "<strong>@The_f1_factory:</strong> I like this modern style",
-      "<strong>@Drems1qa:</strong> Youre my superstar......",
-      "<strong>@DiegoOliveira-z:</strong> Amei essa música Linda maravilhosa perfeita 🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵",
-      "<strong>@Aiden-ri1hg:</strong> It's hard",
-      "<strong>@mr.madelinepresents:</strong> Great !",
-      "<strong>@ragestiragesti6261:</strong> ❤",
-      "<strong>@EM1RSH:</strong> Why isn't there a million views?",
-      "<strong>@epikdummy6702:</strong> I like how you added lyrics to the instrumental part",
-      "<strong>@MarquoskyrieUbana:</strong> This song is legendary 😍❤️",
-      "<strong>@johnphan1644:</strong> We have approximately atleast 200+ types of channels on Youtube Type 159: The channels that produce really great remixes, but have 100K- Subs, this is a easy example.",
-      "<strong>@nomimicyyy:</strong> OMG, DUDE, I LOVE IT SO MUCH!!!!!❤❤❤",
-      "<strong>@DCLCMUSIC:</strong> Dude, that was sick",
-      "<strong>@SusanPantoja-c9t:</strong> PEAK FNAF SONG 🥹✌️ 0:09",
-      "<strong>@LaserZman:</strong> Underrated, just like the original song, lol",
-      "<strong>@yummynubs3646:</strong> Boys, I think I speak for all of us when I say, we are so back",
-      "<strong>@igieborgladys406:</strong> Die in the fire remix is beatheful I listening for the full year!!!!",
-      "<strong>@DeaDasheer:</strong> Its great to see a remix of this that isn't some shit trap music. Love this remix",
-      "<strong>@Kjwippy:</strong> This is awesome! Excellent remix, and I love the bonus lyrics during the instrumental, it's a nice touch!",
-      "<strong>@SDAnim1:</strong> alright.... This absolutely slaps",
-      "<strong>@noahallen96:</strong> 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🪓❤️‍🩹",
-      "<strong>@Arthur01907I-ALT:</strong> You Even Had Bonus lyrics W My Bro And Its Was Like Just Fire 🔥",
-      "<strong>@FP_Oficial:</strong> Although it has few visits, it is seen that it is a job well done with quality",
-      "<strong>@AlooGobi64:</strong> I have been listening to it for a whole year.",
-      "<strong>@CaptainKai808-o6i:</strong> Y E S",
-      "<strong>@pirats_do_deserto:</strong> omg is song very god",
-      "<strong>@noahallen96:</strong> 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥",
-      "<strong>@coolpanama:</strong> this song is great!",
-      "<strong>@Avocadokid:</strong> OML THIS SONG IS SO GOD😂😂",
-      "<strong>@SpektrikFL:</strong> Yo that was insane, the instrumental was great, the mixing on the vocals and the execution was great. Well done bro!",
-      "<strong>@pirats_do_deserto:</strong> im love",
-      "<strong>@WoozyTempest:</strong> AWESOME REMIX!! I LOVE IT SO MUCH!",
-      "<strong>@Kuragair:</strong> I broke the replay button",
-      "<strong>@pootonjxe1forfun:</strong> These words hit me harder than that of a bulldozer",
-      "<strong>@toki1551original:</strong> Its been years memories but remix sheeeeees",
-      "<strong>@lisapruett1718:</strong> I love it sounds like mxes is trying to sing it or spring Bonnie (without afton)",
-      "<strong>@cappedminer369:</strong> Amazing ! Incredible ! One day I hope there's extended version of this",
-      "<strong>@cutepinkpearlOficial:</strong> ❤❤❤❤",
-      "<strong>@azurite_-:</strong> This is actually wicked ?! And Brutally underrated-",
-      "<strong>@douglasanderson3521:</strong> Awesome!!",
-      "<strong>@Jayspd:</strong> Sounds like toy Bonnie",
-      "<strong>@VRToyFreddie:</strong> So beautiful",
-      "<strong>@chibichacha_153:</strong> this deserves more likes and views awesome :0",
-      "<strong>@Mr_top_10_:</strong> Dude this is fire🔥",
-      "<strong>@StopSlenders:</strong> HELL YEAH",
-      "<strong>@Lights16237:</strong> Ah Is So SICK!!!!!!!!",
-      "<strong>@WilliamM-i5w:</strong> Die in a fire? Nah, I'd rather die in a fire remix! This is awesome!",
-      "<strong>@MEU-NOME-NAO:</strong> Essa voz mds q coisa linda",
-      "<strong>@rosminjoseph8780:</strong> Bro , not only amazing edit but hella good remix",
-      "<strong>@Lumina-Studios:</strong> omg this song is sooooo underrated!!",
-      "<strong>@C_Celsius:</strong> 690 likes😳Edit: Noo its 700+ now",
-      "<strong>@SpecialJeff:</strong> I had not heard this remix, it was very good on you, I love it",
-      "<strong>@pancakedevour:</strong> This deserves more views",
-      "<strong>@SmileyPMusic:</strong> WOW YOU'VE IMPROVED A LOT",
-      "<strong>@Cacoo099:</strong> awesome!",
-      "<strong>@mafelbala395:</strong> Underated",
-      "<strong>@WiredSilver:</strong> YOOO Guys i think we found the best fnaf remix",
-      "<strong>@HAHA_Purple_Flower:</strong> So nice",
-      "<strong>@FAZEBEAR_THING:</strong> still 1 min in but love it",
-      "<strong>@CTunes34:</strong> I'm gonna be honest this was apsolutely fire, even better than the original your voice was perfectly suited for this song wonderful job 💜",
-      "<strong>@rosminjoseph8780:</strong> Seriously your voice is just so suited for this song , I been listening to it everyday KEEP UP THE GOOD WORK !!!!!!!🤩🤩🤩🤩🤩🤩🤩🤩😁❤❤❤❤"
-    ];
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') closeAllOverlays();
+            });
 
-    function renderComments() {
-      const grid = document.getElementById('commentsGrid');
-      const counter = document.getElementById('commentsCounter');
-      
-      // Обновляем счётчик
-      counter.textContent = `Total comments: ${comments.length}`;
-      
-      // Очищаем и заполняем сетку
-      grid.innerHTML = '';
-      comments.forEach(comment => {
-        const item = document.createElement('div');
-        item.className = 'comment-item';
-        item.innerHTML = `<span class="scale-text">${comment}</span>`;
-        grid.appendChild(item);
-      });
-    }
+            // Соцсети
+            const socialLinks = [
+                { name:'youtube', url:'https://www.youtube.com/@CallbyBreath' },
+                { name:'instagram', url:'https://www.instagram.com/callbybreath.official' },
+                { name:'pinterest', url:'https://pinterest.com/callbybreath' },
+                { name:'telegram', url:'https://t.me/callbybreath' },
+                { name:'spotify', url:'https://open.spotify.com/artist/4RJTPseEgwmAZIto7YDuV6' },
+                { name:'apple music', url:'https://music.apple.com/ru/artist/callbybreath/1602956679' },
+                { name:'soundcloud', url:'https://soundcloud.com/callbybreath' }
+            ];
+            const bottomSocials = document.getElementById('bottomSocials');
+            socialLinks.forEach(l => {
+                const a = document.createElement('a'); a.className = 'bottom-social-link'; a.href = l.url; a.target = '_blank'; a.innerHTML = `<span>${l.name}</span>`;
+                bottomSocials.appendChild(a);
+            });
+            const socialOverlayList = document.getElementById('socialOverlayList');
+            socialLinks.forEach(l => {
+                const a = document.createElement('a'); a.href = l.url; a.target = '_blank'; a.innerHTML = `<span>${l.name.toUpperCase()}</span>`;
+                socialOverlayList.appendChild(a);
+            });
 
-    renderComments();
+            // Все комментарии
+            const allComments = [
+                "<strong>@Everie:</strong> WHA- What hidden jewel I've stumbled upon?",
+                "<strong>@sushinotthedishtheonefrommario:</strong> The voice is great, I like how soft yet aggressive it is. The animation is great, too! I love the little details like that Springbonnie endo and Fredbear's hat along with the other stuff at the start. Also, the broken FNaF 1 models look great.",
+                "<strong>@LPA-nimations:</strong> This is just unreal to see , so much work , it is NOT just fire , it's undescribeable fire!",
+                "<strong>@milkku2137:</strong> Ive just stumbled across a hidden gem HELL YEAH HATSUNE MIKU GOOO 🗣️🔥🔥🔥🔥",
+                "<strong>@LlamToons:</strong> THIS IS SO PEAK!!! 🗣 I LOVE IT 💖",
+                "<strong>@UNKNOWN-yea:</strong> Damnnn this was hard as hell man got me jumping up and down",
+                "<strong>@duskysfm:</strong> Thank you for making a great fnaf song during this time. Every aspect is spot on!",
+                "<strong>@polishspy8778:</strong> This is what im talking about, this is peak, this is absolute cinema, am i right lad or am i right?",
+                "<strong>@mixandmashup693:</strong> Truely, well done calby, you've actually outdown done yourself, without a doubt this blow up just like your other die in a fire remix.",
+                "<strong>@PurpleGuysAccount:</strong> This is unironically fire🔥",
+                "<strong>@GorjiraSinkOfficialMusic:</strong> I love this so much! I really like the added lyrics at the end too!",
+                "<strong>@Hamzah_The5:</strong> Look good This Awesome",
+                "<strong>@Devin-Music:</strong> ngl this is peak, w animation and w song, fnaf songs in 2025 lets go",
+                "<strong>@nathanpierce7681:</strong> ngl, banger as hell visuals and vocals. something so poignant about the rising fnaf 1 scream during the close up shot of freddy's eye right before. the axe comes down and the instrumental break completely cuts off \"desire\"",
+                "<strong>@GogetaSon-p1z:</strong> Really great and smooth animation.",
+                "<strong>@Kinetic125:</strong> its been a while my guy! sick remix 🔥🔥",
+                "<strong>@Brice1342XD:</strong> Absolute cinema 🗣️🔥🔥",
+                "<strong>@Blyvr:</strong> This is going to be fire 🗣️🔥🔥🔥",
+                "<strong>@Eta-10-x5d:</strong> Awesome",
+                "<strong>@rgb010.:</strong> This is masterpiece!",
+                "<strong>@crumbledcandy:</strong> Dont know who u r but im hyped⁉️🔥",
+                "<strong>@Lioxis_3510:</strong> Yeah, this is 🔥FIRE🔥",
+                "<strong>@DJustMusic3:</strong> That's really good!",
+                "<strong>@ぽてとりおん:</strong> Please add this song to Spotify! This is epic!",
+                "<strong>@Yombi2024:</strong> Epic!",
+                "<strong>@Holden-o8d:</strong> You 666 likes that crazy",
+                "<strong>@fnaflegostudios2268:</strong> Amazing ❤",
+                "<strong>@JestABoxNovaFox:</strong> This cover is genuinely tho, Like william really died in a fire song 🔥",
+                "<strong>@Lumina-Studios:</strong> This is gonna be pure peak! 🔥🔥🔥🔥",
+                "<strong>@LuizHenriqueBezerraAlves:</strong> Incredible animation song remix congratulations on the work",
+                "<strong>@bluebear1993:</strong> I love this SO MUCH!!!",
+                "<strong>@Track-bs8mp:</strong> why this is underrated this is just ultra peak",
+                "<strong>@GameWork_GWS:</strong> Судя по обложки уже топ!)",
+                "<strong>@EternalX0:</strong> The instrumental 🔥",
+                "<strong>@mardjito3077:</strong> Absolute cinema",
+                "<strong>@DroneBat:</strong> What did Freddy do to get mainly axed the most? 😭",
+                "<strong>@NanamiSoraVT:</strong> OUHHHHH LEST **CKING GOOOO!!!",
+                "<strong>@OfficialNeoDay:</strong> This is beautiful",
+                "<strong>@MatthewKitchel:</strong> This is insane job🎉",
+                "<strong>@Muchyutaka:</strong> nice remix",
+                "<strong>@Holden-o8d:</strong> Beautiful 10/10",
+                "<strong>@joeyfaust9075:</strong> Amazing start",
+                "<strong>@croks_a:</strong> OMG THIS IS GORGEOUS! Your remixes always got the special and cool vibe, Keep remixing the songs bro!",
+                "<strong>@ViolaRanieri-o2r:</strong> WOW",
+                "<strong>@Lumina-Studios:</strong> This was amazing!! Everyone who worked on this did a fantastic job! And especially the animation really impressed me!!",
+                "<strong>@hartbreakzofficial:</strong> Awesome 💯 job on this",
+                "<strong>@FortGuitarist:</strong> Кайф",
+                "<strong>@LiforxMusic:</strong> Good job",
+                "<strong>@VitorAnimationsStudios:</strong> THIS WAS LITERALLY AMAZING!! I REALLY LOVED THIS! ESPECIALLY THE ANIMATION! GOOD JOB!",
+                "<strong>@thejusty2009:</strong> Я думаю это будет огонь, очень хочу увидеть , щас в 9ом классе, как раз за два дня до устного русского покайфую от ремикса",
+                "<strong>@baselzeno85:</strong> 🔥",
+                "<strong>@StampRBXnMC:</strong> Dawg dang this is SUPER fire🔥",
+                "<strong>@momotheshi-21:</strong> best",
+                "<strong>@pyraxerre:</strong> The animation and the remix is so peak 🔥",
+                "<strong>@CALl_myface:</strong> So good ❤❤❤❤❤",
+                "<strong>@mars00001:</strong> peak bro",
+                "<strong>@The_Mortal14:</strong> 10/10",
+                "<strong>@ShowtimeFreddy2077:</strong> Oh my God where were you oh my God you made this old song from like 10 or so years ago sound like it's brand new I'm going to subscribe to you made an old song sound peek again I love this rendition of it now what have you done to me you made me feel things in this song I love it so much",
+                "<strong>@DCLCMUSIC:</strong> me boy is back!",
+                "<strong>@Calebwall44:</strong> This song is peak",
+                "<strong>@JadenMudge:</strong> this is so peam",
+                "<strong>@rehanatoqir739:</strong> Is it js me or is hatsune miku singing it??????????",
+                "<strong>@Justie_is_Real:</strong> Ждём всем ру аниматорским составом",
+                "<strong>@cross1133:</strong> Nice remix",
+                "<strong>@mixandmashup693:</strong> The legend returns, you already know ill be making as much mashups as possible with this!",
+                "<strong>@DCLCMUSIC:</strong> I love that chiptune style, I missed this 🕺",
+                "<strong>@Blyvr:</strong> OMG I CANT WAITTTT THIS IS GOING TO BE SO GOOD!!!!!",
+                "<strong>@FisrtTake:</strong> goals: collaborate with this man",
+                "<strong>@Foyxx:</strong> Can not wait bro 🔥🔥",
+                "<strong>@xerblee:</strong> Heeeeyyy!! Nice work Mr CallbyBreath! Very good! :)",
+                "<strong>@Track-bs8mp:</strong> brooo this is a real master piece",
+                "<strong>@CatManalt2:</strong> I love how you did the purple guy dance meme, best cover ever.",
+                "<strong>@RayrY-q4y:</strong> First comment and this is going to be so much fun 😊❤❤❤❤❤",
+                "<strong>@Thesilentboi:</strong> Absolute banger",
+                "<strong>@MobPlaytime:</strong> cool",
+                "<strong>@mikelarios3178:</strong> So fire 🔥",
+                "<strong>@zecabone3850:</strong> He's back!",
+                "<strong>@LiforxMusic:</strong> epic remix/cover :D",
+                "<strong>@andersoncaleb-l4u:</strong> woo I like it",
+                "<strong>@goldinfluencestheselfishz:</strong> T I M E T O M A S H U P",
+                "<strong>@Lumina-Studios:</strong> Great Job!! Keep it up!",
+                "<strong>@zeyland974:</strong> 🤩🤩🤩💥💥💥💥💥",
+                "<strong>@LJPlentiThings:</strong> Where are you man I hope you ain't gave up on this you make good stuff",
+                "<strong>@GLAMROCKBONNIEDED:</strong> Make moreeee pls or I cryyy",
+                "<strong>@Lioxis_3510:</strong> Yoooo, it's so freaking amazing 🔥🔥🔥",
+                "<strong>@DRK_VerseYT:</strong> NICE",
+                "<strong>@Виктория-щ3я:</strong> Кавер номер 1",
+                "<strong>@Marie-JoseeBonneville-ri4mq:</strong> i love your voice",
+                "<strong>@Maximo23_13:</strong> Necesitas mas apoyo sigue asi",
+                "<strong>@karinkakarina6202:</strong> Клфссный клип, мелодичный, xорошая постановка и исполнение, очень неплоxо!",
+                "<strong>@DJustMusic3:</strong> Это действительно великолепно!",
+                "<strong>@kristiess:</strong> красивый трек и амв прекрасный!🥺",
+                "<strong>@dimel4885:</strong> лично знаю АМВ'шера, амв получилось потрясное, трек тоже имбовый",
+                "<strong>@МаринаЦыганкова-е4е:</strong> Интересное зрелищное видео, музыка хорошая танцевальная, можно и посмотреть и подвигаться под музыку!",
+                "<strong>@silentheart.e:</strong> Один из моих любимых треков, сижу на гендзи под него играю",
+                "<strong>@RuLeT_18:</strong> Молодец, очень красивая и качественная работа)",
+                "<strong>@РоманЕфимов-ф5д:</strong> Вау прикольно, трек огонь, Молодец продолжай и дальше нас радовать!",
+                "<strong>@starkstark3908:</strong> Спасибо вам что снимаете такие позитивные ролики.очень интересно смотреть и слушать.",
+                "<strong>@maryconne33:</strong> прикольно, мне очень понравилось🔥 так мощно",
+                "<strong>@АнитаСергеева-х4ю:</strong> очень интересный видео ролик получился респект вам",
+                "<strong>@aivory144:</strong> Мне понравился и трек и клип",
+                "<strong>@daze582:</strong> неплох",
+                "<strong>@nomimicyyy:</strong> Вот это счастье мне нахлынуло, когда я узнал, что ты русский :)",
+                "<strong>@FortGuitarist:</strong> Имба",
+                "<strong>@ruslan_1361:</strong> Я рыгнул в поддержку этого трека, дай бог нам здоровья❤",
+                "<strong>@alsssr:</strong> Это круто",
+                "<strong>@nomimicyyy:</strong> ОБОЖАЮ ЭТО ВСЕЙ ДУШОЙ!",
+                "<strong>@yanox4350:</strong> Male voice hits different. You did a great job on it 👍🏻",
+                "<strong>@Blyvr:</strong> Why didn't I find this earlier than this, it's amazing",
+                "<strong>@Loqukita:</strong> YOO THE REMIX IS SUCH A BANGER!! 🔥🔥 Instrumental? 👀",
+                "<strong>@Tomirissska:</strong> прекрасно, Тём💘(вот и иностранные поклонники:>)",
+                "<strong>@Mario-qy7st:</strong> This is just ☆masterpiece☆ (I called it brother location)",
+                "<strong>@NotTunaVR:</strong> SOOOOOO 🔥🔥🔥🔥🔥🔥",
+                "<strong>@Foxys_gaming_bloopers:</strong> wow i have noting to say",
+                "<strong>@CTunes34:</strong> This is apsolutely incredible Wonderfully done you never fail to impress me with your music and covers 🔥🔥",
+                "<strong>@LiforxMusic:</strong> epic",
+                "<strong>@mikelarios3178:</strong> So fire I love sister location",
+                "<strong>@GabsusBurger:</strong> GOD",
+                "<strong>@svetozarbubnov:</strong> Ну хоть кто то исправил мелодию",
+                "<strong>@JoannaLopez-w9r:</strong> Cool songs 😎😎😎👍🖤🖤🖤🖤🖤🖤",
+                "<strong>@CatManD17:</strong> ЭТО ПРОСТО ОФИГЕННО!!!❤❤❤🔥🔥🔥нет слов",
+                "<strong>@friendlyshadow6857:</strong> I like it",
+                "<strong>@weixiyen221:</strong> Wow this awsome",
+                "<strong>@DCLCMUSIC:</strong> :0",
+                "<strong>@Kayden_and_the_imposters:</strong> H o w I,s T h i s S o G o o d",
+                "<strong>@SCDH_MUSICS:</strong> What a great remix of yours my friend!! 💝💖💗🔥",
+                "<strong>@fnafsams:</strong> OMG IS THIS FR reeeee",
+                "<strong>@fksz9282:</strong> really nice remix i dont know why this dont have many more likes",
+                "<strong>@NanamiSoraVT:</strong> SOO GOOD! 🔥",
+                "<strong>@samirgamerxd:</strong> Wow , hermoso",
+                "<strong>@GameWork_GWS:</strong> Это было круто!)",
+                "<strong>@camerasystem100:</strong> I really like this remix! Thank you for making it!",
+                "<strong>@fnafsams:</strong> Nahh cuz why is this so good REEEE 😳 I LOVE IT",
+                "<strong>@falperio05:</strong> This Is amazing!!",
+                "<strong>@zecabone3850:</strong> fabulous",
+                "<strong>@thejusty2009:</strong> вау, я так рад увидеть такой шедевр от тебя, супер! Надеюсь ты продолжишь в том же темпе)",
+                "<strong>@Lumina-Studios:</strong> i wish i would have found your channel earlier!! DEFENTLY my favorite remix of this song for sure!!!",
+                "<strong>@Torcher_Cake:</strong> Это изумительно , бро!",
+                "<strong>@DJustMusic3:</strong> THIS IS F8CK AWESOME!!!! You're skills are insane now bro 0-0",
+                "<strong>@Maven-790:</strong> Your insane man! Please tell me what you use to make music",
+                "<strong>@RengarLion_42:</strong> I love this song so much ❤and I love it when he says, \"Your my Superstar\" 🥹☺️",
+                "<strong>@naolink7832:</strong> This sounds so good!!",
+                "<strong>@nomimicyyy:</strong> А ЧЕЛ ТО НЕПЛОХ, Я БЫ ДАЖЕ СКАЗАЛ, ШИКАРЕН)",
+                "<strong>@epikdummy6702:</strong> this is so underated, you deserve more",
+                "<strong>@SnoozyJorJor:</strong> Ahhh this is so cool!!❤️✨",
+                "<strong>@shadowfreddy1991:</strong> I like it",
+                "<strong>@TheCtoresin:</strong> way to go superstar.",
+                "<strong>@Kinetic125:</strong> Nice!",
+                "<strong>@miasanchez4792:</strong> it is good and amazing 😄",
+                "<strong>@DJustMusic3:</strong> You're best remix so far!",
+                "<strong>@Charlie_Hazbin_Hotel_187:</strong> 👍💙💞",
+                "<strong>@DCLCMUSIC:</strong> Bruh, This is amazing",
+                "<strong>@TheMrGold:</strong> 👍",
+                "<strong>@universoparalelo1538:</strong> I LOVE IT! ❤",
+                "<strong>@LiforxMusic:</strong> wooow man this is so good :D",
+                "<strong>@The_f1_factory:</strong> I like this modern style",
+                "<strong>@Drems1qa:</strong> Youre my superstar......",
+                "<strong>@DiegoOliveira-z:</strong> Amei essa música Linda maravilhosa perfeita 🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵🩵",
+                "<strong>@Aiden-ri1hg:</strong> It's hard",
+                "<strong>@mr.madelinepresents:</strong> Great !",
+                "<strong>@ragestiragesti6261:</strong> ❤",
+                "<strong>@EM1RSH:</strong> Why isn't there a million views?",
+                "<strong>@epikdummy6702:</strong> I like how you added lyrics to the instrumental part",
+                "<strong>@MarquoskyrieUbana:</strong> This song is legendary 😍❤️",
+                "<strong>@johnphan1644:</strong> We have approximately atleast 200+ types of channels on Youtube Type 159: The channels that produce really great remixes, but have 100K- Subs, this is a easy example.",
+                "<strong>@nomimicyyy:</strong> OMG, DUDE, I LOVE IT SO MUCH!!!!!❤❤❤",
+                "<strong>@DCLCMUSIC:</strong> Dude, that was sick",
+                "<strong>@SusanPantoja-c9t:</strong> PEAK FNAF SONG 🥹✌️ 0:09",
+                "<strong>@LaserZman:</strong> Underrated, just like the original song, lol",
+                "<strong>@yummynubs3646:</strong> Boys, I think I speak for all of us when I say, we are so back",
+                "<strong>@igieborgladys406:</strong> Die in the fire remix is beatheful I listening for the full year!!!!",
+                "<strong>@DeaDasheer:</strong> Its great to see a remix of this that isn't some shit trap music. Love this remix",
+                "<strong>@Kjwippy:</strong> This is awesome! Excellent remix, and I love the bonus lyrics during the instrumental, it's a nice touch!",
+                "<strong>@SDAnim1:</strong> alright.... This absolutely slaps",
+                "<strong>@noahallen96:</strong> 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🪓❤️‍🩹",
+                "<strong>@Arthur01907I-ALT:</strong> You Even Had Bonus lyrics W My Bro And Its Was Like Just Fire 🔥",
+                "<strong>@FP_Oficial:</strong> Although it has few visits, it is seen that it is a job well done with quality",
+                "<strong>@AlooGobi64:</strong> I have been listening to it for a whole year.",
+                "<strong>@CaptainKai808-o6i:</strong> Y E S",
+                "<strong>@pirats_do_deserto:</strong> omg is song very god",
+                "<strong>@noahallen96:</strong> 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥",
+                "<strong>@coolpanama:</strong> this song is great!",
+                "<strong>@Avocadokid:</strong> OML THIS SONG IS SO GOD😂😂",
+                "<strong>@SpektrikFL:</strong> Yo that was insane, the instrumental was great, the mixing on the vocals and the execution was great. Well done bro!",
+                "<strong>@pirats_do_deserto:</strong> im love",
+                "<strong>@WoozyTempest:</strong> AWESOME REMIX!! I LOVE IT SO MUCH!",
+                "<strong>@Kuragair:</strong> I broke the replay button",
+                "<strong>@pootonjxe1forfun:</strong> These words hit me harder than that of a bulldozer",
+                "<strong>@toki1551original:</strong> Its been years memories but remix sheeeeees",
+                "<strong>@lisapruett1718:</strong> I love it sounds like mxes is trying to sing it or spring Bonnie (without afton)",
+                "<strong>@cappedminer369:</strong> Amazing ! Incredible ! One day I hope there's extended version of this",
+                "<strong>@cutepinkpearlOficial:</strong> ❤❤❤❤",
+                "<strong>@azurite_-:</strong> This is actually wicked ?! And Brutally underrated-",
+                "<strong>@douglasanderson3521:</strong> Awesome!!",
+                "<strong>@Jayspd:</strong> Sounds like toy Bonnie",
+                "<strong>@VRToyFreddie:</strong> So beautiful",
+                "<strong>@chibichacha_153:</strong> this deserves more likes and views awesome :0",
+                "<strong>@Mr_top_10_:</strong> Dude this is fire🔥",
+                "<strong>@StopSlenders:</strong> HELL YEAH",
+                "<strong>@Lights16237:</strong> Ah Is So SICK!!!!!!!!",
+                "<strong>@WilliamM-i5w:</strong> Die in a fire? Nah, I'd rather die in a fire remix! This is awesome!",
+                "<strong>@MEU-NOME-NAO:</strong> Essa voz mds q coisa linda",
+                "<strong>@rosminjoseph8780:</strong> Bro , not only amazing edit but hella good remix",
+                "<strong>@Lumina-Studios:</strong> omg this song is sooooo underrated!!",
+                "<strong>@C_Celsius:</strong> 690 likes😳Edit: Noo its 700+ now",
+                "<strong>@SpecialJeff:</strong> I had not heard this remix, it was very good on you, I love it",
+                "<strong>@pancakedevour:</strong> This deserves more views",
+                "<strong>@SmileyPMusic:</strong> WOW YOU'VE IMPROVED A LOT",
+                "<strong>@Cacoo099:</strong> awesome!",
+                "<strong>@mafelbala395:</strong> Underated",
+                "<strong>@WiredSilver:</strong> YOOO Guys i think we found the best fnaf remix",
+                "<strong>@HAHA_Purple_Flower:</strong> So nice",
+                "<strong>@FAZEBEAR_THING:</strong> still 1 min in but love it",
+                "<strong>@CTunes34:</strong> I'm gonna be honest this was apsolutely fire, even better than the original your voice was perfectly suited for this song wonderful job 💜",
+                "<strong>@rosminjoseph8780:</strong> Seriously your voice is just so suited for this song , I been listening to it everyday KEEP UP THE GOOD WORK !!!!!!!🤩🤩🤩🤩🤩🤩🤩🤩😁❤❤❤❤"
+            ];
 
-    // ============================================
-    // ЗАПРЕТ КОПИРОВАНИЯ, ПЕРЕТАСКИВАНИЯ И КОНТЕКСТНОГО МЕНЮ
-    // ============================================
-    document.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      return false;
-    });
+            function shuffle(arr) {
+                for (let i = arr.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [arr[i], arr[j]] = [arr[j], arr[i]];
+                }
+                return arr;
+            }
+            const shuffled = shuffle([...allComments]);
+            const doubled = [...shuffled, ...shuffled];
+            const track = document.getElementById('verticalTrack');
+            doubled.forEach(comment => {
+                const div = document.createElement('div');
+                div.className = 'comment-item';
+                div.innerHTML = comment;
+                track.appendChild(div);
+            });
 
-    document.addEventListener('copy', (e) => {
-      e.preventDefault();
-      return false;
-    });
+            // Эффекты
+            let trailTimeout;
+            document.addEventListener('mousemove', e => {
+                if (trailTimeout) return;
+                trailTimeout = setTimeout(() => {
+                    trailTimeout = null;
+                    const dot = document.createElement('div'); dot.className = 'cursor-trail';
+                    dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px';
+                    document.body.appendChild(dot); setTimeout(() => dot.remove(), 600);
+                }, 50);
+            });
 
-    document.addEventListener('cut', (e) => {
-      e.preventDefault();
-      return false;
-    });
+            const particleSymbols = ['☆','✧','✦','★','⭑'];
+            function spawnParticles(e) {
+                for (let i=0; i<6; i++) {
+                    const p = document.createElement('span'); p.className = 'particle';
+                    p.textContent = particleSymbols[Math.floor(Math.random()*particleSymbols.length)];
+                    p.style.left = e.clientX+'px'; p.style.top = e.clientY+'px';
+                    p.style.color = Math.random()>0.5 ? '#f0fff8' : '#ffcc00';
+                    const a = (Math.PI*2*i)/6, d = 15+Math.random()*25;
+                    p.style.setProperty('--dx', Math.cos(a)*d+'px');
+                    p.style.setProperty('--dy', Math.sin(a)*d+'px');
+                    document.body.appendChild(p); setTimeout(() => p.remove(), 800);
+                }
+            }
+            function attachParticles(sel) { document.querySelectorAll(sel).forEach(e => e.addEventListener('mouseenter', spawnParticles)); }
+            function makeWobbly(sel) {
+                document.querySelectorAll(sel).forEach(el => {
+                    if (el.classList.contains('watch-btn') || el.closest('.watch-btn') || el.classList.contains('wobbly-done')) return;
+                    el.classList.add('wobbly-done','wobbly-text');
+                    const text = el.textContent; el.textContent = '';
+                    [...text].forEach(c => {
+                        const s = document.createElement('span'); s.className = 'char';
+                        s.textContent = c===' ' ? '\u00A0' : c;
+                        s.style.setProperty('--wx', (Math.random()-0.5)*3+'px');
+                        s.style.setProperty('--wy', (Math.random()-0.5)*3+'px');
+                        s.style.setProperty('--wr', (Math.random()-0.5)*4+'deg');
+                        el.appendChild(s);
+                    });
+                });
+            }
 
-    document.addEventListener('dragstart', (e) => {
-      e.preventDefault();
-      return false;
-    });
-  </script>
+            setTimeout(() => {
+                makeWobbly('.nav a'); makeWobbly('.more-toggle'); makeWobbly('.bottom-social-link');
+                makeWobbly('.more-overlay-list a'); makeWobbly('.nav-overlay-list a'); makeWobbly('.mobile-social-btn'); makeWobbly('.social-overlay-list a');
+                attachParticles('.nav a'); attachParticles('.more-toggle'); attachParticles('.bottom-social-link');
+                attachParticles('.more-overlay-list a'); attachParticles('.nav-overlay-list a'); attachParticles('.mobile-social-btn'); attachParticles('.social-overlay-list a');
+                attachParticles('.logo');
+                loadingEl.classList.add('hidden');
+                clearInterval(loadingInterval);
+            }, 3000);
+
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('copy', e => e.preventDefault());
+            document.addEventListener('cut', e => e.preventDefault());
+            document.addEventListener('dragstart', e => e.preventDefault());
+        })();
+    </script>
 </body>
 </html>
