@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>CallbyBreath (Terms of Purchase)</title>
+    <link rel="icon" type="image/png" href="Images/logo.png">
+    <style>
+        @font-face {
+            font-family: 'Press Start 2P';
+            src: url('Font/PressStart2P.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+        @font-face {
+            font-family: 'OldNewspaperTypes';
+            src: url('Font/OldNewspaperTypes.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            overflow-x: hidden;
+            touch-action: manipulation;
+        }
+
+        body {
+            background: #141416;
+            color: #f0fff8;
+            font-family: 'Press Start 2P', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            text-align: center;
+            line-height: 1.8;
+            overflow-y: auto;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 850px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            width: clamp(120px, 20vw, 180px);
+            height: auto;
+            filter: brightness(0) invert(1);
+            margin-bottom: 0.5rem;
+        }
+
+        h1 {
+            font-family: 'OldNewspaperTypes', cursive;
+            font-size: clamp(2rem, 5vw, 2.8rem);
+            color: #ffcc00;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            margin-bottom: 0.5rem;
+        }
+
+        .section {
+            background: rgba(20, 20, 22, 0.9);
+            border: 2px solid rgba(255, 230, 200, 0.4);
+            border-radius: 15px;
+            padding: 1.8rem;
+            width: 100%;
+            text-align: left;
+            font-size: 0.7rem;
+            line-height: 1.7;
+            color: #f0fff8;
+        }
+
+        .section h2 {
+            font-family: 'OldNewspaperTypes', cursive;
+            font-size: 1.3rem;
+            color: #ffcc00;
+            margin-bottom: 1rem;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        .section h3 {
+            font-family: 'OldNewspaperTypes', cursive;
+            font-size: 1rem;
+            color: #ffcc00;
+            margin: 1.2rem 0 0.5rem 0;
+            text-transform: none;
+            letter-spacing: 1px;
+        }
+
+        .section p, .section li {
+            margin-bottom: 0.8rem;
+        }
+
+        .section ul {
+            list-style-type: none;
+            padding-left: 1.2rem;
+        }
+
+        .section ul li::before {
+            content: '▸ ';
+            color: #ffcc00;
+            margin-right: 0.3rem;
+        }
+
+        .highlight {
+            color: #f0fff8;
+            font-weight: bold;
+            text-decoration: underline;
+        }
+
+        a {
+            color: #ffcc00;
+            text-decoration: underline;
+        }
+
+        a:hover {
+            color: #ffffff;
+        }
+
+        .divider {
+            width: 100%;
+            height: 2px;
+            background: rgba(255, 230, 200, 0.4);
+            margin: 1rem 0;
+        }
+
+        .back-link {
+            font-size: 0.65rem;
+            margin-top: 1rem;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 1.5rem 0.8rem;
+            }
+            .section {
+                padding: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Terms of Purchase</h1>
+        <img src="Images/logo.png" alt="CallbyBreath" class="logo">
+
+        <!-- Раздел 1: Покупки и хранение данных -->
+        <div class="section">
+            <h2>1. Purchase &amp; Data Storage</h2>
+
+            <h3>1.1. Local Storage Only</h3>
+            <p>All purchase information is stored <span class="highlight">exclusively in your browser's local storage</span>. We do not operate any user accounts, databases, or cloud backups on external servers. This guarantees your privacy, but also means that you are fully responsible for keeping your purchases safe.</p>
+
+            <h3>1.2. Consequences of Data Loss</h3>
+            <ul>
+                <li>If you clear your browser data (cache, cookies, site data), <span class="highlight">all your purchases will be permanently deleted</span>.</li>
+                <li>Reinstalling the browser or using a different device will also result in the loss of your purchase history.</li>
+                <li>There is no way for us to restore your purchases because no record exists outside your browser.</li>
+            </ul>
+
+            <h3>1.3. How to Back Up Your Purchases</h3>
+            <p>To prevent data loss, you must <span class="highlight">manually save your purchased items as a backup file</span>. Follow these steps:</p>
+            <ul>
+                <li>On the <span class="highlight">Shop</span> page, click the <span class="highlight">"Purchased"</span> button in the bottom‑right corner.</li>
+                <li>In the list of your purchases, click <span class="highlight">"Save"</span> (this button appears only when you have at least one purchased item).</li>
+                <li>A file named <span class="highlight">purchases.callbybreath.purchases</span> will be downloaded. This file is <span class="highlight">encrypted</span> and contains a complete list of your purchased items.</li>
+                <li>Keep this file in a secure location (e.g., cloud drive, external storage).</li>
+            </ul>
+
+            <h3>1.4. Restoring Your Purchases</h3>
+            <p>If you lose your browser data or switch devices, you can restore your purchases:</p>
+            <ul>
+                <li>Click <span class="highlight">"Load"</span> in the same "Purchased" view (the button is always available).</li>
+                <li>Before the file dialog opens, you will be asked to <span class="highlight">accept the Terms of Purchase</span> (the same agreement you see here). This is a mandatory step.</li>
+                <li>Select the previously saved <span class="highlight">.callbybreath.purchases</span> file.</li>
+                <li>Your purchased items will reappear in the "Purchased" section, and download links will be accessible again.</li>
+            </ul>
+
+            <h3>1.5. Understanding Purchase Codes</h3>
+            <p>A <span class="highlight">purchase code</span> is a unique sequence that unlocks digital content (audio, artwork, video, etc.). Important points:</p>
+            <ul>
+                <li>Codes are <span class="highlight">only required once</span>. After successful entry, the item is permanently marked as purchased in your local storage.</li>
+                <li>Codes themselves are not stored online. If you lose a code before activating it, you must obtain it again through the official channels.</li>
+                <li>A code gives you access to the digital files; it does not grant commercial rights (see Section 2).</li>
+                <li>You can always retrieve your purchased items using the backup file, even without re‑entering the code.</li>
+            </ul>
+
+            <h3>1.6. What You Download</h3>
+            <p>The downloaded packages may contain:</p>
+            <ul>
+                <li>Music tracks (MP3 / WAV / FLAC)</li>
+                <li>Instrumental versions and stems</li>
+                <li>Cover artwork (PNG / JPG)</li>
+                <li>Music videos or visualisers (MP4)</li>
+                <li>Any additional bonus content specified in the product description</li>
+            </ul>
+            <p>You are responsible for keeping the downloaded files safe after they are on your device.</p>
+        </div>
+
+        <!-- Раздел 2: Использование и авторские права -->
+        <div class="section">
+            <h2>2. Usage &amp; Copyright</h2>
+
+            <h3>2.1. Ownership</h3>
+            <p>All content provided through this shop, including audio, images, video, and other digital materials, is the <span class="highlight">exclusive property of CallbyBreath</span>. All rights are reserved unless explicitly stated otherwise.</p>
+
+            <h3>2.2. Prohibited Actions</h3>
+            <p>You may <span class="highlight">not</span>:</p>
+            <ul>
+                <li>Use any materials for <span class="highlight">commercial purposes</span> (selling, licensing, monetisation) without prior written consent.</li>
+                <li>Resell, redistribute, sublicense, or lease the content to third parties.</li>
+                <li>Upload or share the files on other websites, torrent trackers, file‑sharing platforms, or social media, <span class="highlight">even for free</span>.</li>
+                <li>Claim the content as your own work or use it in a way that implies endorsement by CallbyBreath.</li>
+            </ul>
+
+            <h3>2.3. Non‑Commercial Remixes &amp; Covers</h3>
+            <p><span class="highlight">Exceptions</span> are made for creative, non‑commercial use:</p>
+            <ul>
+                <li>You may create <span class="highlight">remixes, covers, or transformative works</span> using the provided instrumentals or audio stems.</li>
+                <li>These works must be <span class="highlight">strictly non‑commercial</span> (no monetisation, no ad revenue, no paid downloads).</li>
+                <li>When sharing online, you must clearly credit <span class="highlight">CallbyBreath</span> as the original creator.</li>
+            </ul>
+
+            <h3>2.4. Commercial Use of Remixes / Covers</h3>
+            <p>If you wish to earn money from your remix or cover (e.g., YouTube Partner Programme, streaming royalties, sync licensing), you <span class="highlight">must obtain explicit permission</span> from CallbyBreath.</p>
+            <p><span class="highlight">How to request permission:</span></p>
+            <ul>
+                <li>Contact us through the official social media links displayed at the <span class="highlight">bottom of every page</span> (YouTube, Instagram, Pinterest, Telegram, Spotify, Apple Music, SoundCloud).</li>
+                <li>On mobile devices, tap the <span class="highlight">"SOCIAL"</span> button in the bottom bar to see the full list of platforms.</li>
+                <li>Send a direct message explaining your project, how you intend to monetise it, and the specific content you want to use.</li>
+            </ul>
+
+            <h3>2.5. Consequences of Violation</h3>
+            <p>Any violation of these terms may result in legal action. We reserve the right to revoke access to digital goods at any time if the rules are not respected. Protect the community and the artist – always play fair.</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="back-link">
+            <a href="shop.html">← Back to Shop</a>
+        </p>
+    </div>
+
+    <script>
+        // Блокируем масштабирование
+        window.addEventListener('wheel', (e) => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+        window.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && ['+', '-', '0'].includes(e.key)) {
+                e.preventDefault();
+            }
+        });
+        document.addEventListener('touchstart', (e) => {
+            if (e.touches.length > 1) e.preventDefault();
+        }, { passive: false });
+    </script>
+</body>
+</html>

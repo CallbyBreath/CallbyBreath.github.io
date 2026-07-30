@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>callbybreath official website</title>
+    <title>Callbybreath Official Website</title>
     <link rel="icon" type="image/png" href="Images/logo.png">
     <style>
         @font-face { font-family: 'Press Start 2P'; src: url('Font/PressStart2P.ttf') format('truetype'); font-weight: normal; font-style: normal; }
@@ -137,6 +137,30 @@
             z-index: 2;
         }
 
+        /* ПОИСК */
+        .search-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            background: #1f2024;
+            border: 2px solid rgba(255,230,200,0.6);
+            border-radius: 10px;
+            color: #f0fff8;
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.6rem;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus { border-color: #ffcc00; }
+        .search-input::placeholder { color: rgba(240,255,248,0.4); }
+
         .videos-grid {
             display: flex;
             flex-wrap: wrap;
@@ -156,6 +180,7 @@
             transition: opacity 0.35s ease;
         }
         .video-card.visible { opacity: 1; }
+        .video-card.hidden { display: none; }
         .video-thumbnail-wrapper { position: relative; width: 100%; }
         .video-thumbnail-link {
             display: block;
@@ -242,7 +267,6 @@
             <div class="more-overlay-title">More</div>
             <div class="more-overlay-list">
                 <a href="archive.html"><span>ARCHIVE</span></a>
-                <!-- Добавлен SCHEDULE в More -->
                 <a href="schedule.html"><span>SCHEDULE</span></a>
                 <a href="special.html"><span>SPECIAL</span></a>
             </div>
@@ -260,7 +284,6 @@
             <div class="nav-overlay-list" id="navOverlayList">
                 <a href="discography.html"><span>DISCOGRAPHY</span></a>
                 <a href="videos.html"><span>MUSIC VIDEOS</span></a>
-                <!-- Shop добавлен в мобильное меню -->
                 <a href="shop.html"><span>SHOP</span></a>
                 <a href="schedule.html"><span>SCHEDULE</span></a>
                 <a href="archive.html"><span>ARCHIVE</span></a>
@@ -273,9 +296,7 @@
             <nav class="nav">
                 <a href="discography.html"><span>DISCOGRAPHY</span></a>
                 <a href="videos.html"><span>MUSIC VIDEOS</span></a>
-                <!-- Новая вкладка Shop -->
                 <a href="shop.html"><span>SHOP</span></a>
-                <!-- Ссылка SCHEDULE убрана из десктопной навигации -->
                 <button class="more-toggle" id="moreToggle"><span>MORE</span></button>
             </nav>
             <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
@@ -285,6 +306,12 @@
             <div id="loadingIndicator">Loading</div>
 
             <h1 class="videos-title">MUSIC VIDEOS</h1>
+
+            <!-- ПОИСК -->
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search...">
+            </div>
+
             <div class="videos-grid" id="videosGrid"></div>
         </div>
 
@@ -294,7 +321,6 @@
     </div>
     <div class="right-panel"></div>
 
-    <!-- Подключаем конфиг с видео -->
     <script src="videos-config.js"></script>
     <script>
         (function() {
@@ -372,12 +398,13 @@
             })();
 
             const videosGrid = document.getElementById('videosGrid');
+            const searchInput = document.getElementById('searchInput');
+            let currentSearch = '';
 
             function createVideoCard(video) {
                 const card = document.createElement('div');
                 card.className = 'video-card';
 
-                // Превью – всегда ссылка на YouTube видео
                 const thumbnailLink = document.createElement('a');
                 thumbnailLink.className = 'video-thumbnail-link';
                 thumbnailLink.href = video.url;
@@ -398,7 +425,6 @@
                 thumbnailWrapper.appendChild(duration);
                 thumbnailLink.appendChild(thumbnailWrapper);
 
-                // Название – ссылка на карточку релиза (если releaseLink задан), иначе на YouTube
                 const titleLink = document.createElement('a');
                 titleLink.className = 'video-title';
                 titleLink.href = video.releaseLink || video.url;
@@ -410,18 +436,27 @@
                 return card;
             }
 
-            function renderVideos() {
+            function renderVideos(filter = '') {
+                const term = filter.trim().toLowerCase();
+                const filtered = term ? videos.filter(v => v.title.toLowerCase().includes(term)) : videos;
                 videosGrid.innerHTML = '';
-                videos.forEach(video => {
+                filtered.forEach(video => {
                     videosGrid.appendChild(createVideoCard(video));
                 });
-
-                const cards = document.querySelectorAll('.video-card');
+                // Анимация появления
+                const cards = videosGrid.querySelectorAll('.video-card');
                 cards.forEach((card, index) => {
+                    card.classList.remove('visible');
                     setTimeout(() => card.classList.add('visible'), index * 60);
                 });
             }
 
+            searchInput.addEventListener('input', () => {
+                currentSearch = searchInput.value;
+                renderVideos(currentSearch);
+            });
+
+            // Первоначальный рендер
             renderVideos();
 
             // Эффекты

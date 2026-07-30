@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>callbybreath official website</title>
+    <title>Callbybreath Official Website</title>
     <link rel="icon" type="image/png" href="Images/logo.png">
     <style>
         @font-face { font-family: 'Press Start 2P'; src: url('Font/PressStart2P.ttf') format('truetype'); font-weight: normal; font-style: normal; }
@@ -105,8 +105,32 @@
             font-size: clamp(1.2rem, 2.5vw, 2rem);
             color: #f0fff8; text-transform: uppercase; letter-spacing: 4px;
             text-shadow: 0 0 20px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5);
-            margin: 1.5rem 0 1.5rem; position: relative; z-index: 2;
+            margin: 1.5rem 0 1rem; position: relative; z-index: 2;
         }
+
+        /* ПОИСК */
+        .search-container {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+        .search-input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+            background: #1f2024;
+            border: 2px solid rgba(255,230,200,0.6);
+            border-radius: 10px;
+            color: #f0fff8;
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.6rem;
+            outline: none;
+            text-align: center;
+            transition: border-color 0.3s;
+        }
+        .search-input:focus { border-color: #ffcc00; }
+        .search-input::placeholder { color: rgba(240,255,248,0.4); }
 
         .albums-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem; width: 100%; max-width: 1200px; position: relative; z-index: 2; }
         .album-card { display: flex; flex-direction: column; align-items: center; text-decoration: none; width: 200px; opacity: 0; transition: opacity 0.35s ease; }
@@ -194,8 +218,14 @@
         <div class="page-content" id="pageContent">
             <div id="loadingIndicator">Loading</div>
             <h1 class="discography-title">DISCOGRAPHY</h1>
+
+            <!-- ПОИСК -->
+            <div class="search-container">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search...">
+            </div>
+
             <div class="albums-grid" id="albumsGrid"></div>
-            <div id="noResults" style="display:none;color:#f0fff8;text-align:center;font-size:0.6rem;">No releases found</div>
+            <div id="noResults" style="display:none;color:#f0fff8;text-align:center;font-size:0.6rem;margin-top:1rem;">No releases found</div>
         </div>
 
         <div class="bottom-bar"><div class="bottom-bar-inner" id="bottomSocials">
@@ -337,11 +367,11 @@
                 socialOverlayList.appendChild(a);
             });
 
-            // Берем альбомы из конфига, если он загрузился
+            // Альбомы из конфига
             const albums = (typeof discographyConfig !== 'undefined' && discographyConfig.albums) ? discographyConfig.albums : [];
-
             const albumsGrid = document.getElementById('albumsGrid');
             const noResults = document.getElementById('noResults');
+            const searchInput = document.getElementById('searchInput');
             const parseDate = (dateStr) => new Date(dateStr.replace(/\./g, '-'));
 
             function createAlbumCard(album) {
@@ -367,19 +397,32 @@
                 return card;
             }
 
-            function renderAlbums() {
+            function renderFilteredAlbums(filter = '') {
+                const term = filter.trim().toLowerCase();
+                const filtered = term ? albums.filter(a => a.title.toLowerCase().includes(term)) : albums;
                 albumsGrid.innerHTML = '';
-                if (albums.length === 0) {
+                if (filtered.length === 0) {
                     noResults.style.display = 'block';
-                    return;
+                } else {
+                    noResults.style.display = 'none';
+                    const sorted = [...filtered].sort((a, b) => parseDate(b.date) - parseDate(a.date));
+                    sorted.forEach(album => albumsGrid.appendChild(createAlbumCard(album)));
+                    // анимация
+                    const cards = albumsGrid.querySelectorAll('.album-card');
+                    cards.forEach((card, index) => {
+                        card.classList.remove('visible');
+                        setTimeout(() => card.classList.add('visible'), index * 60);
+                    });
                 }
-                noResults.style.display = 'none';
-                const sorted = [...albums].sort((a, b) => parseDate(b.date) - parseDate(a.date));
-                sorted.forEach(album => albumsGrid.appendChild(createAlbumCard(album)));
-                const cards = document.querySelectorAll('.album-card');
-                cards.forEach((card, index) => setTimeout(() => card.classList.add('visible'), index * 60));
             }
-            renderAlbums();
+
+            // Первоначальный рендер
+            renderFilteredAlbums();
+
+            // Поиск
+            searchInput.addEventListener('input', () => {
+                renderFilteredAlbums(searchInput.value);
+            });
 
             // Эффекты
             let trailTimeout;
