@@ -3,6 +3,19 @@
 
 const scheduleConfig = {
   eventsData: {
+    "2026-09-31": {
+      img: "",
+      events: [
+        'New release: <a href="https://x.com/xCallbyBreath/status/2085279898617233698?s=20"> (link)</a>',
+      ]
+    },
+    "2026-08-06": {
+      img: "",
+      events: [
+        'New post on Twitter: <a href="https://x.com/xCallbyBreath/status/2085279898617233698?s=20"> (link)</a>',
+        'and Telegram: <a href="https://t.me/callbybreath/1512"> (link)</a>'
+      ]
+    },
     "2025-02-10": {
       img: "Images/Releases/remix_01.jpg",
       events: [

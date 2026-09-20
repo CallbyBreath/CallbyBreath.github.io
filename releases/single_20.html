@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Рассекай</title>
+  <link rel="icon" type="image/png" href="../Images/logo.png">
+  <style>
+    @font-face {
+      font-family: 'Press Start 2P';
+      src: url('../Font/PressStart2P.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    @font-face {
+      font-family: 'Rubik Spray Paint';
+      src: url('../Font/RubikSprayPaint-Regular.ttf') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1f2024;
+      font-family: 'Press Start 2P', sans-serif;
+      color: #1f2024;
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .release-container {
+      max-width: 500px;
+      width: auto;
+      text-align: center;
+      background-color: #f0fff8;
+      padding: 1.2rem 1.2rem;
+      border-radius: 8px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    .release-cover {
+      width: 280px;
+      aspect-ratio: 1 / 1;
+      background-color: #1f2024;
+      border: 1px solid #700707;
+      overflow: hidden;
+      margin: 0 auto 1rem auto;
+      border-radius: 6px;
+      pointer-events: none;
+    }
+
+    .release-cover img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      pointer-events: none;
+      -webkit-user-drag: none;
+      user-drag: none;
+    }
+
+    .text-wrapper {
+      width: 280px;
+      max-width: 100%;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    .release-title {
+      font-family: 'Press Start 2P', sans-serif;
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: #1f2024;
+      line-height: 1.4;
+      margin-bottom: 1rem;
+      word-break: break-word;
+      overflow-wrap: break-word;
+      user-select: text;
+      -webkit-user-select: text;
+      -moz-user-select: text;
+      -ms-user-select: text;
+      cursor: text;
+    }
+
+    .available-title {
+      font-family: 'Press Start 2P', sans-serif;
+      font-size: 0.9rem;
+      font-weight: normal;
+      color: #1f2024;
+      opacity: 0.6;
+      letter-spacing: 2px;
+      margin-bottom: 0.8rem;
+      display: inline-block;
+      width: 100%;
+    }
+
+    .divider-line {
+      width: 100%;
+      height: 1px;
+      background-color: #700707;
+      opacity: 0.3;
+      margin: 0.8rem 0;
+    }
+
+    .platforms-section {
+      display: flex;
+      flex-direction: column;
+      width: 280px;
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .platform-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: stretch;
+    }
+
+    .platform-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(31, 32, 36, 0.1);
+      padding-bottom: 0.35rem;
+      width: 100%;
+    }
+
+    .platform-name-wrapper {
+      display: inline-block;
+    }
+
+    .platform-name {
+      font-family: 'Press Start 2P', sans-serif;
+      font-size: 0.8rem;
+      font-weight: normal;
+      color: #1f2024;
+      opacity: 0.8;
+      display: inline-block;
+    }
+
+    .platform-link {
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      height: 32px;
+      border: 2px solid #1f2024;
+      border-radius: 5px;
+      background-color: #f0fff8;
+      transition: all 0.2s ease;
+      flex-shrink: 0;
+      font-family: 'Press Start 2P', sans-serif;
+      font-size: 1.2rem;
+      color: #1f2024;
+    }
+
+    .platform-link:hover {
+      background-color: #700707;
+      border-color: #700707;
+      color: #f0fff8;
+    }
+
+    .not-available {
+      text-align: center;
+      margin: 0;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    .not-available-title {
+      font-family: 'Rubik Spray Paint', sans-serif;
+      font-size: 1.3rem;
+      font-weight: normal;
+      color: #700707;
+      display: inline-block;
+      white-space: nowrap;
+    }
+
+    .divider, .tracklist-section, .not-available-text {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 0;
+        background-color: #f0fff8;
+      }
+      .release-container {
+        max-width: 100%;
+        min-height: 100vh;
+        border-radius: 0;
+        padding: 1.2rem 1.2rem;
+        box-shadow: none;
+        width: 100%;
+      }
+      .release-cover {
+        width: min(75%, 280px);
+        max-width: 280px;
+      }
+      .text-wrapper {
+        width: min(75%, 280px);
+        max-width: 280px;
+      }
+      .platforms-section {
+        width: min(75%, 280px);
+        max-width: 280px;
+      }
+      .release-title {
+        font-size: 1rem;
+      }
+      .available-title {
+        font-size: 1rem;
+      }
+      .platform-name {
+        font-size: 0.9rem;
+      }
+      .platform-link {
+        width: 36px;
+        height: 36px;
+        font-size: 1.4rem;
+      }
+      .not-available-title {
+        font-size: 1.4rem;
+      }
+      .divider-line {
+        width: min(75%, 280px);
+        max-width: 280px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+
+    h1, div, span, a {
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+    }
+
+    img {
+      -webkit-user-drag: none;
+      user-drag: none;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="release-container">
+    <div class="release-cover">
+      <img src="" alt="" id="releaseCover">
+    </div>
+    
+    <div class="text-wrapper">
+      <h1 class="release-title" id="releaseTitle"></h1>
+    </div>
+    
+    <div class="divider-line" id="dividerLine" style="display: none;"></div>
+    <div class="available-title" id="availableTitle">- AVAILABLE ON -</div>
+    
+    <div class="platforms-section">
+      <div class="platform-list" id="platformsList"></div>
+      <div class="not-available" id="notAvailable" style="display: none;">
+        <div class="not-available-title">NOT AVAILABLE</div>
+      </div>
+    </div>
+    
+    <div class="tracklist-section"></div>
+  </div>
+
+  <script>
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+    
+    document.addEventListener('dragstart', function(e) {
+      if (e.target.tagName === 'IMG') {
+        e.preventDefault();
+        return false;
+      }
+    });
+    
+    const releaseData = {
+      cover: '../Images/Releases/single_20.jpg',
+      title: "Highway Replay",
+      platforms: {
+        spotify: '',
+        appleMusic: '',        
+        yandexMusic: '',       
+        amazonMusic: '4',       
+        deezer: '',            
+        youtubeMusic: '',      
+        boomplay: '',          
+        vk: ''                 
+      },
+      tracks: []
+    };
+    
+    const platformNames = {
+      spotify: 'Spotify',
+      appleMusic: 'Apple Music',
+      yandexMusic: 'Yandex Music',
+      amazonMusic: 'Amazon Music',
+      deezer: 'Deezer',
+      youtubeMusic: 'YouTube Music',
+      boomplay: 'Boomplay',
+      vk: 'VK'
+    };
+    
+    function renderRelease() {
+      document.getElementById('releaseCover').src = releaseData.cover;
+      document.getElementById('releaseCover').alt = releaseData.title;
+      document.getElementById('releaseTitle').textContent = releaseData.title;
+      
+      const availablePlatforms = [];
+      
+      for (const [key, url] of Object.entries(releaseData.platforms)) {
+        if (url && url.trim() !== '') {
+          availablePlatforms.push({
+            name: platformNames[key],
+            url: url
+          });
+        }
+      }
+      
+      const platformsList = document.getElementById('platformsList');
+      const notAvailable = document.getElementById('notAvailable');
+      const availableTitle = document.getElementById('availableTitle');
+      const dividerLine = document.getElementById('dividerLine');
+      
+      if (availablePlatforms.length > 0) {
+        platformsList.style.display = 'flex';
+        notAvailable.style.display = 'none';
+        availableTitle.style.display = 'block';
+        dividerLine.style.display = 'none';
+        
+        platformsList.innerHTML = '';
+        availablePlatforms.forEach(platform => {
+          const row = document.createElement('div');
+          row.className = 'platform-row';
+          
+          const wrapper = document.createElement('span');
+          wrapper.className = 'platform-name-wrapper';
+          
+          const nameSpan = document.createElement('span');
+          nameSpan.className = 'platform-name';
+          nameSpan.textContent = platform.name;
+          
+          wrapper.appendChild(nameSpan);
+          
+          const link = document.createElement('a');
+          link.className = 'platform-link';
+          link.href = platform.url;
+          link.target = '_blank';
+          link.textContent = '►';
+          link.setAttribute('aria-label', `Open ${platform.name}`);
+          
+          row.appendChild(wrapper);
+          row.appendChild(link);
+          platformsList.appendChild(row);
+        });
+      } else {
+        platformsList.style.display = 'none';
+        notAvailable.style.display = 'flex';
+        availableTitle.style.display = 'none';
+        dividerLine.style.display = 'block';
+      }
+    }
+    
+    renderRelease();
+  </script>
+</body>
+</html>

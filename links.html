@@ -6,79 +6,111 @@
     <title>callbybreath official website – Links</title>
     <link rel="icon" type="image/png" href="Images/logo.png">
     <style>
-        @font-face {
-            font-family: 'Press Start 2P';
-            src: url('Font/PressStart2P.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-        @font-face {
-            font-family: 'Rubik Spray Paint';
-            src: url('Font/RubikSprayPaint-Regular.ttf') format('truetype');
-            font-weight: normal;
-            font-style: normal;
-        }
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        html {
-            height: 100%;
-            overflow: hidden;
-        }
+        @font-face { font-family: 'Press Start 2P'; src: url('Font/PressStart2P.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'Rubik Spray Paint'; src: url('Font/OldNewspaperTypes.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; height: 100%; overflow: hidden; }
         body {
             font-family: 'Press Start 2P', sans-serif;
-            color: #f0fff8;
-            background: #141416;
+            color: #1f2024;
+            line-height: 1.5;
             display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
+            flex-direction: row;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
             height: 100%;
-            overflow-y: auto;
-            overflow-x: hidden;
-            padding: 2rem 1rem;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            user-select: none;
-            position: relative;
-        }
-        #bgCanvas {
+            overflow: hidden;
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
+            width: 100%;
+            background: #001a00; /* тёмно-зелёный фон */
         }
+        img { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; pointer-events: auto; }
 
-        .back-button {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 100;
-            font-family: 'Press Start 2P', sans-serif;
-            font-size: 0.6rem;
-            color: #f0fff8;
-            text-decoration: none;
-            background: rgba(20, 20, 22, 0.85);
-            border: 2px solid rgba(255, 230, 200, 0.6);
-            border-radius: 8px;
-            padding: 0.5rem 1rem;
-            letter-spacing: 1px;
-            transition: all 0.25s ease;
-            backdrop-filter: blur(4px);
-            text-shadow: 0 0 6px rgba(0,0,0,0.5);
-            white-space: nowrap;
+        .particle { position: fixed; pointer-events: none; z-index: 9999; font-size: 1.2rem; animation: particleFade 0.8s ease-out forwards; font-family: 'Press Start 2P', sans-serif; }
+        @keyframes particleFade { 0% { opacity: 1; transform: translate(0,0) scale(1); } 100% { opacity: 0; transform: translate(var(--dx),var(--dy)) scale(0.3); } }
+
+        .cursor-trail { position: fixed; pointer-events: none; z-index: 10000; width: 6px; height: 6px; border-radius: 50%; background: rgba(0,255,0,0.6); box-shadow: 0 0 6px rgba(0,255,0,0.4); animation: trailFade 0.6s ease-out forwards; }
+        @keyframes trailFade { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
+
+        .wobbly-text { display: inline-block; }
+        .wobbly-text .char { display: inline-block; transition: transform 0.25s ease-out, filter 0.25s ease-out; position: relative; z-index: 1; }
+        .wobbly-text:hover .char { z-index: 2; transform: translate(var(--wx), var(--wy)) rotate(var(--wr)); filter: brightness(1.5); }
+
+        /* ОВЕРЛЕИ */
+        .more-overlay, .social-overlay, .nav-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: #111111;
+            z-index: 1000;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: clamp(1.5rem, 3vh, 2.5rem);
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+            overflow: hidden;
         }
-        .back-button:hover {
-            border-color: #ffcc00;
-            box-shadow: 0 0 12px rgba(255,200,40,0.4);
-            color: #ffcc00;
+        .more-overlay.open, .social-overlay.open, .nav-overlay.open { opacity: 1; pointer-events: auto; }
+        .overlay-bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; }
+
+        .overlay-close-btn {
+            position: absolute; top: 20px; right: 20px;
+            background: transparent; border: none; color: #f0fff8;
+            font-size: 2rem; cursor: pointer; z-index: 20;
+            line-height: 1; transition: color 0.2s;
         }
+        .overlay-close-btn:hover { color: #00ff00; text-shadow: 0 0 10px rgba(0,255,0,0.8); }
+
+        .more-overlay-title, .social-overlay-title, .nav-overlay-title {
+            font-family: 'Rubik Spray Paint', sans-serif; font-size: clamp(1.5rem, 3vw, 2.5rem);
+            color: #f0fff8; text-transform: uppercase; letter-spacing: 5px; opacity: 0.9;
+            margin-bottom: 1rem; position: relative; z-index: 2; text-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .more-overlay-list, .social-overlay-list, .nav-overlay-list {
+            display: flex; flex-direction: column; gap: clamp(0.8rem, 1.5vh, 1.2rem); min-width: 250px;
+            position: relative; z-index: 2;
+        }
+        .more-overlay-list a, .social-overlay-list a, .nav-overlay-list a {
+            display: flex; align-items: center; justify-content: center; gap: 0.8rem;
+            padding: clamp(1rem, 2vh, 1.5rem) clamp(1.5rem, 3vw, 2.5rem);
+            color: #f0fff8; text-decoration: none; font-family: 'Press Start 2P', sans-serif;
+            font-size: clamp(0.7rem, 1.2vw, 0.9rem); letter-spacing: 2px; border-radius: 10px;
+            transition: color 0.2s ease; text-transform: uppercase; text-align: center;
+            text-shadow: 0 0 12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.6);
+        }
+        .more-overlay-list a:hover, .social-overlay-list a:hover, .nav-overlay-list a:hover { color: #00ff00; text-shadow: 0 0 10px rgba(0,255,0,0.8); }
+
+        #globalBgCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
+
+        .left-panel, .right-panel { width: clamp(40px, 5vw, 64px); flex-shrink: 0; height: 100vh; position: relative; z-index: 5; background: #111111; }
+        .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 10; height: 100%; }
+        .top-bar { width: 100%; padding: 0; flex-shrink: 0; position: relative; z-index: 100; background: #111111; }
+        .top-bar-inner { width: 100%; height: clamp(48px, 8vh, 64px); display: flex; align-items: center; justify-content: space-between; padding: 0; position: relative; }
+        .logo-wrapper { position: relative; display: inline-block; padding-left: 0.5rem; }
+        .logo { height: clamp(36px, 6vh, 48px); width: auto; display: block; cursor: pointer; filter: brightness(0) invert(1); transition: transform 0.2s ease; }
+        .logo:hover { transform: scale(1.05); }
+        .nav { display: flex; gap: 1.2rem; align-items: center; padding-right: 0; }
+        .nav a { text-decoration: none; font-size: 0.7rem; letter-spacing: 0.3px; color: #ffffff; transition: color 0.2s; padding: 0.5rem 0.8rem; border-radius: 10px; text-shadow: 0 0 8px rgba(255,255,255,0.6); font-family: 'Press Start 2P', sans-serif; }
+        .nav a:last-child { padding-right: 0.5rem; }
+        .nav a:hover { color: #00ff00; text-shadow: 0 0 12px rgba(0,255,0,1); }
+        .more-toggle { text-decoration: none; font-size: 0.7rem; letter-spacing: 0.3px; color: #ffffff; transition: color 0.2s; padding: 0.5rem 0.8rem; cursor: pointer; background: none; border: none; border-radius: 10px; font-family: 'Press Start 2P', sans-serif; outline: none; -webkit-tap-highlight-color: transparent; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+        .more-toggle:focus { outline: none; }
+        .more-toggle:hover { color: #00ff00; text-shadow: 0 0 12px rgba(0,255,0,1); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #ffffff; font-size: 1.8rem; cursor: pointer; padding: 0 0.5rem 0 0; line-height: 1; transition: color 0.2s, transform 0.3s ease; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+        .mobile-menu-btn:hover { color: #00ff00; text-shadow: 0 0 12px rgba(0,255,0,1); }
+        .mobile-menu-btn.open { transform: rotate(90deg); }
+
+        .page-content {
+            flex: 1; overflow-y: auto; overflow-x: hidden;
+            scrollbar-width: none; -ms-overflow-style: none;
+            padding: 1rem clamp(0.5rem, 2vw, 1.5rem);
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; background: transparent;
+        }
+        .page-content::-webkit-scrollbar { display: none; }
+
+        #loadingIndicator {
+            position: absolute; top: 20px; left: 20px; z-index: 1000;
+            background: #000; color: #fff; font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.4rem; padding: 4px 8px; border-radius: 3px;
+            opacity: 1; transition: opacity 0.4s ease; white-space: nowrap;
+        }
+        #loadingIndicator.hidden { opacity: 0; pointer-events: none; }
 
         .logo-container {
             position: relative;
@@ -88,7 +120,7 @@
         .logo-container img {
             height: clamp(80px, 15vh, 150px);
             width: auto;
-            filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(255,220,170,0.7));
+            filter: brightness(0) invert(1);
             transition: transform 0.3s ease;
             cursor: pointer;
         }
@@ -102,7 +134,7 @@
             color: #f0fff8;
             text-transform: uppercase;
             letter-spacing: 4px;
-            text-shadow: 0 0 20px rgba(0,0,0,0.7);
+            text-shadow: 0 0 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7), 0 0 10px rgba(0,255,0,0.5);
             margin-bottom: 2rem;
             position: relative;
             z-index: 2;
@@ -123,8 +155,8 @@
         .search-input {
             flex: 1;
             padding: 0.8rem 1.2rem;
-            background: rgba(20,20,22,0.9);
-            border: 2px solid rgba(255,230,200,0.6);
+            background: #111111;
+            border: 2px solid rgba(0,255,0,0.6);
             border-radius: 12px;
             color: #f0fff8;
             font-family: 'Press Start 2P', sans-serif;
@@ -132,41 +164,38 @@
             letter-spacing: 1px;
             outline: none;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
         .search-input::placeholder {
             color: rgba(240,255,248,0.4);
             font-size: 0.5rem;
         }
         .search-input:focus {
-            border-color: #ffcc00;
-            box-shadow: 0 0 12px rgba(255,200,40,0.3);
+            border-color: #00ff00;
+            box-shadow: 0 0 15px rgba(0,255,0,0.5);
         }
 
-        /* Кнопка LINKS */
         .toggle-links-btn {
             padding: 0.8rem 1.5rem;
-            background: rgba(20,20,22,0.9);
-            border: 2px solid rgba(255,230,200,0.6);
+            background: #00ff00;
+            border: none;
             border-radius: 12px;
-            color: #f0fff8;
+            color: #000000;
             font-family: 'Press Start 2P', sans-serif;
             font-size: 0.6rem;
             letter-spacing: 1px;
             cursor: pointer;
-            transition: all 0.25s ease;
-            text-shadow: 0 0 6px rgba(0,0,0,0.5);
+            transition: box-shadow 0.3s ease;
+            text-shadow: none;
             white-space: nowrap;
             z-index: 2;
+            box-shadow: 0 0 10px rgba(0,255,0,0.8), 0 0 20px rgba(0,255,0,0.6), 0 0 30px rgba(0,255,0,0.4);
         }
         .toggle-links-btn:hover {
-            border-color: #ffcc00;
-            box-shadow: 0 0 12px rgba(255,200,40,0.4);
-            color: #ffcc00;
+            box-shadow: 0 0 15px rgba(0,255,0,1), 0 0 30px rgba(0,255,0,0.8), 0 0 50px rgba(0,255,0,0.6);
         }
         .toggle-links-btn.active {
-            background: rgba(255,200,40,0.15);
-            border-color: #ffcc00;
-            color: #ffcc00;
+            background: #33ff33;
         }
 
         .platforms-grid {
@@ -181,8 +210,8 @@
         }
 
         .platform-card {
-            background: rgba(20,20,22,0.85);
-            border: none;
+            background: #111111;
+            border: 2px solid rgba(0,255,0,0.7);
             border-radius: 10px;
             padding: 0.7rem 1.2rem;
             display: flex;
@@ -190,13 +219,12 @@
             align-items: center;
             gap: 0.4rem;
             min-width: 150px;
-            backdrop-filter: blur(4px);
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            box-shadow: 0 0 15px rgba(0,255,0,0.5), 0 0 30px rgba(0,0,0,0.7);
             transition: all 0.25s ease;
         }
         .platform-card:hover {
-            background: rgba(255,200,40,0.15);
-            box-shadow: 0 4px 15px rgba(255,200,40,0.25);
+            border-color: rgba(0,255,0,1);
+            box-shadow: 0 0 25px rgba(0,255,0,0.9), 0 0 50px rgba(0,255,0,0.6);
             transform: translateY(-2px);
         }
 
@@ -207,11 +235,11 @@
             font-size: 0.6rem;
             letter-spacing: 1px;
             text-transform: uppercase;
-            text-shadow: 0 0 6px rgba(0,0,0,0.5);
+            text-shadow: 0 0 8px rgba(0,0,0,0.8);
             transition: color 0.2s;
         }
         .platform-name-link:hover {
-            color: #ffcc00;
+            color: #00ff00;
         }
 
         .platform-url {
@@ -223,70 +251,110 @@
             transition: color 0.2s;
             text-align: center;
             line-height: 1.4;
-            display: none; /* скрыто по умолчанию */
+            display: none;
         }
-        /* Класс, который показывает ссылки */
         .show-urls .platform-url {
             display: block;
         }
-
         .platform-url:hover {
-            color: #ffcc00;
+            color: #00ff00;
         }
 
-        /* Адаптив */
+        .bottom-bar { width: 100%; padding: 0; flex-shrink: 0; position: relative; z-index: 100; background: #111111; }
+        .bottom-bar-inner { width: 100%; height: clamp(48px, 8vh, 64px); display: flex; align-items: center; justify-content: center; padding: 0 1rem; position: relative; gap: 2rem; }
+        .bottom-social-link { text-decoration: none; font-family: 'Press Start 2P', sans-serif; font-size: clamp(0.5rem, 0.9vw, 0.65rem); letter-spacing: 0.3px; color: #ffffff; text-transform: uppercase; transition: color 0.2s ease; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+        .bottom-social-link:hover { color: #00ff00; text-shadow: 0 0 14px rgba(0,255,0,1); }
+        .mobile-social-btn { display: none; background: none; border: none; color: #ffffff; font-family: 'Press Start 2P', sans-serif; font-size: 0.6rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; padding: 0.5rem 1rem; text-shadow: 0 0 8px rgba(255,255,255,0.6); transition: color 0.2s ease; }
+        .mobile-social-btn:hover { color: #00ff00; text-shadow: 0 0 10px rgba(0,255,0,1); }
+
+        @media (max-width: 768px) {
+            .left-panel, .right-panel { width: clamp(30px, 6vw, 40px); }
+            .nav, .more-toggle { display: none; }
+            .mobile-menu-btn { display: block; }
+            .page-content { padding: 1rem 0.5rem; }
+            .bottom-bar-inner { gap: 0; height: clamp(40px, 7vh, 48px); }
+            .bottom-social-link { display: none; }
+            .mobile-social-btn { display: block; }
+        }
         @media (max-width: 480px) {
-            .back-button {
-                font-size: 0.5rem;
-                padding: 0.4rem 0.8rem;
-                top: 10px;
-                left: 10px;
-            }
-            .platform-card {
-                min-width: 120px;
-                padding: 0.5rem 0.8rem;
-            }
-            .platform-name-link {
-                font-size: 0.5rem;
-            }
-            .platform-url {
-                font-size: 0.35rem;
-            }
-            .search-input {
-                font-size: 0.5rem;
-            }
-            .toggle-links-btn {
-                font-size: 0.5rem;
-                padding: 0.5rem 1rem;
-            }
+            .left-panel, .right-panel { width: clamp(24px, 5vw, 32px); }
+            .logo { height: clamp(28px, 4vh, 36px); }
         }
     </style>
 </head>
 <body>
-    <canvas id="bgCanvas"></canvas>
+    <canvas id="globalBgCanvas"></canvas>
+    <div class="left-panel"></div>
+    <div class="main-content" id="mainContent">
+        <div class="more-overlay" id="moreOverlay">
+            <canvas class="overlay-bg-canvas" id="moreBgCanvas"></canvas>
+            <button class="overlay-close-btn" id="closeMoreOverlay">✕</button>
+            <div class="more-overlay-title">More</div>
+            <div class="more-overlay-list">
+                <a href="archive.html"><span>ARCHIVE</span></a>
+                <a href="schedule.html"><span>SCHEDULE</span></a>
+                <a href="special.html"><span>SPECIAL</span></a>
+            </div>
+        </div>
+        <div class="social-overlay" id="socialOverlay">
+            <canvas class="overlay-bg-canvas" id="socialBgCanvas"></canvas>
+            <button class="overlay-close-btn" id="closeSocialOverlay">✕</button>
+            <div class="social-overlay-title">Social</div>
+            <div class="social-overlay-list" id="socialOverlayList"></div>
+        </div>
+        <div class="nav-overlay" id="navOverlay">
+            <canvas class="overlay-bg-canvas" id="navBgCanvas"></canvas>
+            <button class="overlay-close-btn" id="closeNavOverlay">✕</button>
+            <div class="nav-overlay-title">Menu</div>
+            <div class="nav-overlay-list" id="navOverlayList">
+                <a href="discography.html"><span>DISCOGRAPHY</span></a>
+                <a href="videos.html"><span>MUSIC VIDEOS</span></a>
+                <a href="shop.html"><span>SHOP</span></a>
+                <a href="schedule.html"><span>SCHEDULE</span></a>
+                <a href="archive.html"><span>ARCHIVE</span></a>
+                <a href="special.html"><span>SPECIAL</span></a>
+            </div>
+        </div>
 
-    <a href="index.html" class="back-button">Back ►</a>
+        <div class="top-bar"><div class="top-bar-inner">
+            <div class="logo-wrapper"><a href="index.html"><img src="Images/logo.png" alt="CallbyBreath" class="logo" id="logoImg"></a></div>
+            <nav class="nav">
+                <a href="discography.html"><span>DISCOGRAPHY</span></a>
+                <a href="videos.html"><span>MUSIC VIDEOS</span></a>
+                <a href="shop.html"><span>SHOP</span></a>
+                <button class="more-toggle" id="moreToggle"><span>MORE</span></button>
+            </nav>
+            <button class="mobile-menu-btn" id="mobileMenuBtn">☰</button>
+        </div></div>
 
-    <div class="logo-container">
-        <a href="index.html">
-            <img src="Images/logo.png" alt="CallbyBreath">
-        </a>
+        <div class="page-content" id="pageContent">
+            <div id="loadingIndicator">Loading</div>
+
+            <div class="logo-container">
+                <a href="index.html">
+                    <img src="Images/logo.png" alt="CallbyBreath">
+                </a>
+            </div>
+
+            <h1 class="page-title">All Platforms</h1>
+
+            <div class="search-wrapper">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search platform...">
+                <button class="toggle-links-btn" id="toggleLinksBtn">LINKS</button>
+            </div>
+
+            <div class="platforms-grid" id="platformsGrid"></div>
+        </div>
+
+        <div class="bottom-bar"><div class="bottom-bar-inner" id="bottomSocials">
+            <button class="mobile-social-btn" id="mobileSocialBtn">SOCIAL</button>
+        </div></div>
     </div>
+    <div class="right-panel"></div>
 
-    <h1 class="page-title">All Platforms</h1>
-
-    <div class="search-wrapper">
-        <input type="text" class="search-input" id="searchInput" placeholder="Search platform...">
-        <button class="toggle-links-btn" id="toggleLinksBtn">LINKS</button>
-    </div>
-
-    <div class="platforms-grid" id="platformsGrid"></div>
-
-    <!-- Подключаем конфиг с платформами -->
     <script src="links-config.js"></script>
     <script>
         (function() {
-            // Проверяем загрузку конфига
             if (typeof linksConfig === 'undefined' || !linksConfig.platforms) {
                 document.getElementById('platformsGrid').innerHTML = 
                     '<div style="color:red; text-align:center; width:100%;">Ошибка загрузки платформ. Проверьте links-config.js</div>';
@@ -294,6 +362,124 @@
                 return;
             }
             const platforms = linksConfig.platforms;
+
+            // Глобальный фон
+            const globalCanvas = document.getElementById('globalBgCanvas');
+            const ctx = globalCanvas.getContext('2d');
+            const blobs = Array.from({length:6}, () => ({ x: 0.1+Math.random()*0.8, y: 0.1+Math.random()*0.8, r: 0.12+Math.random()*0.28 }));
+
+            function drawGlobalBg() {
+                const w = globalCanvas.width = window.innerWidth;
+                const h = globalCanvas.height = window.innerHeight;
+                ctx.clearRect(0,0,w,h);
+                ctx.globalCompositeOperation = 'lighter';
+                blobs.forEach(b => {
+                    const cx = b.x * w, cy = b.y * h, maxR = b.r * Math.max(w,h);
+                    const grad = ctx.createRadialGradient(cx,cy,maxR*0.2,cx,cy,maxR);
+                    grad.addColorStop(0,'rgba(0,255,0,0.45)');
+                    grad.addColorStop(0.2,'rgba(0,255,0,0.30)');
+                    grad.addColorStop(0.4,'rgba(0,255,0,0.18)');
+                    grad.addColorStop(0.6,'rgba(0,255,0,0.08)');
+                    grad.addColorStop(0.8,'rgba(0,255,0,0.03)');
+                    grad.addColorStop(1,'rgba(0,0,0,0)');
+                    ctx.fillStyle = grad;
+                    ctx.beginPath();
+                    ctx.arc(cx,cy,maxR,0,Math.PI*2);
+                    ctx.fill();
+                });
+                ctx.globalCompositeOperation = 'source-over';
+            }
+            window.addEventListener('resize', drawGlobalBg);
+            drawGlobalBg();
+
+            function copyBgToOverlay(overlayCanvas) {
+                if (!overlayCanvas) return;
+                const oCtx = overlayCanvas.getContext('2d');
+                overlayCanvas.width = window.innerWidth;
+                overlayCanvas.height = window.innerHeight;
+                oCtx.drawImage(globalCanvas, 0, 0, overlayCanvas.width, overlayCanvas.height);
+            }
+
+            const loadingEl = document.getElementById('loadingIndicator');
+            let loadingDots = 0;
+            const loadingInterval = setInterval(() => {
+                loadingDots = (loadingDots + 1) % 4;
+                loadingEl.textContent = 'Loading' + '.'.repeat(loadingDots);
+            }, 500);
+
+            window.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
+            window.addEventListener('keydown', e => { if ((e.ctrlKey||e.metaKey) && (e.key==='+'||e.key==='-'||e.key==='0')) e.preventDefault(); });
+
+            function closeAllOverlays() {
+                ['moreOverlay','socialOverlay','navOverlay'].forEach(id => {
+                    document.getElementById(id).classList.remove('open');
+                });
+                const menuBtn = document.getElementById('mobileMenuBtn');
+                if (menuBtn) {
+                    menuBtn.classList.remove('open');
+                    menuBtn.textContent = '☰';
+                }
+            }
+
+            document.getElementById('moreToggle').addEventListener('click', e => {
+                e.stopPropagation();
+                const overlay = document.getElementById('moreOverlay');
+                overlay.classList.toggle('open');
+                if (overlay.classList.contains('open')) copyBgToOverlay(document.getElementById('moreBgCanvas'));
+            });
+            document.getElementById('closeMoreOverlay').addEventListener('click', () => {
+                document.getElementById('moreOverlay').classList.remove('open');
+            });
+
+            document.getElementById('mobileSocialBtn').addEventListener('click', e => {
+                e.stopPropagation();
+                const overlay = document.getElementById('socialOverlay');
+                overlay.classList.toggle('open');
+                if (overlay.classList.contains('open')) copyBgToOverlay(document.getElementById('socialBgCanvas'));
+            });
+            document.getElementById('closeSocialOverlay').addEventListener('click', () => {
+                document.getElementById('socialOverlay').classList.remove('open');
+            });
+
+            document.getElementById('mobileMenuBtn').addEventListener('click', () => {
+                const overlay = document.getElementById('navOverlay');
+                overlay.classList.toggle('open');
+                document.getElementById('mobileMenuBtn').classList.toggle('open');
+                document.getElementById('mobileMenuBtn').textContent = overlay.classList.contains('open') ? '✕' : '☰';
+                if (overlay.classList.contains('open')) copyBgToOverlay(document.getElementById('navBgCanvas'));
+            });
+            document.getElementById('closeNavOverlay').addEventListener('click', () => {
+                document.getElementById('navOverlay').classList.remove('open');
+                document.getElementById('mobileMenuBtn').classList.remove('open');
+                document.getElementById('mobileMenuBtn').textContent = '☰';
+            });
+
+            document.querySelectorAll('.more-overlay, .social-overlay, .nav-overlay').forEach(overlay => {
+                overlay.addEventListener('click', function(e) {
+                    if (e.target === this) closeAllOverlays();
+                });
+            });
+
+            document.addEventListener('keydown', e => {
+                if (e.key === 'Escape') closeAllOverlays();
+            });
+
+            // Соцсети
+            const socialLinks = [
+                { name:'youtube', url:'https://www.youtube.com/@CallbyBreath' },
+                { name:'twitter', url:'https://x.com/xCallbyBreath' },
+                { name:'telegram', url:'https://t.me/callbybreath' }
+            ];
+            const bottomSocials = document.getElementById('bottomSocials');
+            socialLinks.forEach(l => {
+                const a = document.createElement('a'); a.className = 'bottom-social-link'; a.href = l.url; a.target = '_blank'; a.innerHTML = `<span>${l.name}</span>`;
+                bottomSocials.appendChild(a);
+            });
+            const socialOverlayList = document.getElementById('socialOverlayList');
+            socialLinks.forEach(l => {
+                const a = document.createElement('a'); a.href = l.url; a.target = '_blank'; a.innerHTML = `<span>${l.name.toUpperCase()}</span>`;
+                socialOverlayList.appendChild(a);
+            });
 
             const grid = document.getElementById('platformsGrid');
             const searchInput = document.getElementById('searchInput');
@@ -333,7 +519,7 @@
                         navigator.clipboard.writeText(p.url).then(() => {
                             const originalText = urlSpan.textContent;
                             urlSpan.textContent = 'Copied!';
-                            urlSpan.style.color = '#ffcc00';
+                            urlSpan.style.color = '#00ff00';
                             setTimeout(() => {
                                 urlSpan.textContent = originalText;
                                 urlSpan.style.color = '';
@@ -347,7 +533,6 @@
                     card.appendChild(urlSpan);
                     grid.appendChild(card);
                 });
-                // Применяем текущее состояние видимости ссылок
                 if (linksVisible) {
                     grid.classList.add('show-urls');
                 } else {
@@ -359,7 +544,6 @@
                 renderPlatforms(e.target.value);
             });
 
-            // Переключение видимости ссылок
             toggleBtn.addEventListener('click', () => {
                 linksVisible = !linksVisible;
                 if (linksVisible) {
@@ -375,47 +559,62 @@
 
             renderPlatforms();
 
-            // Фоновый эффект
-            const canvas = document.getElementById('bgCanvas');
-            const ctx = canvas.getContext('2d');
-            const blobs = [];
-            for (let i = 0; i < 6; i++) {
-                blobs.push({
-                    x: 0.1 + Math.random() * 0.8,
-                    y: 0.1 + Math.random() * 0.8,
-                    r: 0.12 + Math.random() * 0.28
-                });
-            }
-            function resizeCanvas() {
-                canvas.width = window.innerWidth;
-                canvas.height = window.innerHeight;
-            }
-            function drawBackground() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                ctx.globalCompositeOperation = 'lighter';
-                blobs.forEach(b => {
-                    const cx = b.x * canvas.width;
-                    const cy = b.y * canvas.height;
-                    const maxR = b.r * Math.max(canvas.width, canvas.height);
-                    const grad = ctx.createRadialGradient(cx, cy, maxR * 0.2, cx, cy, maxR);
-                    grad.addColorStop(0, 'rgba(180,182,186,0.3)');
-                    grad.addColorStop(0.2, 'rgba(160,162,166,0.25)');
-                    grad.addColorStop(0.4, 'rgba(140,142,146,0.15)');
-                    grad.addColorStop(0.7, 'rgba(120,122,126,0.05)');
-                    grad.addColorStop(1, 'rgba(0,0,0,0)');
-                    ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(cx, cy, maxR, 0, Math.PI * 2);
-                    ctx.fill();
-                });
-                ctx.globalCompositeOperation = 'source-over';
-            }
-            window.addEventListener('resize', () => {
-                resizeCanvas();
-                drawBackground();
+            // Декоративные эффекты
+            let trailTimeout;
+            document.addEventListener('mousemove', e => {
+                if (trailTimeout) return;
+                trailTimeout = setTimeout(() => {
+                    trailTimeout = null;
+                    const dot = document.createElement('div'); dot.className = 'cursor-trail';
+                    dot.style.left = e.clientX+'px'; dot.style.top = e.clientY+'px';
+                    document.body.appendChild(dot); setTimeout(() => dot.remove(), 600);
+                }, 50);
             });
-            resizeCanvas();
-            drawBackground();
+
+            const particleSymbols = ['☆','✧','✦','★','⭑'];
+            function spawnParticles(e) {
+                for (let i=0; i<6; i++) {
+                    const p = document.createElement('span'); p.className = 'particle';
+                    p.textContent = particleSymbols[Math.floor(Math.random()*particleSymbols.length)];
+                    p.style.left = e.clientX+'px'; p.style.top = e.clientY+'px';
+                    p.style.color = Math.random()>0.5 ? '#00ff00' : '#66ff66';
+                    const a = (Math.PI*2*i)/6, d = 15+Math.random()*25;
+                    p.style.setProperty('--dx', Math.cos(a)*d+'px');
+                    p.style.setProperty('--dy', Math.sin(a)*d+'px');
+                    document.body.appendChild(p); setTimeout(() => p.remove(), 800);
+                }
+            }
+            function attachParticles(sel) { document.querySelectorAll(sel).forEach(e => e.addEventListener('mouseenter', spawnParticles)); }
+            function makeWobbly(sel) {
+                document.querySelectorAll(sel).forEach(el => {
+                    if (el.classList.contains('watch-btn') || el.closest('.watch-btn') || el.classList.contains('wobbly-done')) return;
+                    el.classList.add('wobbly-done','wobbly-text');
+                    const text = el.textContent; el.textContent = '';
+                    [...text].forEach(c => {
+                        const s = document.createElement('span'); s.className = 'char';
+                        s.textContent = c===' ' ? '\u00A0' : c;
+                        s.style.setProperty('--wx', (Math.random()-0.5)*3+'px');
+                        s.style.setProperty('--wy', (Math.random()-0.5)*3+'px');
+                        s.style.setProperty('--wr', (Math.random()-0.5)*4+'deg');
+                        el.appendChild(s);
+                    });
+                });
+            }
+
+            setTimeout(() => {
+                makeWobbly('.nav a'); makeWobbly('.more-toggle'); makeWobbly('.bottom-social-link');
+                makeWobbly('.more-overlay-list a'); makeWobbly('.nav-overlay-list a'); makeWobbly('.mobile-social-btn'); makeWobbly('.social-overlay-list a');
+                attachParticles('.nav a'); attachParticles('.more-toggle'); attachParticles('.bottom-social-link');
+                attachParticles('.more-overlay-list a'); attachParticles('.nav-overlay-list a'); attachParticles('.mobile-social-btn'); attachParticles('.social-overlay-list a');
+                attachParticles('.logo'); attachParticles('.platform-card');
+                loadingEl.classList.add('hidden');
+                clearInterval(loadingInterval);
+            }, 3000);
+
+            document.addEventListener('contextmenu', e => e.preventDefault());
+            document.addEventListener('copy', e => e.preventDefault());
+            document.addEventListener('cut', e => e.preventDefault());
+            document.addEventListener('dragstart', e => e.preventDefault());
         })();
     </script>
 </body>

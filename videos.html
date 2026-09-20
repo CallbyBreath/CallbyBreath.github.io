@@ -7,26 +7,37 @@
     <link rel="icon" type="image/png" href="Images/logo.png">
     <style>
         @font-face { font-family: 'Press Start 2P'; src: url('Font/PressStart2P.ttf') format('truetype'); font-weight: normal; font-style: normal; }
-        @font-face { font-family: 'Rubik Spray Paint'; src: url('Font/RubikSprayPaint-Regular.ttf') format('truetype'); font-weight: normal; font-style: normal; }
+        @font-face { font-family: 'Rubik Spray Paint'; src: url('Font/OldNewspaperTypes.ttf') format('truetype'); font-weight: normal; font-style: normal; }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; height: 100%; overflow: hidden; }
-        body { font-family: 'Press Start 2P', sans-serif; color: #1f2024; line-height: 1.5; display: flex; flex-direction: row; -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none; height: 100%; overflow: hidden; position: fixed; width: 100%; background: #141416; }
+        body {
+            font-family: 'Press Start 2P', sans-serif;
+            color: #1f2024;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: row;
+            -webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;
+            height: 100%;
+            overflow: hidden;
+            position: fixed;
+            width: 100%;
+            background: #001a00; /* тёмно-зелёный фон */
+        }
         img { -webkit-user-drag: none; -khtml-user-drag: none; -moz-user-drag: none; -o-user-drag: none; user-drag: none; pointer-events: auto; }
 
         .particle { position: fixed; pointer-events: none; z-index: 9999; font-size: 1.2rem; animation: particleFade 0.8s ease-out forwards; font-family: 'Press Start 2P', sans-serif; }
         @keyframes particleFade { 0% { opacity: 1; transform: translate(0,0) scale(1); } 100% { opacity: 0; transform: translate(var(--dx),var(--dy)) scale(0.3); } }
 
-        .cursor-trail { position: fixed; pointer-events: none; z-index: 10000; width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); box-shadow: 0 0 6px rgba(255,255,255,0.4); animation: trailFade 0.6s ease-out forwards; }
+        .cursor-trail { position: fixed; pointer-events: none; z-index: 10000; width: 6px; height: 6px; border-radius: 50%; background: rgba(0,255,0,0.6); box-shadow: 0 0 6px rgba(0,255,0,0.4); animation: trailFade 0.6s ease-out forwards; }
         @keyframes trailFade { 0% { opacity: 0.8; transform: scale(1); } 100% { opacity: 0; transform: scale(0); } }
 
         .wobbly-text { display: inline-block; }
         .wobbly-text .char { display: inline-block; transition: transform 0.25s ease-out, filter 0.25s ease-out; position: relative; z-index: 1; }
         .wobbly-text:hover .char { z-index: 2; transform: translate(var(--wx), var(--wy)) rotate(var(--wr)); filter: brightness(1.5); }
 
-        /* ФИКСИРОВАННЫЕ ОВЕРЛЕИ НА ВЕСЬ ЭКРАН */
         .more-overlay, .social-overlay, .nav-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #141416;
+            background-color: #111111;
             z-index: 1000;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             gap: clamp(1.5rem, 3vh, 2.5rem);
@@ -42,7 +53,7 @@
             font-size: 2rem; cursor: pointer; z-index: 20;
             line-height: 1; transition: color 0.2s;
         }
-        .overlay-close-btn:hover { color: #ffcc00; }
+        .overlay-close-btn:hover { color: #00ff00; text-shadow: 0 0 10px rgba(0,255,0,0.8); }
 
         .more-overlay-title, .social-overlay-title, .nav-overlay-title {
             font-family: 'Rubik Spray Paint', sans-serif; font-size: clamp(1.5rem, 3vw, 2.5rem);
@@ -61,95 +72,66 @@
             transition: color 0.2s ease; text-transform: uppercase; text-align: center;
             text-shadow: 0 0 12px rgba(0,0,0,0.5), 0 2px 4px rgba(0,0,0,0.6);
         }
-        .more-overlay-list a:hover, .social-overlay-list a:hover, .nav-overlay-list a:hover { color: #ffcc00; }
+        .more-overlay-list a:hover, .social-overlay-list a:hover, .nav-overlay-list a:hover { color: #00ff00; text-shadow: 0 0 10px rgba(0,255,0,0.8); }
 
-        #videosBgCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 0;
-            pointer-events: none;
-        }
+        #videosBgCanvas { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 0; pointer-events: none; }
 
-        .left-panel, .right-panel { width: clamp(40px, 5vw, 64px); flex-shrink: 0; height: 100vh; position: relative; z-index: 5; background: #ffffff; }
+        .left-panel, .right-panel { width: clamp(40px, 5vw, 64px); flex-shrink: 0; height: 100vh; position: relative; z-index: 5; background: #111111; }
         .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; position: relative; z-index: 10; height: 100%; }
-        .top-bar { width: 100%; padding: 0; flex-shrink: 0; position: relative; z-index: 100; background: #ffffff; }
+        .top-bar { width: 100%; padding: 0; flex-shrink: 0; position: relative; z-index: 100; background: #111111; }
         .top-bar-inner { width: 100%; height: clamp(48px, 8vh, 64px); display: flex; align-items: center; justify-content: space-between; padding: 0; position: relative; }
         .logo-wrapper { position: relative; display: inline-block; padding-left: 0.5rem; }
-        .logo { height: clamp(36px, 6vh, 48px); width: auto; display: block; cursor: pointer; filter: brightness(0) saturate(100%) invert(10%) sepia(78%) saturate(4617%) hue-rotate(350deg) brightness(92%) contrast(108%); transition: transform 0.2s ease; }
+        .logo { height: clamp(36px, 6vh, 48px); width: auto; display: block; cursor: pointer; filter: brightness(0) invert(1); transition: transform 0.2s ease; }
         .logo:hover { transform: scale(1.05); }
         .nav { display: flex; gap: 1.2rem; align-items: center; padding-right: 0; }
-        .nav a { text-decoration: none; font-size: 0.7rem; letter-spacing: 0.3px; color: #700707; transition: color 0.2s; padding: 0.5rem 0.8rem; border-radius: 10px; text-shadow: 0 0 6px rgba(112,7,7,0.3); }
+        .nav a { text-decoration: none; font-size: 0.7rem; letter-spacing: 0.3px; color: #ffffff; transition: color 0.2s; padding: 0.5rem 0.8rem; border-radius: 10px; text-shadow: 0 0 8px rgba(255,255,255,0.6); font-family: 'Press Start 2P', sans-serif; }
         .nav a:last-child { padding-right: 0.5rem; }
-        .nav a:hover { color: #990000; text-shadow: 0 0 10px rgba(153,0,0,0.5); }
-        .more-toggle { text-decoration: none; font-size: 0.7rem; letter-spacing: 0.3px; color: #700707; transition: color 0.2s; padding: 0.5rem 0.8rem; cursor: pointer; background: none; border: none; border-radius: 10px; font-family: 'Press Start 2P', sans-serif; outline: none; -webkit-tap-highlight-color: transparent; text-shadow: 0 0 6px rgba(112,7,7,0.3); }
+        .nav a:hover { color: #00ff00; text-shadow: 0 0 12px rgba(0,255,0,1); }
+        .more-toggle { text-decoration: none; font-size: 0.7rem; letter-spacing: 0.3px; color: #ffffff; transition: color 0.2s; padding: 0.5rem 0.8rem; cursor: pointer; background: none; border: none; border-radius: 10px; font-family: 'Press Start 2P', sans-serif; outline: none; -webkit-tap-highlight-color: transparent; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
         .more-toggle:focus { outline: none; }
-        .more-toggle:hover { color: #990000; text-shadow: 0 0 10px rgba(153,0,0,0.5); }
-        .mobile-menu-btn { display: none; background: transparent; border: none; color: #700707; font-size: 1.8rem; cursor: pointer; padding: 0 0.5rem 0 0; line-height: 1; transition: color 0.2s, transform 0.3s ease; }
-        .mobile-menu-btn:hover { color: #4a0000; }
+        .more-toggle:hover { color: #00ff00; text-shadow: 0 0 12px rgba(0,255,0,1); }
+        .mobile-menu-btn { display: none; background: transparent; border: none; color: #ffffff; font-size: 1.8rem; cursor: pointer; padding: 0 0.5rem 0 0; line-height: 1; transition: color 0.2s, transform 0.3s ease; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+        .mobile-menu-btn:hover { color: #00ff00; text-shadow: 0 0 12px rgba(0,255,0,1); }
         .mobile-menu-btn.open { transform: rotate(90deg); }
 
-        .page-content { 
-            flex: 1; 
-            overflow-y: auto; 
-            overflow-x: hidden; 
-            scrollbar-width: none; 
-            -ms-overflow-style: none; 
-            padding: 1rem clamp(0.5rem, 2vw, 1.5rem); 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            position: relative;
-            background: transparent;
+        .page-content {
+            flex: 1; overflow-y: auto; overflow-x: hidden;
+            scrollbar-width: none; -ms-overflow-style: none;
+            padding: 1rem clamp(0.5rem, 2vw, 1.5rem);
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; background: transparent;
         }
         .page-content::-webkit-scrollbar { display: none; }
 
         #loadingIndicator {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            background: #000;
-            color: #fff;
-            font-family: 'Press Start 2P', sans-serif;
-            font-size: 0.4rem;
-            padding: 4px 8px;
-            border-radius: 3px;
-            opacity: 1;
-            transition: opacity 0.4s ease;
-            white-space: nowrap;
-            pointer-events: auto;
+            position: absolute; top: 20px; left: 20px; z-index: 1000;
+            background: #000; color: #fff; font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.4rem; padding: 4px 8px; border-radius: 3px;
+            opacity: 1; transition: opacity 0.4s ease; white-space: nowrap;
         }
         #loadingIndicator.hidden { opacity: 0; pointer-events: none; }
 
         .videos-title {
             font-family: 'Rubik Spray Paint', sans-serif;
             font-size: clamp(1.2rem, 2.5vw, 2rem);
-            color: #f0fff8;
-            text-transform: uppercase;
-            letter-spacing: 4px;
-            text-align: center;
-            margin: 1.5rem 0 1rem;
-            text-shadow: 0 0 20px rgba(0,0,0,0.7), 0 0 40px rgba(0,0,0,0.5);
-            position: relative;
-            z-index: 2;
+            color: #f0fff8; text-transform: uppercase; letter-spacing: 4px;
+            text-align: center; margin: 1.5rem 0 1rem;
+            text-shadow: 0 0 30px rgba(0,0,0,0.9), 0 0 60px rgba(0,0,0,0.7), 0 0 10px rgba(0,255,0,0.5);
+            position: relative; z-index: 2;
         }
 
-        /* ПОИСК */
         .search-container {
             width: 100%;
             max-width: 400px;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 0.5rem;
             position: relative;
             z-index: 2;
         }
         .search-input {
             width: 100%;
             padding: 0.6rem 1rem;
-            background: #1f2024;
-            border: 2px solid rgba(255,230,200,0.6);
+            background: #111111;
+            border: 2px solid rgba(0,255,0,0.6);
             border-radius: 10px;
             color: #f0fff8;
             font-family: 'Press Start 2P', sans-serif;
@@ -157,9 +139,33 @@
             outline: none;
             text-align: center;
             transition: border-color 0.3s;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
-        .search-input:focus { border-color: #ffcc00; }
+        .search-input:focus { border-color: #00ff00; box-shadow: 0 0 15px rgba(0,255,0,0.5); }
         .search-input::placeholder { color: rgba(240,255,248,0.4); }
+
+        .follow-platform-btn {
+            display: block;
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto 1.5rem;
+            padding: 0.6rem 1rem;
+            background: #00ff00;
+            color: #000000;
+            font-family: 'Press Start 2P', sans-serif;
+            font-size: 0.6rem;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,255,0,0.8), 0 0 20px rgba(0,255,0,0.6), 0 0 30px rgba(0,255,0,0.4);
+            transition: box-shadow 0.3s ease;
+            z-index: 2;
+            position: relative;
+            letter-spacing: 1px;
+        }
+        .follow-platform-btn:hover {
+            box-shadow: 0 0 15px rgba(0,255,0,1), 0 0 30px rgba(0,255,0,0.8), 0 0 50px rgba(0,255,0,0.6);
+        }
 
         .videos-grid {
             display: flex;
@@ -189,17 +195,17 @@
         .video-thumbnail {
             width: 100%;
             aspect-ratio: 16/9;
-            background: #141416;
-            border: 2px solid rgba(255,230,200,0.7);
+            background: #111111;
+            border: 2px solid rgba(0,255,0,0.7);
             border-radius: 10px;
             overflow: hidden;
-            box-shadow: 0 0 8px rgba(255,220,170,0.5), 0 0 15px rgba(0,0,0,0.4);
+            box-shadow: 0 0 15px rgba(0,255,0,0.8), 0 0 30px rgba(0,255,0,0.5), 0 0 50px rgba(0,0,0,0.7);
             transition: box-shadow 0.3s ease, border-color 0.3s ease;
             margin-bottom: 0.5rem;
         }
         .video-thumbnail-link:hover .video-thumbnail {
-            border-color: rgba(255,245,220,1);
-            box-shadow: 0 0 18px rgba(255,230,190,0.95), 0 0 40px rgba(255,210,150,0.75), 0 0 70px rgba(255,170,90,0.55), 0 0 110px rgba(255,130,50,0.45), 0 0 160px rgba(255,100,25,0.35), 0 0 230px rgba(255,70,15,0.18), 0 0 8px rgba(0,0,0,0.5);
+            border-color: rgba(0,255,0,1);
+            box-shadow: 0 0 25px rgba(0,255,0,1), 0 0 50px rgba(0,255,0,0.8), 0 0 90px rgba(0,255,0,0.6), 0 0 120px rgba(0,255,0,0.4);
         }
         .video-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
         .video-title {
@@ -210,31 +216,30 @@
             text-transform: uppercase;
             line-height: 1.4;
             margin-bottom: 0.25rem;
-            text-shadow: 0 0 8px rgba(0,0,0,0.6);
+            text-shadow: 0 0 10px rgba(0,0,0,0.9), 0 0 20px rgba(0,0,0,0.7), 0 0 5px rgba(0,255,0,0.3);
             text-decoration: none;
             transition: color 0.2s;
         }
-        .video-title:hover {
-            color: #ffcc00;
-        }
+        .video-title:hover { color: #00ff00; }
         .video-duration {
             position: absolute;
             bottom: 6px;
             right: 6px;
-            background: #141416;
-            color: #f0fff8;
+            background: #00ff00;
+            color: #000000;
             font-family: 'Press Start 2P', sans-serif;
             font-size: 0.4rem;
             padding: 2px 6px;
             border-radius: 4px;
+            box-shadow: 0 0 8px rgba(0,255,0,0.8);
         }
 
-        .bottom-bar { width: 100%; padding: 0; flex-shrink: 0; position: relative; z-index: 100; background: #ffffff; }
+        .bottom-bar { width: 100%; padding: 0; flex-shrink: 0; position: relative; z-index: 100; background: #111111; }
         .bottom-bar-inner { width: 100%; height: clamp(48px, 8vh, 64px); display: flex; align-items: center; justify-content: center; padding: 0 1rem; position: relative; gap: 2rem; }
-        .bottom-social-link { text-decoration: none; font-family: 'Press Start 2P', sans-serif; font-size: clamp(0.5rem, 0.9vw, 0.65rem); letter-spacing: 0.3px; color: #700707; text-transform: uppercase; transition: color 0.2s ease; text-shadow: 0 0 8px rgba(112,7,7,0.4); }
-        .bottom-social-link:hover { color: #990000; text-shadow: 0 0 14px rgba(153,0,0,0.6); }
-        .mobile-social-btn { display: none; background: none; border: none; color: #700707; font-family: 'Press Start 2P', sans-serif; font-size: 0.6rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; padding: 0.5rem 1rem; text-shadow: 0 0 8px rgba(112,7,7,0.4); transition: color 0.2s ease; }
-        .mobile-social-btn:hover { color: #990000; }
+        .bottom-social-link { text-decoration: none; font-family: 'Press Start 2P', sans-serif; font-size: clamp(0.5rem, 0.9vw, 0.65rem); letter-spacing: 0.3px; color: #ffffff; text-transform: uppercase; transition: color 0.2s ease; text-shadow: 0 0 8px rgba(255,255,255,0.6); }
+        .bottom-social-link:hover { color: #00ff00; text-shadow: 0 0 14px rgba(0,255,0,1); }
+        .mobile-social-btn { display: none; background: none; border: none; color: #ffffff; font-family: 'Press Start 2P', sans-serif; font-size: 0.6rem; cursor: pointer; text-transform: uppercase; letter-spacing: 2px; padding: 0.5rem 1rem; text-shadow: 0 0 8px rgba(255,255,255,0.6); transition: color 0.2s ease; }
+        .mobile-social-btn:hover { color: #00ff00; text-shadow: 0 0 10px rgba(0,255,0,1); }
 
         @media (max-width: 900px) { .video-card { width: 280px; } }
         @media (max-width: 768px) {
@@ -260,7 +265,6 @@
 
     <div class="left-panel"></div>
     <div class="main-content" id="mainContent">
-        <!-- ФИКСИРОВАННЫЕ ОВЕРЛЕИ С КНОПКАМИ ЗАКРЫТИЯ -->
         <div class="more-overlay" id="moreOverlay">
             <canvas class="overlay-bg-canvas" id="moreBgCanvas"></canvas>
             <button class="overlay-close-btn" id="closeMoreOverlay">✕</button>
@@ -307,10 +311,11 @@
 
             <h1 class="videos-title">MUSIC VIDEOS</h1>
 
-            <!-- ПОИСК -->
             <div class="search-container">
                 <input type="text" class="search-input" id="searchInput" placeholder="Search...">
             </div>
+
+            <a href="links.html" class="follow-platform-btn">FOLLOW YOUR PLATFORM</a>
 
             <div class="videos-grid" id="videosGrid"></div>
         </div>
@@ -324,32 +329,32 @@
     <script src="videos-config.js"></script>
     <script>
         (function() {
-            // Берем видео из конфига
             const videos = (typeof videosConfig !== 'undefined' && videosConfig.videos) ? videosConfig.videos : [];
 
-            // Фон и оверлеи
-            const colorPalettes = { dark: { stops: [[0, 'rgba(180,182,186,0.3)'], [0.2, 'rgba(160,162,166,0.25)'], [0.4, 'rgba(140,142,146,0.15)'], [0.7, 'rgba(120,122,126,0.05)'], [1, 'rgba(0,0,0,0)']] } };
-            function generateRandomBlobs(count=6){ let b=[]; for(let i=0;i<count;i++) b.push({x:0.1+Math.random()*0.8,y:0.1+Math.random()*0.8,r:0.12+Math.random()*0.28}); return b; }
-            const darkBlobs = generateRandomBlobs();
-            function renderBackground(canvas, blobs, key){
+            const darkBlobs = Array.from({length:6}, () => ({ x: 0.1+Math.random()*0.8, y: 0.1+Math.random()*0.8, r: 0.12+Math.random()*0.28 }));
+            function renderBackground(canvas, blobs){
                 if(!canvas) return;
                 const ctx=canvas.getContext('2d');
                 canvas.width=window.innerWidth; canvas.height=window.innerHeight;
                 ctx.clearRect(0,0,canvas.width,canvas.height);
                 ctx.globalCompositeOperation='lighter';
-                const palette=colorPalettes[key]||colorPalettes.dark;
                 blobs.forEach(b=>{
                     const cx=b.x*canvas.width, cy=b.y*canvas.height;
                     const maxR=b.r*Math.max(canvas.width,canvas.height);
                     const grad=ctx.createRadialGradient(cx,cy,maxR*0.2,cx,cy,maxR);
-                    palette.stops.forEach(s=>grad.addColorStop(s[0],s[1]));
+                    grad.addColorStop(0,'rgba(0,255,0,0.45)');
+                    grad.addColorStop(0.2,'rgba(0,255,0,0.30)');
+                    grad.addColorStop(0.4,'rgba(0,255,0,0.18)');
+                    grad.addColorStop(0.6,'rgba(0,255,0,0.08)');
+                    grad.addColorStop(0.8,'rgba(0,255,0,0.03)');
+                    grad.addColorStop(1,'rgba(0,0,0,0)');
                     ctx.fillStyle=grad; ctx.beginPath(); ctx.arc(cx,cy,maxR,0,Math.PI*2); ctx.fill();
                 });
                 ctx.globalCompositeOperation='source-over';
             }
             const videosBgCanvas = document.getElementById('videosBgCanvas');
-            renderBackground(videosBgCanvas, darkBlobs, 'dark');
-            window.addEventListener('resize', ()=>renderBackground(videosBgCanvas, darkBlobs, 'dark'));
+            renderBackground(videosBgCanvas, darkBlobs);
+            window.addEventListener('resize', ()=>renderBackground(videosBgCanvas, darkBlobs));
 
             function copyBgToOverlay(ov){ if(!ov) return; const octx=ov.getContext('2d'); ov.width=window.innerWidth; ov.height=window.innerHeight; octx.drawImage(videosBgCanvas,0,0,ov.width,ov.height); }
 
@@ -381,25 +386,16 @@
 
             const socialLinks = [
                 { name:'youtube', url:'https://www.youtube.com/@CallbyBreath' },
-                { name:'instagram', url:'https://www.instagram.com/callbybreath.official' },
-                { name:'pinterest', url:'https://pinterest.com/callbybreath' },
-                { name:'telegram', url:'https://t.me/callbybreath' },
-                { name:'spotify', url:'https://open.spotify.com/artist/4RJTPseEgwmAZIto7YDuV6' },
-                { name:'apple music', url:'https://music.apple.com/ru/artist/callbybreath/1602956679' },
-                { name:'soundcloud', url:'https://soundcloud.com/callbybreath' }
+                { name:'twitter', url:'https://x.com/xCallbyBreath' },
+                { name:'telegram', url:'https://t.me/callbybreath' }
             ];
-            (function renderBottomSocials(){
-                const c=document.getElementById('bottomSocials');
-                socialLinks.forEach(l=>{ const a=document.createElement('a'); a.className='bottom-social-link'; a.href=l.url; a.target='_blank'; a.innerHTML=`<span>${l.name}</span>`; c.appendChild(a); });
-            })();
-            (function renderSocialOverlayList(){
-                const list=document.getElementById('socialOverlayList'); list.innerHTML='';
-                socialLinks.forEach(l=>{ const a=document.createElement('a'); a.href=l.url; a.target='_blank'; a.innerHTML=`<span>${l.name.toUpperCase()}</span>`; list.appendChild(a); });
-            })();
+            const bottomSocials = document.getElementById('bottomSocials');
+            socialLinks.forEach(l=>{ const a=document.createElement('a'); a.className='bottom-social-link'; a.href=l.url; a.target='_blank'; a.innerHTML=`<span>${l.name}</span>`; bottomSocials.appendChild(a); });
+            const socialOverlayList = document.getElementById('socialOverlayList');
+            socialLinks.forEach(l=>{ const a=document.createElement('a'); a.href=l.url; a.target='_blank'; a.innerHTML=`<span>${l.name.toUpperCase()}</span>`; socialOverlayList.appendChild(a); });
 
             const videosGrid = document.getElementById('videosGrid');
             const searchInput = document.getElementById('searchInput');
-            let currentSearch = '';
 
             function createVideoCard(video) {
                 const card = document.createElement('div');
@@ -440,10 +436,7 @@
                 const term = filter.trim().toLowerCase();
                 const filtered = term ? videos.filter(v => v.title.toLowerCase().includes(term)) : videos;
                 videosGrid.innerHTML = '';
-                filtered.forEach(video => {
-                    videosGrid.appendChild(createVideoCard(video));
-                });
-                // Анимация появления
+                filtered.forEach(video => videosGrid.appendChild(createVideoCard(video)));
                 const cards = videosGrid.querySelectorAll('.video-card');
                 cards.forEach((card, index) => {
                     card.classList.remove('visible');
@@ -451,15 +444,9 @@
                 });
             }
 
-            searchInput.addEventListener('input', () => {
-                currentSearch = searchInput.value;
-                renderVideos(currentSearch);
-            });
-
-            // Первоначальный рендер
+            searchInput.addEventListener('input', () => renderVideos(searchInput.value));
             renderVideos();
 
-            // Эффекты
             let trailTimeout;
             document.addEventListener('mousemove', e => {
                 if (trailTimeout) return;
@@ -477,7 +464,7 @@
                     const p = document.createElement('span'); p.className = 'particle';
                     p.textContent = particleSymbols[Math.floor(Math.random()*particleSymbols.length)];
                     p.style.left = e.clientX+'px'; p.style.top = e.clientY+'px';
-                    p.style.color = Math.random()>0.5 ? '#f0fff8' : '#ffcc00';
+                    p.style.color = Math.random()>0.5 ? '#00ff00' : '#66ff66';
                     const a = (Math.PI*2*i)/6, d = 15+Math.random()*25;
                     p.style.setProperty('--dx', Math.cos(a)*d+'px');
                     p.style.setProperty('--dy', Math.sin(a)*d+'px');
@@ -506,7 +493,7 @@
                 makeWobbly('.more-overlay-list a'); makeWobbly('.nav-overlay-list a'); makeWobbly('.mobile-social-btn'); makeWobbly('.social-overlay-list a');
                 attachParticles('.nav a'); attachParticles('.more-toggle'); attachParticles('.bottom-social-link');
                 attachParticles('.more-overlay-list a'); attachParticles('.nav-overlay-list a'); attachParticles('.mobile-social-btn'); attachParticles('.social-overlay-list a');
-                attachParticles('.logo'); attachParticles('.video-card');
+                attachParticles('.logo'); attachParticles('.video-card'); attachParticles('.follow-platform-btn');
                 loadingEl.classList.add('hidden'); clearInterval(loadingInterval);
             }, 3000);
 

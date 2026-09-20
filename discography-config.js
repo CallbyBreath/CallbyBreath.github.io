@@ -4,6 +4,7 @@
 
 const discographyConfig = {
   albums: [
+    { cover: 'Images/Releases/single_20.jpg', title: 'Highway Replay', date: '2026.09.31', type: 'SINGLE', link: 'releases/single_20.html' },
     { cover: 'Images/Releases/remix_01.jpg', title: 'Die In a Fire (feat. @OomuraMiki)', date: '2025.02.10', type: 'SINGLE', link: 'releases/remix_01.html' },
     { cover: 'Images/Releases/single_19.jpeg', title: 'РАССЕКАЙ', date: '2023.08.11', type: 'SINGLE', link: 'releases/single_19.html' },
     { cover: 'Images/Releases/single_18.jpeg', title: 'ДЕВОЧКА МЕЧТЫ', date: '2023.06.15', type: 'SINGLE', link: 'releases/single_18.html' },

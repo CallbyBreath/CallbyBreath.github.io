@@ -6,10 +6,9 @@ const indexConfig = {
   // ================= ПРЕВЬЮ ПОСЛЕДНЕГО РЕЛИЗА =================
   hero: {
     label: "Latest Release",                     // Текст над превью
-    thumbnail: "Images/Thumbnails/remix001.jpg", // Картинка превью
+    thumbnail: "Images/Thumbnails/018.jpg", // Картинка превью
     listenLink: "releases/remix_01.html",        // Ссылка на ♪ LISTEN
-    watchLink: "https://youtu.be/Rj0nKMv3GrQ?si=7wyYJzPvnr38diyp", // Ссылка на ► WATCH
-    trackTitle: "Die In a Fire Remix/Cover (feat. @OomuraMiki)"  // Название трека
+    trackTitle: "Highway Replay (Music Video)"  // Название трека
   },
 
   // ================= СЕКЦИЯ "ABOUT" =================
@@ -21,17 +20,14 @@ const indexConfig = {
 
   // ================= СОЦИАЛЬНЫЕ СЕТИ (нижняя панель + оверлей Social) =================
   socialLinks: [
-    { name: "youtube",     url: "https://www.youtube.com/@CallbyBreath" },
-    { name: "instagram",   url: "https://www.instagram.com/callbybreath.official" },
-    { name: "pinterest",   url: "https://pinterest.com/callbybreath" },
-    { name: "telegram",    url: "https://t.me/callbybreath" },
-    { name: "spotify",     url: "https://open.spotify.com/artist/4RJTPseEgwmAZIto7YDuV6" },
-    { name: "apple music", url: "https://music.apple.com/ru/artist/callbybreath/1602956679" },
-    { name: "soundcloud",  url: "https://soundcloud.com/callbybreath" }
+    { name:'youtube', url:'https://www.youtube.com/@CallbyBreath' },
+    { name:'twitter', url:'https://x.com/xCallbyBreath' },
+    { name:'telegram', url:'https://t.me/callbybreath' }
   ],
 
   // ================= РЕЛИЗЫ ДЛЯ БЕСКОНЕЧНОЙ ЛЕНТЫ =================
   releaseItems: [
+    { image: "Images/Releases/single_20.jpg", url: "releases/single_20.html" },
     { image: "Images/Releases/remix_01.jpg", url: "releases/remix_01.html" },
     { image: "Images/Releases/single_19.jpeg", url: "releases/single_19.html" },
     { image: "Images/Releases/single_18.jpeg", url: "releases/single_18.html" },
