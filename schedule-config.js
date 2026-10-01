@@ -3,6 +3,12 @@
 
 const scheduleConfig = {
   eventsData: {
+    "2026-10-01": {
+      img: "",
+      events: [
+        'New Digital Single「Highway Replay」: <a href="https://musicalligator.link/HighwayReplay"> (link)</a>',
+      ]
+    },
     "2026-09-31": {
       img: "",
       events: [

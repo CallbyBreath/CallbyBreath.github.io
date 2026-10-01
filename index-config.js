@@ -7,8 +7,8 @@ const indexConfig = {
   hero: {
     label: "Latest Release",                     // Текст над превью
     thumbnail: "Images/Thumbnails/018.jpg", // Картинка превью
-    listenLink: "releases/remix_01.html",        // Ссылка на ♪ LISTEN
-    trackTitle: "Highway Replay (Music Video)"  // Название трека
+    listenLink: "https://musicalligator.link/HighwayReplay",        // Ссылка на ♪ LISTEN
+    trackTitle: "Highway Replay"  // Название трека
   },
 
   // ================= СЕКЦИЯ "ABOUT" =================
@@ -22,12 +22,13 @@ const indexConfig = {
   socialLinks: [
     { name:'youtube', url:'https://www.youtube.com/@CallbyBreath' },
     { name:'twitter', url:'https://x.com/xCallbyBreath' },
+    { name:'instagram', url:'https://instagram.com/callbybreath.official' },
     { name:'telegram', url:'https://t.me/callbybreath' }
   ],
 
   // ================= РЕЛИЗЫ ДЛЯ БЕСКОНЕЧНОЙ ЛЕНТЫ =================
   releaseItems: [
-    { image: "Images/Releases/single_20.jpg", url: "releases/single_20.html" },
+    { image: "Images/Releases/single_20.jpg", url: "https://musicalligator.link/HighwayReplay" },
     { image: "Images/Releases/remix_01.jpg", url: "releases/remix_01.html" },
     { image: "Images/Releases/single_19.jpeg", url: "releases/single_19.html" },
     { image: "Images/Releases/single_18.jpeg", url: "releases/single_18.html" },

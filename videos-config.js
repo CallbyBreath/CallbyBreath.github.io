@@ -4,7 +4,7 @@
 
 const videosConfig = {
   videos: [
-    { thumbnail: 'Images/Thumbnails/018.jpg', title: 'Highway Replay (Music Video)', duration: '3:18', url: 'https://youtu.be/v3rElplio7c', releaseLink: 'releases/single_20.html' },
+    { thumbnail: 'Images/Thumbnails/018.jpg', title: 'Highway Replay', duration: '3:18', url: 'https://www.youtube.com/watch?v=nXYnJOQbr8Y', releaseLink: 'https://musicalligator.link/HighwayReplay' },
     { thumbnail: 'Images/Thumbnails/remix001.jpg', title: 'Die In a Fire (feat. @OomuraMiki)', duration: '3:12', url: 'https://youtu.be/Rj0nKMv3GrQ', releaseLink: 'releases/remix_01.html' },
     { thumbnail: 'Images/Thumbnails/017.jpg', title: 'Рассекай', duration: '2:47', url: 'https://youtu.be/v3rElplio7c', releaseLink: 'releases/single_19.html' },
     { thumbnail: 'Images/Thumbnails/016.jpg', title: 'Девочка мечты', duration: '2:53', url: 'https://youtu.be/qt8pzz8E9IQ', releaseLink: 'releases/single_18.html' },
