@@ -18,6 +18,7 @@ const linksConfig = {
   { name: "Spotify", url: "https://open.spotify.com/artist/4RJTPseEgwmAZIto7YDuV6" },
   { name: "Telegram", url: "https://t.me/callbybreath" },
   { name: "Tidal", url: "https://tidal.com/artist/29996654" },
+  { name: "TikTok", url: "https://www.tiktok.com/@callbybreath.official" },
   { name: "Twitter", url: "https://x.com/xCallbyBreath" },
   { name: "VK Music", url: "https://vk.ru/artist/7824552078880299617" },
   { name: "Yandex Music / Яндекс Музыка", url: "https://music.yandex.ru/artist/15571549" },
